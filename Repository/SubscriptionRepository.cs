@@ -12,20 +12,20 @@ using System.Threading.Tasks;
 
 namespace IdentityText.Repository
 {
-    public class SubjectRepository : Repository<Subject>, ISubjectRepository
+    public class SubscriptionRepository : Repository<Subscription>, ISubscriptionRepository
     {
         private readonly ApplicationDbContext _dbContext;
-        public SubjectRepository(ApplicationDbContext dbContext) : base(dbContext)
+        public SubscriptionRepository(ApplicationDbContext dbContext) : base(dbContext)
         {
             _dbContext = dbContext;
         }
-        public async Task<IEnumerable<SelectListItem>> SelectListSubjectAsync()
+        public async Task<IEnumerable<SelectListItem>> SelectListSubscriptionAsync()
         {
-            return await dbSet.OrderBy(a => a.Title)
+            return await dbSet.OrderBy(a => a.SubscriptionId)
                               .Select(a => new SelectListItem
                               {
-                                  Value = a.SubjectId.ToString(),
-                                  Text = a.Title
+                                  Value = a.SubscriptionId.ToString(),
+                                  Text = a.Code
                               }).ToListAsync();
         }
 

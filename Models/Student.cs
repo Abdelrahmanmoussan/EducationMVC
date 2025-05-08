@@ -61,11 +61,11 @@ namespace IdentityText.Models
         [BindNever]
         public ICollection<Enrollment> Enrollments { get; set; }
         
-        public int? SubscriptionId { get; set; }
-        public Subscription? Subscription { get; set; }
+        public int SubscriptionId { get; set; }
+        public Subscription Subscription { get; set; }
 
         [Required]
-        public int? AcademicYearId { get; set; }
+        public int AcademicYearId { get; set; }
         public AcademicYear AcademicYear { get; set; }
 
     }

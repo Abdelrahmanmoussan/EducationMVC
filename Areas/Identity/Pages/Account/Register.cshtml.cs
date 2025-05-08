@@ -23,6 +23,7 @@ using Microsoft.AspNetCore.Routing.Constraints;
 using IdentityText.Data;
 using IdentityText.Repository.IRepository;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace IdentityText.Areas.Identity.Pages.Account
 {
@@ -37,7 +38,10 @@ namespace IdentityText.Areas.Identity.Pages.Account
         private readonly IStudentRepository _studentRepository;
         private readonly ITeacherRepository _teacherRepository;
         private readonly ISubjectRepository _subjectRepository;
+        private readonly ISubscriptionRepository _subscriptionRepository;
+        private readonly IAcademicYearRepository _academicYearRepository;
         
+
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
@@ -47,8 +51,10 @@ namespace IdentityText.Areas.Identity.Pages.Account
             IEmailSender emailSender,
             IStudentRepository studentRepository,
             ITeacherRepository teacherRepository,
-            ISubjectRepository subjectRepository
-            ) 
+            ISubjectRepository subjectRepository,
+            ISubscriptionRepository subscriptionRepository,
+            IAcademicYearRepository academicYearRepository
+            )
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -59,6 +65,8 @@ namespace IdentityText.Areas.Identity.Pages.Account
             _studentRepository = studentRepository;
             _teacherRepository = teacherRepository;
             _subjectRepository = subjectRepository;
+            _subscriptionRepository = subscriptionRepository;
+            _academicYearRepository = academicYearRepository;
         }
 
         [BindProperty]
@@ -67,7 +75,7 @@ namespace IdentityText.Areas.Identity.Pages.Account
 
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
-       
+
         public class InputModel
         {
             /// <summary>
@@ -84,7 +92,7 @@ namespace IdentityText.Areas.Identity.Pages.Account
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
             public string Password { get; set; }
-        
+
             [DataType(DataType.Password)]
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
@@ -129,8 +137,11 @@ namespace IdentityText.Areas.Identity.Pages.Account
             [MaxLength(500)]
             public string StudentNotes { get; set; }
             public bool StudentIsActive { get; set; } = true;
-            //public int SubscriptionId { get; set; }
-            public int? AcademicYearId { get; set; }
+            public int SubscriptionId { get; set; }
+            public int AcademicYearId { get; set; }
+            public IEnumerable<SelectListItem> SubscriptionsList { get; set; } = Enumerable.Empty<SelectListItem>();
+            public IEnumerable<SelectListItem> AcademicYearsList { get; set; } = Enumerable.Empty<SelectListItem>();
+
 
             //techer.
             public DateTime TeacherHireDate { get; set; }
@@ -151,7 +162,8 @@ namespace IdentityText.Areas.Identity.Pages.Account
 
             public bool TeacherIsActive { get; set; } = true;
             public int SubjectId { get; set; }
-
+            public IEnumerable<SelectListItem> SubjectsList { get; set; } = Enumerable.Empty<SelectListItem>();
+            
         }
 
 
@@ -159,8 +171,33 @@ namespace IdentityText.Areas.Identity.Pages.Account
         {
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            Input = new InputModel
+            {
+                //Role = "Student",
+                //Role = "Teacher",
+                EnrollmentDate = DateTime.Now,
+                TeacherHireDate = DateTime.Now,
+                StudentDB = DateTime.Now,
+                TeacherDB = DateTime.Now,
+                AttendancePercent = 0,
+                StudentIsActive = true,
+                TeacherIsActive = true,
+                AcademicYearId = 1,
+                ParentName = "",
+                ParentPhone = "",
+                ParentMail = "",
+                EmergencyContact = "",
+                GradeLevel = "",
+                StudentNotes = "",
+                TeacherNotes = "",
+            };
+
+            // Fill the Subject list for the teacher
+            Input.SubscriptionsList = await _subscriptionRepository.SelectListSubscriptionAsync();
+            Input.AcademicYearsList = await _academicYearRepository.SelectListAcademicYearAsync();
+            Input.SubjectsList = await _subjectRepository.SelectListSubjectAsync();
         }
-        
+
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
@@ -189,8 +226,8 @@ namespace IdentityText.Areas.Identity.Pages.Account
                 ModelState.Remove("Input.AttendancePercent");
                 ModelState.Remove("Input.StudentNotes");
                 ModelState.Remove("Input.StudentIsActive");
-                //ModelState.Remove("Input.SubscriptionId");
-                //ModelState.Remove("Input.AcademicYearId");
+                ModelState.Remove("Input.SubscriptionId");
+                ModelState.Remove("Input.AcademicYearId");
             }
 
 
@@ -218,7 +255,7 @@ namespace IdentityText.Areas.Identity.Pages.Account
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
- 
+
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
@@ -243,8 +280,8 @@ namespace IdentityText.Areas.Identity.Pages.Account
                             AttendancePercent = Input.AttendancePercent,
                             StudentNotes = Input.StudentNotes,
                             StudentIsActive = Input.StudentIsActive,
-                           // AcademicYearId = Input.AcademicYearId,
-                            //SubscriptionId = Input.SubscriptionId
+                            AcademicYearId = Input.AcademicYearId,
+                            SubscriptionId = Input.SubscriptionId
                         };
 
                         await _studentRepository.CreateAsync(student);
@@ -261,7 +298,9 @@ namespace IdentityText.Areas.Identity.Pages.Account
                             Salary = Input.Salary,
                             TeacherNetAmount = Input.TeacherNetAmount,
                             TeacherNotes = Input.TeacherNotes,
-                            TeacherIsActive = Input.TeacherIsActive
+                            TeacherIsActive = Input.TeacherIsActive,
+                            SubjectId = Input.SubjectId
+
                         };
 
                         await _teacherRepository.CreateAsync(teacher);
@@ -281,7 +320,7 @@ namespace IdentityText.Areas.Identity.Pages.Account
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                   
+
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {

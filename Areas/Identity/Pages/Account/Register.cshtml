@@ -12,12 +12,12 @@
             <h2>Create a new account.</h2>
             <hr />
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-             <div class="form-floating mb-3">
+            <div class="form-floating mb-3">
                 <input asp-for="Input.FirstName" class="form-control" autocomplete="FirstName" aria-required="true" placeholder="FirstName" />
                 <label asp-for="Input.FirstName">FirstName</label>
                 <span asp-validation-for="Input.FirstName" class="text-danger"></span>
             </div>
-             <div class="form-floating mb-3">
+            <div class="form-floating mb-3">
                 <input asp-for="Input.LastName" class="form-control" autocomplete="LastName" aria-required="true" placeholder="LastName" />
                 <label asp-for="Input.LastName">LastName</label>
                 <span asp-validation-for="Input.LastName" class="text-danger"></span>
@@ -37,7 +37,7 @@
                 <label asp-for="Input.ConfirmPassword">Confirm Password</label>
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
-             <div class="form-floating mb-3">
+            <div class="form-floating mb-3">
                 <input asp-for="Input.Address" class="form-control" autocomplete="Address" aria-required="true" placeholder="Address" />
                 <label asp-for="Input.Address">Address</label>
                 <span asp-validation-for="Input.Address" class="text-danger"></span>
@@ -115,26 +115,26 @@
                     <label asp-for="Input.StudentIsActive" class="form-check-label">الطالب مفعل</label>
                     <span asp-validation-for="Input.StudentIsActive" class="text-danger"></span>
                 </div>
-               
-                @* <div class="form-floating mb-3"> *@
-                @*     <select asp-for="Input.SubscriptionId" class="form-control"> *@
-                @*         <option value="">اختر الاشتراك</option> *@
-                @*         <!-- Add options dynamically --> *@
-                @*     </select> *@
-                @*     <label asp-for="Input.SubscriptionId">الاشتراك</label> *@
-                @*     <span asp-validation-for="Input.SubscriptionId" class="text-danger"></span> *@
-                @* </div> *@
 
-                @* <div class="form-floating mb-3"> *@
-                @*     <select asp-for="Input.AcademicYearId" class="form-control"> *@
-                @*         <option value="">اختر السنة الدراسية</option> *@
-                @*         <!-- Add options dynamically --> *@
-                @*     </select> *@
-                @*     <label asp-for="Input.AcademicYearId">السنة الدراسية</label> *@
-                @*     <span asp-validation-for="Input.AcademicYearId" class="text-danger"></span> *@
-                @* </div> *@
+                <div class="form-floating mb-3"> 
+                    <select asp-for="Input.SubscriptionId" asp-items="Model.Input.SubscriptionsList" class="form-control">
+                        <option value="">اختر الاشتراك</option> 
+                      <!-- Add options dynamically --> 
+                   </select> 
+                     <label asp-for="Input.SubscriptionId">الاشتراك</label> 
+                   <span asp-validation-for="Input.SubscriptionId" class="text-danger"></span> 
+                 </div> 
 
-            
+                 <div class="form-floating mb-3">
+                    <select asp-for="Input.AcademicYearId" asp-items="Model.Input.AcademicYearsList" class="form-control">
+                        <option value="">اختر السنة الدراسية</option> 
+                        <!-- Add options dynamically --> 
+                    </select> 
+                    <label asp-for="Input.AcademicYearId">السنة الدراسية</label>
+                    <span asp-validation-for="Input.AcademicYearId" class="text-danger"></span> 
+                 </div>
+
+
             </div>
 
             <!-- حقول المدرس -->
@@ -180,18 +180,22 @@
                     <span asp-validation-for="Input.TeacherNotes" class="text-danger"></span>
                 </div>
 
+
                 <div class="form-check mb-3">
                     <input asp-for="Input.TeacherIsActive" class="form-check-input" type="checkbox" />
                     <label asp-for="Input.TeacherIsActive" class="form-check-label">المدرس مفعل</label>
                     <span asp-validation-for="Input.TeacherIsActive" class="text-danger"></span>
                 </div>
-				@* <div class="form-floating mb-3"> *@
-    @*                 <select asp-for="Input.SubjectId" asp-items="Model.Input.SubjectsList" class="form-select"> *@
-    @*                     <option value="">-- اختر المادة --</option> *@
-    @*                 </select> *@
-    @*                 <label asp-for="Input.SubjectId">المادة</label> *@
-    @*                 <span asp-validation-for="Input.SubjectId" class="text-danger"></span> *@
-    @*             </div> *@
+
+
+                <div class="form-floating mb-3">
+                    <select asp-for="Input.SubjectId" asp-items="Model.Input.SubjectsList" class="form-select">
+                        <option value="">-- اختر المادة --</option>
+                    </select>
+                    <label asp-for="Input.SubjectId">المادة</label>
+                    <span asp-validation-for="Input.SubjectId" class="text-danger"></span>
+                </div>
+
 
 
             </div>
@@ -209,8 +213,10 @@
                 {
                     <div>
                         <p>
-                            There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">article
-                            about setting up this ASP.NET application to support logging in via external services</a>.
+                            There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">
+                                article
+                                about setting up this ASP.NET application to support logging in via external services
+                            </a>.
                         </p>
                     </div>
                 }
@@ -222,7 +228,7 @@
                                 @foreach (var provider in Model.ExternalLogins!)
                                 {
                                     <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">
-                                      @provider.DisplayName
+                                        @provider.DisplayName
                                     </button>
                                 }
                             </p>
@@ -264,10 +270,10 @@
                 [...teacherFields.querySelectorAll("input")].forEach(input => {
                     if (selectedRole !== "Teacher") input.value = "";
                 });
-			}
-			roleSelector.addEventListener("change", toggleRoleFields);
-			toggleRoleFields(); // Call on page load to set initial state
-		});
-	</script>
+            }
+            roleSelector.addEventListener("change", toggleRoleFields);
+            toggleRoleFields(); // Call on page load to set initial state
+        });
+    </script>
 }
 
