@@ -2,6 +2,7 @@
 using IdentityText.Data;
 using IdentityText.Models;
 using IdentityText.Repository.IRepository;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,5 +19,24 @@ namespace IdentityText.Repository
         {
             dbContext = appDbContext;
         }
+
+
+        public async Task<IEnumerable<Teacher>> GetAllWithIncludesAsync()
+        {
+            return await dbContext.Teachers
+                .Include(t => t.ApplicationUser)
+                .Include(t => t.Subject)
+                .ToListAsync();
+        }
+
+        public async Task<Teacher?> GetByIdWithIncludesAsync(int id)
+        {
+            return await dbContext.Teachers
+                .Include(t => t.ApplicationUser)
+                .Include(t => t.Subject)
+                .FirstOrDefaultAsync(t => t.TeacherId == id);
+        }
+
+
     }
 }

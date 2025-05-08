@@ -30,6 +30,10 @@ namespace IdentityText
             builder.Services.AddScoped<IStudentRepository, StudentRepository>();
             builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
             builder.Services.AddScoped<ISubjectRepository, SubjectRepository>();
+            builder.Services.AddScoped<ILectureRepository, LectureRepository>();
+            builder.Services.AddScoped<IAcademicYearRepository, AcademicYearRepository>();
+            builder.Services.AddScoped<IPrivateLessonRepository, PrivateLessonRepository>();
+            builder.Services.AddScoped<IClassGroupRepository, ClassGroupRepository>();
 
             var app = builder.Build();
 

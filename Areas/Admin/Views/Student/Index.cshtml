@@ -1,0 +1,107 @@
+﻿@model IEnumerable<IdentityText.Models.Student>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.UserId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ParentName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ParentPhone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ParentMail)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StudentDB)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EnrollmentDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GradeLevel)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmergencyContact)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AttendancePercent)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StudentNotes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StudentIsActive)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Subscription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AcademicYear)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ParentName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ParentPhone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ParentMail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StudentDB)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EnrollmentDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GradeLevel)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmergencyContact)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AttendancePercent)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StudentNotes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StudentIsActive)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Subscription.Code)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AcademicYear.Name)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.StudentId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.StudentId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.StudentId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
