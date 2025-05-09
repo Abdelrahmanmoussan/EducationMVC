@@ -35,7 +35,8 @@ namespace IdentityText.Models
 
         public string? TeacherNotes { get; set; }
 
-        public bool? TeacherIsActive { get; set; } = true;
+        public bool TeacherIsActive { get; set; } = true;
+
         /// <summary>
         /// ///////add when registration//////////
         /// </summary>

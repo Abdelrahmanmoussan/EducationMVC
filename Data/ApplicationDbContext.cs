@@ -1,4 +1,5 @@
-﻿using IdentityText.Models;
+﻿using IdentityText.Enums;
+using IdentityText.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -135,6 +136,72 @@ namespace IdentityText.Data
                    RoleId = "5aa54943-8b55-4399-91b7-d247ab235cf3"
                }
            );
+
+            // seeding data for subject table
+            builder.Entity<Subject>().HasData(
+                new Subject
+                {
+                    SubjectId = 1,
+                    Title = "الرياضيات"
+                },
+                new Subject
+                {
+                    SubjectId = 2,
+                    Title = "العلوم"
+                },
+                new Subject
+                {
+                    SubjectId = 3,
+                    Title = "اللغة العربية"
+                },
+                new Subject
+                {
+                    SubjectId = 4,
+                    Title = "اللغة الإنجليزية"
+                },
+                new Subject
+                {
+                    SubjectId = 5,
+                    Title = "الدراسات الاجتماعية"
+                }
+            );
+            builder.Entity<AcademicYear>().HasData(
+                new AcademicYear
+                {
+                    AcademicYearId = 1,
+                    Name = "one"
+                },
+                new AcademicYear
+                {
+                    AcademicYearId = 2,
+                    Name = "two"
+                },
+                new AcademicYear
+                {
+                    AcademicYearId = 3,
+                    Name = "three"
+                }
+            );
+            builder.Entity<Subscription>().HasData(
+                new Subscription
+                {
+                    SubscriptionId = 1,
+                    StartDate = new DateTime(2024, 1, 1),
+                    EndDate = new DateTime(2024, 12, 31),
+                    Code = "SUBS2024A",
+                    SubscriptionStatus = SubscriptionStatus.Active
+                },
+                new Subscription
+                {
+                    SubscriptionId = 2,
+                    StartDate = new DateTime(2023, 1, 1),
+                    EndDate = new DateTime(2023, 12, 31),
+                    Code = "SUBS2023B",
+                    SubscriptionStatus = SubscriptionStatus.Expired
+                }
+);
+
+
 
         }
 

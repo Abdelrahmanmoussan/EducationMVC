@@ -9,8 +9,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace IdentityText.Repository.IRepository
 {
-    public interface ISubjectRepository : IRepository<Subject>
+    public interface ISubscriptionRepository : IRepository<Subscription>
     {
-         Task<IEnumerable<SelectListItem>> SelectListSubjectAsync();
+         Task<IEnumerable<SelectListItem>> SelectListSubscriptionAsync();
     }
 }

@@ -4,6 +4,7 @@ using IdentityText.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IdentityText.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250508211015_add-seeding")]
+    partial class addseeding
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -157,7 +160,7 @@ namespace IdentityText.Migrations
                             Id = "7aafd540-fdf8-482b-804d-780fb6726703",
                             AccessFailedCount = 0,
                             Address = "Quesna,Menofia",
-                            ConcurrencyStamp = "8f705834-5eca-4b84-9725-562c741cd0b1",
+                            ConcurrencyStamp = "f2986c48-38a6-472a-8459-f19981eb3675",
                             Email = "amin@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Amin",
@@ -165,10 +168,10 @@ namespace IdentityText.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "AMIN@GMAIL.COM",
                             NormalizedUserName = "AMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEEVeBnGz1MS4tGRGbkzD4WTKTw8t3v0q82rppZy657kab67HQyrlZcW8utMGy+RoPw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEBQ0FWzRU2dhRE5/gl1IC87poCPrjXuIV/cRprqSIsj7Em9UuKKKbQ0+S5BjsQJ3pQ==",
                             PhoneNumberConfirmed = false,
                             Photo = "admin.jpg",
-                            SecurityStamp = "028c0734-e486-446a-b03a-151df76cd5ef",
+                            SecurityStamp = "932a8cb1-a82f-41a2-aca5-0daf9c5fceaa",
                             TwoFactorEnabled = false,
                             UserName = "amin"
                         });
@@ -569,7 +572,8 @@ namespace IdentityText.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StudentId"));
 
-                    b.Property<int>("AcademicYearId")
+                    b.Property<int?>("AcademicYearId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("ApplicationUserId")
@@ -609,7 +613,7 @@ namespace IdentityText.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<int>("SubscriptionId")
+                    b.Property<int?>("SubscriptionId")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
@@ -712,24 +716,6 @@ namespace IdentityText.Migrations
                     b.HasKey("SubscriptionId");
 
                     b.ToTable("Subscriptions");
-
-                    b.HasData(
-                        new
-                        {
-                            SubscriptionId = 1,
-                            Code = "SUBS2024A",
-                            EndDate = new DateTime(2024, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            StartDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SubscriptionStatus = 0
-                        },
-                        new
-                        {
-                            SubscriptionId = 2,
-                            Code = "SUBS2023B",
-                            EndDate = new DateTime(2023, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            StartDate = new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SubscriptionStatus = 1
-                        });
                 });
 
             modelBuilder.Entity("IdentityText.Models.Teacher", b =>
@@ -1188,9 +1174,7 @@ namespace IdentityText.Migrations
 
                     b.HasOne("IdentityText.Models.Subscription", "Subscription")
                         .WithMany("Students")
-                        .HasForeignKey("SubscriptionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SubscriptionId");
 
                     b.Navigation("AcademicYear");
 
