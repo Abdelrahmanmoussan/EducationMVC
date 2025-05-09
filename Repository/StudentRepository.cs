@@ -18,5 +18,70 @@ namespace IdentityText.Repository
         {
             this.appDbContext = appDbContext;
         }
+
+
+        public async Task<IEnumerable<Student>> GetAllWithIncludesAsync()
+        {
+            return await appDbContext.Students
+                .Include(s => s.ApplicationUser)
+                .Include(s => s.AcademicYear)
+                .Include(s => s.Subscription)
+                .ToListAsync();
+        }
+
+        public async Task<Student?> GetByIdWithIncludesAsync(int id)
+        {
+            return await appDbContext.Students
+                .Include(s => s.ApplicationUser)
+                .Include(s => s.AcademicYear)
+                .Include(s => s.Subscription)
+                .FirstOrDefaultAsync(s => s.StudentId == id);
+        }
+
+
+
+
+        public async Task<IEnumerable<Student>> GetAllAsync()
+        {
+            return await appDbContext.Students.ToListAsync();
+        }
+
+        public async Task<Student?> GetByIdAsync(int id)
+        {
+            return await appDbContext.Students.FindAsync(id);
+        }
+
+        public async Task AddAsync(Student student)
+        {
+            await appDbContext.Students.AddAsync(student);
+            await appDbContext.SaveChangesAsync();
+        }
+
+        public async Task UpdateAsync(Student student)
+        {
+            appDbContext.Students.Update(student);
+            await appDbContext.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var student = await appDbContext.Students.FindAsync(id);
+            if (student != null)
+            {
+                appDbContext.Students.Remove(student);
+                await appDbContext.SaveChangesAsync();
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
     }
 }
