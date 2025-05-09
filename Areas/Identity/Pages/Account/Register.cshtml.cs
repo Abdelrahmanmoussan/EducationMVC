@@ -260,8 +260,6 @@ namespace IdentityText.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    //await _userManager.AddToRoleAsync(user, "User");
-                    // إضافة المستخدم إلى الدور
                     await _userManager.AddToRoleAsync(user, Input.Role);
 
                     // إنشاء بيانات إضافية حسب الدور
