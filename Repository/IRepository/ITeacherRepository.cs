@@ -10,5 +10,8 @@ namespace IdentityText.Repository.IRepository
 {
     public interface ITeacherRepository : IRepository<Teacher>
     {
+        Task<IEnumerable<Teacher>> GetAllWithIncludesAsync();
+        Task<Teacher?> GetByIdWithIncludesAsync(int id);
+
     }
 }

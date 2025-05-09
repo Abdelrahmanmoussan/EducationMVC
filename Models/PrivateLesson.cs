@@ -34,6 +34,7 @@ namespace IdentityText.Models
         public ICollection<PrivateLessonStudent> PrivateLessonStudents { get; set; }
 
 
+
     }
 
 }

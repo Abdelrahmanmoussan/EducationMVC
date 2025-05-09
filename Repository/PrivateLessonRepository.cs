@@ -1,12 +1,12 @@
-﻿
+﻿using IdentityText.Repository;
 using IdentityText.Repository.IRepository;
 using IdentityText.Models;
-using IdentityText.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IdentityText.Data;
 
 namespace IdentityText.Repository
 {
