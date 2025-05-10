@@ -1,4 +1,4 @@
-﻿@model @model IdentityText.ViewModel.DashboardViewModel
+﻿@model IdentityText.ViewModel.DashboardViewModel
 
 @{
     ViewData["Title"] = "لوحة التحكم";
@@ -104,33 +104,4 @@
         </div>
     </div>
 </div>
-.ViewModel.DashboardViewModel
 
-<h2>Dashboard</h2>
-
-<div class="row">
-    <div class="col-md-3">
-        <div class="card bg-info text-white p-3">
-            <h4>Students</h4>
-            <p>@Model.StudentsCount</p>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card bg-success text-white p-3">
-            <h4>Teachers</h4>
-            <p>@Model.TeachersCount</p>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card bg-warning text-white p-3">
-            <h4>Today's Sales</h4>
-            <p>@Model.TodaySales.ToString("C")</p>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card bg-danger text-white p-3">
-            <h4>Total Revenue</h4>
-            <p>@Model.TotalRevenue.ToString("C")</p>
-        </div>
-    </div>
-</div>
