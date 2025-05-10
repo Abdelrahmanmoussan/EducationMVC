@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using IdentityText.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace IdentityText.Repository
 {
@@ -17,6 +18,10 @@ namespace IdentityText.Repository
         public ClassGroupRepository(ApplicationDbContext appDbContext) : base(appDbContext)
         {
             dbContext = appDbContext;
+        }
+        public async Task<int> CountAsync()
+        {
+            return await dbContext.ClassGroups.CountAsync();
         }
     }
 }

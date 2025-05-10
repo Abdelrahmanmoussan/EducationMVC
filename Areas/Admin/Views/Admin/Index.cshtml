@@ -1,0 +1,136 @@
+﻿@model @model IdentityText.ViewModel.DashboardViewModel
+
+@{
+    ViewData["Title"] = "لوحة التحكم";
+}
+
+<div class="container-fluid py-4">
+    <h2 class="mb-4">لوحة التحكم</h2>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card text-white bg-primary mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">عدد الطلاب</h5>
+                    <p class="card-text display-6">@Model.StudentsCount</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-success mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">عدد المدرسين</h5>
+                    <p class="card-text display-6">@Model.TeachersCount</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-info mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">عدد الكورسات</h5>
+                    <p class="card-text display-6">@Model.TotalCourses</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-warning mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">إجمالي الإيرادات</h5>
+                    <p class="card-text display-6">@Model.TotalRevenue.ToString("C")</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <div class="card-header bg-light">المعاملات الأخيرة</div>
+                <ul class="list-group list-group-flush">
+                    @foreach (var transaction in Model.RecentTransactions)
+                    {
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>@transaction.StudentName</span>
+                            <span>@transaction.Amount.ToString("C") - @transaction.Date.ToShortTimeString()</span>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <div class="card-header bg-light">الرسائل الأخيرة</div>
+                <ul class="list-group list-group-flush">
+                    @foreach (var msg in Model.RecentMessages)
+                    {
+                        <li class="list-group-item">
+                            <strong>@msg.SenderName:</strong> @msg.MessagePreview
+                            <br /><small class="text-muted">@msg.SentAt.ToShortTimeString()</small>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <div class="card-header bg-light">الأحداث القادمة</div>
+                <ul class="list-group list-group-flush">
+                    @foreach (var evt in Model.CalendarEvents)
+                    {
+                        <li class="list-group-item">
+                            <strong>@evt.Title</strong>
+                            <br /><small class="text-muted">@evt.EventDate.ToShortDateString()</small>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <div class="card-header bg-light">المهام</div>
+                <ul class="list-group list-group-flush">
+                    @foreach (var task in Model.TodoList)
+                    {
+                        <li class="list-group-item">
+                            <input type="checkbox" @(task.IsCompleted ? "checked" : "") disabled /> @task.Task
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+.ViewModel.DashboardViewModel
+
+<h2>Dashboard</h2>
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="card bg-info text-white p-3">
+            <h4>Students</h4>
+            <p>@Model.StudentsCount</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-success text-white p-3">
+            <h4>Teachers</h4>
+            <p>@Model.TeachersCount</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-warning text-white p-3">
+            <h4>Today's Sales</h4>
+            <p>@Model.TodaySales.ToString("C")</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-danger text-white p-3">
+            <h4>Total Revenue</h4>
+            <p>@Model.TotalRevenue.ToString("C")</p>
+        </div>
+    </div>
+</div>

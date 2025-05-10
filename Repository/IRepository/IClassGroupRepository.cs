@@ -9,5 +9,6 @@ namespace IdentityText.Repository.IRepository
 {
     public interface IClassGroupRepository : IRepository<ClassGroup>
     {
+        Task<int> CountAsync();
     }
 }

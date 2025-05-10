@@ -77,13 +77,13 @@ namespace IdentityText.Data
                 .WithMany(t => t.PrivateLessons)
                 .HasForeignKey(pl => pl.TeacherId)
                 .OnDelete(DeleteBehavior.Restrict);
-           
+
 
 
             var hasher = new PasswordHasher<ApplicationUser>();
-            
-            // Seeding roles and users
-            var adminUser = new ApplicationUser
+
+            // First admin user (Amin)
+            var adminUser1 = new ApplicationUser
             {
                 Id = "7aafd540-fdf8-482b-804d-780fb6726703",
                 UserName = "amin",
@@ -96,11 +96,26 @@ namespace IdentityText.Data
                 Address = "Quesna,Menofia",
                 Photo = "admin.jpg"
             };
+            adminUser1.PasswordHash = hasher.HashPassword(adminUser1, "Admin@1234");
 
-            // Generate hashed password
-            adminUser.PasswordHash = hasher.HashPassword(adminUser, "Admin@1234");
+            // Second admin user (Abdelrahman Moussan)
+            var adminUser2 = new ApplicationUser
+            {
+                Id = "9b4cd611-6c35-4c98-a0dc-1d2e1349ab91", // Generate a new GUID
+                UserName = "abdelrahman",
+                NormalizedUserName = "ABDELRAHMAN",
+                Email = "abdelrahmanmoussan@gmail.com",
+                NormalizedEmail = "ABDELRAHMANMOUSSAN@GMAIL.COM",
+                EmailConfirmed = true,
+                FirstName = "Abdelrahman",
+                LastName = "Moussan",
+                Address = "Port Said",
+                Photo = "Moussan.jpg"
+            };
+            adminUser2.PasswordHash = hasher.HashPassword(adminUser2, "Admin@1234");
 
-            builder.Entity<ApplicationUser>().HasData(adminUser);
+            // Seed users
+            builder.Entity<ApplicationUser>().HasData(adminUser1, adminUser2);
 
 
             builder.Entity<IdentityRole>().HasData(
@@ -134,7 +149,12 @@ namespace IdentityText.Data
                {
                    UserId = "7aafd540-fdf8-482b-804d-780fb6726703",
                    RoleId = "5aa54943-8b55-4399-91b7-d247ab235cf3"
-               }
+               },
+                   new IdentityUserRole<string>
+                   {
+                       UserId = "9b4cd611-6c35-4c98-a0dc-1d2e1349ab91", // Abdelrahman
+                       RoleId = "5aa54943-8b55-4399-91b7-d247ab235cf3"
+                   }
            );
 
             // seeding data for subject table

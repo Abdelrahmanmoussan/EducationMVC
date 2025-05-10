@@ -18,7 +18,10 @@ namespace IdentityText.Repository
         {
             this.appDbContext = appDbContext;
         }
-
+        public async Task<int> CountAsync()
+        {
+            return await appDbContext.Students.CountAsync();
+        }
 
         public async Task<IEnumerable<Student>> GetAllWithIncludesAsync()
         {

@@ -4,81 +4,92 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<div class="container bg-dark text-white mt-5 p-4 rounded shadow">
+    <h4 class="mb-4 text-light"><i class="bi bi-pencil-fill text-success"></i> Edit Student</h4>
 
-<h4>Student</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="StudentId" />
-            <div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
-                <input asp-for="UserId" class="form-control" />
-                <span asp-validation-for="UserId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ParentName" class="control-label"></label>
-                <input asp-for="ParentName" class="form-control" />
-                <span asp-validation-for="ParentName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ParentPhone" class="control-label"></label>
-                <input asp-for="ParentPhone" class="form-control" />
-                <span asp-validation-for="ParentPhone" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ParentMail" class="control-label"></label>
-                <input asp-for="ParentMail" class="form-control" />
-                <span asp-validation-for="ParentMail" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="StudentDB" class="control-label"></label>
-                <input asp-for="StudentDB" class="form-control" />
-                <span asp-validation-for="StudentDB" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EnrollmentDate" class="control-label"></label>
-                <input asp-for="EnrollmentDate" class="form-control" />
-                <span asp-validation-for="EnrollmentDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EmergencyContact" class="control-label"></label>
-                <input asp-for="EmergencyContact" class="form-control" />
-                <span asp-validation-for="EmergencyContact" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AttendancePercent" class="control-label"></label>
-                <input asp-for="AttendancePercent" class="form-control" />
-                <span asp-validation-for="AttendancePercent" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="StudentNotes" class="control-label"></label>
-                <input asp-for="StudentNotes" class="form-control" />
-                <span asp-validation-for="StudentNotes" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SubscriptionId" class="control-label"></label>
-                <select asp-for="SubscriptionId" class="form-control" asp-items="ViewBag.SubscriptionId"></select>
-                <span asp-validation-for="SubscriptionId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AcademicYearId" class="control-label"></label>
-                <select asp-for="AcademicYearId" class="form-control" asp-items="ViewBag.AcademicYearId"></select>
-                <span asp-validation-for="AcademicYearId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
+    <form asp-action="Edit">
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+        <input type="hidden" asp-for="StudentId" />
 
-<div>
-    <a asp-action="Index">Back to List</a>
+        <div class="mb-3">
+            <label asp-for="UserId" class="form-label text-light"></label>
+            <input asp-for="UserId" class="form-control bg-dark text-white border-light" />
+            <span asp-validation-for="UserId" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="ParentName" class="form-label text-light"></label>
+            <input asp-for="ParentName" class="form-control bg-dark text-white border-light" />
+            <span asp-validation-for="ParentName" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="ParentPhone" class="form-label text-light"></label>
+            <input asp-for="ParentPhone" class="form-control bg-dark text-white border-light" />
+            <span asp-validation-for="ParentPhone" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="ParentMail" class="form-label text-light"></label>
+            <input asp-for="ParentMail" class="form-control bg-dark text-white border-light" />
+            <span asp-validation-for="ParentMail" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="StudentDB" class="form-label text-light"></label>
+            <input asp-for="StudentDB" class="form-control bg-dark text-white border-light" />
+            <span asp-validation-for="StudentDB" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="EnrollmentDate" class="form-label text-light"></label>
+            <input asp-for="EnrollmentDate" class="form-control bg-dark text-white border-light" />
+            <span asp-validation-for="EnrollmentDate" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="EmergencyContact" class="form-label text-light"></label>
+            <input asp-for="EmergencyContact" class="form-control bg-dark text-white border-light" />
+            <span asp-validation-for="EmergencyContact" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="AttendancePercent" class="form-label text-light"></label>
+            <input asp-for="AttendancePercent" class="form-control bg-dark text-white border-light" />
+            <span asp-validation-for="AttendancePercent" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="StudentNotes" class="form-label text-light"></label>
+            <input asp-for="StudentNotes" class="form-control bg-dark text-white border-light" />
+            <span asp-validation-for="StudentNotes" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="SubscriptionId" class="form-label text-light"></label>
+            <select asp-for="SubscriptionId" class="form-select bg-dark text-white border-light" asp-items="ViewBag.SubscriptionId"></select>
+            <span asp-validation-for="SubscriptionId" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="AcademicYearId" class="form-label text-light"></label>
+            <select asp-for="AcademicYearId" class="form-select bg-dark text-white border-light" asp-items="ViewBag.AcademicYearId"></select>
+            <span asp-validation-for="AcademicYearId" class="text-danger"></span>
+        </div>
+
+        <div class="d-flex gap-2 mt-4">
+            <button type="submit" class="btn btn-success">
+                <i class="bi bi-save"></i> Save
+            </button>
+            <a asp-action="Index" class="btn btn-outline-light">
+                <i class="bi bi-arrow-left-circle"></i> Back to List
+            </a>
+        </div>
+    </form>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

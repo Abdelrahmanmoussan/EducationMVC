@@ -42,6 +42,8 @@ namespace IdentityText
             builder.Services.AddScoped<IPrivateLessonRepository, PrivateLessonRepository>();
             builder.Services.AddScoped<IClassGroupRepository, ClassGroupRepository>();
             builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
+            builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
+
 
             var app = builder.Build();
 

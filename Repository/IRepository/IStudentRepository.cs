@@ -9,6 +9,7 @@ namespace IdentityText.Repository.IRepository
 {
     public interface IStudentRepository : IRepository<Student>
     {
+        Task<int> CountAsync();
 
 
         Task<IEnumerable<Student>> GetAllWithIncludesAsync();
