@@ -38,9 +38,6 @@ namespace IdentityText.Models
         [DataType(DataType.Date)]
        
         public DateTime EnrollmentDate { get; set; }
-
-        [MaxLength(50)]
-        public string? GradeLevel { get; set; }
      
         [MaxLength(100)]
         public string? EmergencyContact { get; set; }
@@ -48,7 +45,7 @@ namespace IdentityText.Models
         public decimal AttendancePercent { get; set; }
         [MaxLength(500)]
         public string? StudentNotes { get; set; }
-        public bool StudentIsActive { get; set; } = true;
+       
         /// <summary>
         /// 
         /// </summary>

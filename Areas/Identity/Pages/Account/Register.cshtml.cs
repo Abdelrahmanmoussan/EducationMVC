@@ -129,14 +129,12 @@ namespace IdentityText.Areas.Identity.Pages.Account
             [DataType(DataType.Date)]
             public DateTime EnrollmentDate { get; set; }
             [MaxLength(50)]
-            public string GradeLevel { get; set; }
-            [MaxLength(100)]
+       
             public string EmergencyContact { get; set; }
             [Range(0, 100)]
             public decimal AttendancePercent { get; set; }
             [MaxLength(500)]
             public string StudentNotes { get; set; }
-            public bool StudentIsActive { get; set; } = true;
             public int SubscriptionId { get; set; }
             public int AcademicYearId { get; set; }
             public IEnumerable<SelectListItem> SubscriptionsList { get; set; } = Enumerable.Empty<SelectListItem>();
@@ -148,19 +146,11 @@ namespace IdentityText.Areas.Identity.Pages.Account
 
             public DateTime? TeacherDB { get; set; }
 
-            [MaxLength(100)]
-            public string Specialty { get; set; }
-
-
-            [Column(TypeName = "decimal(18,2)")]
-            public decimal? Salary { get; set; }
-
             [Column(TypeName = "decimal(18,2)")]
             public decimal? TeacherNetAmount { get; set; }
 
             public string TeacherNotes { get; set; }
 
-            public bool TeacherIsActive { get; set; } = true;
             public int SubjectId { get; set; }
             public IEnumerable<SelectListItem> SubjectsList { get; set; } = Enumerable.Empty<SelectListItem>();
             
@@ -180,14 +170,11 @@ namespace IdentityText.Areas.Identity.Pages.Account
                 StudentDB = DateTime.Now,
                 TeacherDB = DateTime.Now,
                 AttendancePercent = 0,
-                StudentIsActive = true,
-                TeacherIsActive = true,
                 AcademicYearId = 1,
                 ParentName = "",
                 ParentPhone = "",
                 ParentMail = "",
                 EmergencyContact = "",
-                GradeLevel = "",
                 StudentNotes = "",
                 TeacherNotes = "",
             };
@@ -210,8 +197,6 @@ namespace IdentityText.Areas.Identity.Pages.Account
                 ModelState.Remove("Input.TeacherHireDate");
                 ModelState.Remove("Input.TeacherDB");
                 ModelState.Remove("Input.Specialty");
-                ModelState.Remove("Input.Salary");
-                ModelState.Remove("Input.TeacherIsActive");
                 ModelState.Remove("Input.SubjectId");
             }
             else if (Input.Role == "Teacher")
@@ -221,11 +206,9 @@ namespace IdentityText.Areas.Identity.Pages.Account
                 ModelState.Remove("Input.ParentMail");
                 ModelState.Remove("Input.StudentDB");
                 ModelState.Remove("Input.EnrollmentDate");
-                ModelState.Remove("Input.GradeLevel");
                 ModelState.Remove("Input.EmergencyContact");
                 ModelState.Remove("Input.AttendancePercent");
                 ModelState.Remove("Input.StudentNotes");
-                ModelState.Remove("Input.StudentIsActive");
                 ModelState.Remove("Input.SubscriptionId");
                 ModelState.Remove("Input.AcademicYearId");
             }
@@ -273,11 +256,9 @@ namespace IdentityText.Areas.Identity.Pages.Account
                             ParentMail = Input.ParentMail,
                             StudentDB = Input.StudentDB,
                             EnrollmentDate = Input.EnrollmentDate,
-                            GradeLevel = Input.GradeLevel,
                             EmergencyContact = Input.EmergencyContact,
                             AttendancePercent = Input.AttendancePercent,
                             StudentNotes = Input.StudentNotes,
-                            StudentIsActive = Input.StudentIsActive,
                             AcademicYearId = Input.AcademicYearId,
                             SubscriptionId = Input.SubscriptionId
                         };
@@ -292,11 +273,8 @@ namespace IdentityText.Areas.Identity.Pages.Account
                             UserId = user.Id,
                             TeacherHireDate = Input.TeacherHireDate,
                             TeacherDB = Input.TeacherDB,
-                            Specialty = Input.Specialty,
-                            Salary = Input.Salary,
                             TeacherNetAmount = Input.TeacherNetAmount,
                             TeacherNotes = Input.TeacherNotes,
-                            TeacherIsActive = Input.TeacherIsActive,
                             SubjectId = Input.SubjectId
 
                         };
