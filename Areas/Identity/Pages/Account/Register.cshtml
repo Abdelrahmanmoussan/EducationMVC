@@ -87,12 +87,6 @@
                 </div>
 
                 <div class="form-floating mb-3">
-                    <input asp-for="Input.GradeLevel" class="form-control" placeholder="المستوى الدراسي" />
-                    <label asp-for="Input.GradeLevel">المستوى الدراسي</label>
-                    <span asp-validation-for="Input.GradeLevel" class="text-danger"></span>
-                </div>
-
-                <div class="form-floating mb-3">
                     <input asp-for="Input.EmergencyContact" class="form-control" placeholder="رقم هاتف للطوارئ" />
                     <label asp-for="Input.EmergencyContact">رقم هاتف للطوارئ</label>
                     <span asp-validation-for="Input.EmergencyContact" class="text-danger"></span>
@@ -108,12 +102,6 @@
                     <textarea asp-for="Input.StudentNotes" class="form-control" placeholder="ملاحظات عن الطالب" style="height: 100px;"></textarea>
                     <label asp-for="Input.StudentNotes">ملاحظات عن الطالب</label>
                     <span asp-validation-for="Input.StudentNotes" class="text-danger"></span>
-                </div>
-
-                <div class="form-check mb-3">
-                    <input asp-for="Input.StudentIsActive" class="form-check-input" type="checkbox" />
-                    <label asp-for="Input.StudentIsActive" class="form-check-label">الطالب مفعل</label>
-                    <span asp-validation-for="Input.StudentIsActive" class="text-danger"></span>
                 </div>
 
                 <div class="form-floating mb-3"> 
@@ -140,11 +128,6 @@
             <!-- حقول المدرس -->
             <div id="teacherFields" style="display: none;">
                 <div class="form-floating mb-3">
-                    <input asp-for="Input.TeacherNotes" class="form-control" placeholder="نبذة عنك أو عن المحتوى" />
-                    <label asp-for="Input.TeacherNotes">المحتوى أو نبذة</label>
-                    <span asp-validation-for="Input.TeacherNotes" class="text-danger"></span>
-                </div>
-                <div class="form-floating mb-3">
                     <input asp-for="Input.TeacherHireDate" type="date" class="form-control" placeholder="تاريخ التعيين" />
                     <label asp-for="Input.TeacherHireDate">تاريخ التعيين</label>
                     <span asp-validation-for="Input.TeacherHireDate" class="text-danger"></span>
@@ -154,18 +137,6 @@
                     <input asp-for="Input.TeacherDB" type="date" class="form-control" placeholder="تاريخ ميلاد المدرس" />
                     <label asp-for="Input.TeacherDB">تاريخ ميلاد المدرس</label>
                     <span asp-validation-for="Input.TeacherDB" class="text-danger"></span>
-                </div>
-
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.Specialty" class="form-control" placeholder="التخصص" />
-                    <label asp-for="Input.Specialty">التخصص</label>
-                    <span asp-validation-for="Input.Specialty" class="text-danger"></span>
-                </div>
-
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.Salary" type="number" step="0.01" class="form-control" placeholder="الراتب" />
-                    <label asp-for="Input.Salary">الراتب</label>
-                    <span asp-validation-for="Input.Salary" class="text-danger"></span>
                 </div>
 
                 <div class="form-floating mb-3">
@@ -179,15 +150,6 @@
                     <label asp-for="Input.TeacherNotes">المحتوى أو نبذة</label>
                     <span asp-validation-for="Input.TeacherNotes" class="text-danger"></span>
                 </div>
-
-
-                <div class="form-check mb-3">
-                    <input asp-for="Input.TeacherIsActive" class="form-check-input" type="checkbox" />
-                    <label asp-for="Input.TeacherIsActive" class="form-check-label">المدرس مفعل</label>
-                    <span asp-validation-for="Input.TeacherIsActive" class="text-danger"></span>
-                </div>
-
-
                 <div class="form-floating mb-3">
                     <select asp-for="Input.SubjectId" asp-items="Model.Input.SubjectsList" class="form-select">
                         <option value="">-- اختر المادة --</option>

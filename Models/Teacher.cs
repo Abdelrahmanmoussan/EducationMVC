@@ -24,18 +24,12 @@ namespace IdentityText.Models
 
         public DateTime? TeacherDB { get; set; }
 
-        [MaxLength(100)]
-        public string? Specialty { get; set; }
-
-        [Column(TypeName = "decimal(18,2)")]
-        public decimal? Salary { get; set; }
 
         [Column(TypeName = "decimal(18,2)")]
         public decimal? TeacherNetAmount { get; set; }
 
         public string? TeacherNotes { get; set; }
 
-        public bool TeacherIsActive { get; set; } = true;
 
         /// <summary>
         /// ///////add when registration//////////
