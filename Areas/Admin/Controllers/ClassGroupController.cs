@@ -1,11 +1,13 @@
 ﻿using IdentityText.Models;
 using IdentityText.Repository.IRepository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace IdentityText.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class ClassGroupController : Controller
     {
         private readonly IClassGroupRepository _classGroupRepository;

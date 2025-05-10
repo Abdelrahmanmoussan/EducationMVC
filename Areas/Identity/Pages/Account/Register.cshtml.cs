@@ -24,6 +24,7 @@ using IdentityText.Data;
 using IdentityText.Repository.IRepository;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using IdentityText.Validation;
 
 namespace IdentityText.Areas.Identity.Pages.Account
 {
@@ -78,13 +79,10 @@ namespace IdentityText.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
-            [Required]
-            [EmailAddress]
             [Display(Name = "Email")]
+            [Required(ErrorMessage = "البريد الإلكتروني مطلوب")]
+            [EmailAddress(ErrorMessage = "صيغة البريد الإلكتروني غير صحيحة")]
+            [UniqueEmail]
             public string Email { get; set; }
 
             [Required]
@@ -121,8 +119,10 @@ namespace IdentityText.Areas.Identity.Pages.Account
             [Phone]
             public string ParentPhone { get; set; }
 
-            [Required]
-            [EmailAddress]
+            [Display(Name = "Email")]
+            [Required(ErrorMessage = "البريد الإلكتروني مطلوب")]
+            [EmailAddress(ErrorMessage = "صيغة البريد الإلكتروني غير صحيحة")]
+            [UniqueEmail]
             public string ParentMail { get; set; }
             [DataType(DataType.Date)]
             public DateTime? StudentDB { get; set; }

@@ -1,10 +1,12 @@
 ﻿using IdentityText.Models;
 using IdentityText.Repository.IRepository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IdentityText.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class SubjectController : Controller
     {
         private readonly ISubjectRepository _subjectRepository;
