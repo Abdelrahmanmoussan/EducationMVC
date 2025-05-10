@@ -23,6 +23,7 @@ namespace IdentityText.Areas.Admin.Controllers
         public IActionResult Details(int id)
         {
             var academicYear = _academicYearRepository.GetOne(e => e.AcademicYearId == id);
+           
             if (academicYear == null)
             {
                 return NotFound();
@@ -43,6 +44,7 @@ namespace IdentityText.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 await _academicYearRepository.CreateAsync(academicYear);
+                TempData["notification"] = "Successfully Create ";
                 return RedirectToAction(nameof(Index));
             }
             return View(academicYear);
@@ -63,8 +65,9 @@ namespace IdentityText.Areas.Admin.Controllers
         public IActionResult Edit(AcademicYear academicYear)
         {
  
-                _academicYearRepository.Edit(academicYear);
-                return RedirectToAction(nameof(Index));
+             _academicYearRepository.Edit(academicYear);
+            TempData["notification"] = "Successfully Edit ";
+            return RedirectToAction(nameof(Index));
         }
         [HttpGet]
         public IActionResult Delete(int id)
@@ -76,6 +79,7 @@ namespace IdentityText.Areas.Admin.Controllers
             }
             _academicYearRepository.Delete(academicYear);
             _academicYearRepository.CommitAsync();
+            TempData["notification"] = "Successfully Delete ";
             return RedirectToAction("Index");
         }
 
