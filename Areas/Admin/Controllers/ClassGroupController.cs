@@ -42,19 +42,40 @@ namespace IdentityText.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            var subjects = _subjectRepository.Get();
-            var teachers = _teacherRepository.Get(includes: [t => t.ApplicationUser]);
+            var subjects = _subjectRepository.Get().ToList();
+
+            var teachers = _teacherRepository.Get(includes: [t => t.ApplicationUser])
+                                             .Where(t => t.ApplicationUser != null)
+                                             .Select(t => new
+                                             {
+                                                 t.TeacherId,
+                                                 FullName = t.ApplicationUser.FirstName + " " + t.ApplicationUser.LastName
+                                             })
+                                             .ToList();
+
+            // اطبع في الـ Output Window بتاع Visual Studio
+            foreach (var t in teachers)
+            {
+                System.Diagnostics.Debug.WriteLine($"ID: {t.TeacherId}, Name: {t.FullName}");
+            }
+
+
+            ViewBag.TeacherId = new SelectList(teachers, "TeacherId", "FullName");
+
+
             ViewBag.SubjectId = new SelectList(subjects, "SubjectId", "Title");
-            ViewBag.TeacherId = new SelectList(teachers, "TeacherId", "ApplicationUser.Email");
 
             return View(new ClassGroup
             {
-                Title = string.Empty, 
-                Location = string.Empty, 
-                Subject = new Subject { Title = string.Empty },   
-                Teacher = new Teacher { UserId = string.Empty } 
+                Title = "",
+                Location = "",
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddDays(30),
+                Subject = new Subject(),
+                Teacher = new Teacher { UserId = string.Empty },
             });
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -65,12 +86,24 @@ namespace IdentityText.Areas.Admin.Controllers
                 _classGroupRepository.CreateAsync(classGroup);
                 return RedirectToAction(nameof(Index));
             }
-            var subjects = _subjectRepository.Get();
-            var teachers = _teacherRepository.Get(includes: [t => t.ApplicationUser]);
+
+            var subjects = _subjectRepository.Get().ToList();
+            var teachers = _teacherRepository.Get(includes: [t => t.ApplicationUser])
+                                             .Where(t => t.ApplicationUser != null)
+                                             .Select(t => new
+                                             {
+                                                 t.TeacherId,
+                                                 FullName = t.ApplicationUser.FirstName + " " + t.ApplicationUser.LastName
+                                             })
+                                             .ToList();
+
+            ViewBag.TeacherId = new SelectList(teachers, "TeacherId", "FullName");
+
             ViewBag.SubjectId = new SelectList(subjects, "SubjectId", "Title");
-            ViewBag.TeacherId = new SelectList(teachers, "TeacherId", "ApplicationUser.Email");
+
             return View(classGroup);
         }
+
 
         [HttpGet]
         public IActionResult Edit(int id)

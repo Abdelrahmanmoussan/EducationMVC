@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace IdentityText.Areas.Admin.Controllers
 {
+
+    [Area("Admin")]
     public class PaymentController : Controller
     {
         private readonly IPaymentRepository _paymentRepository;
@@ -23,9 +25,29 @@ namespace IdentityText.Areas.Admin.Controllers
             return View(payments);
         }
 
+        [HttpGet]
+        public IActionResult Details(int id)
+        {
+            var classGroup = _classGroupRepository.GetOne(e => e.ClassGroupId == id);
+            var teacher = _teacherRepository.GetOne(e => e.TeacherId == id);
+            if (teacher == null)
+            {
+                var student = _studentRepository.GetOne(e => e.StudentId == id);
+            }
+
+
+            var payment = _paymentRepository.GetOne(e=>e.PaymentId == id);
+            if (payment == null)
+            {
+                return NotFound();
+            }
+            return View(payment);
+        }
 
 
 
-            
+
+
+
     }
 }
