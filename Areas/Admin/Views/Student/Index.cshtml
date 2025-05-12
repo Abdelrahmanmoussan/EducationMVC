@@ -1,0 +1,95 @@
+﻿@model IEnumerable<IdentityText.Models.Student>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container">
+    <div class="col-sm-12 col-xl-6 col-xl-12">
+        <div class="bg-secondary rounded h-100 p-4">
+            <h6 class="mb-4">All Students</h6>
+
+            <a href="/Admin/Student/Create" class="btn btn-success w-100 m-2" type="button">
+                <i class="fa fa-plus"></i>
+                Create New
+            </a>
+
+            <table class="table table-dark text-center">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>User ID</th>
+                        <th>Parent Name</th>
+                        <th>Parent Phone</th>
+                        <th>Parent Mail</th>
+                        <th>Student DOB</th>
+                        <th>Enrollment Date</th>
+                        <th>Emergency Contact</th>
+                        <th>Attendance %</th>
+                        <th>Notes</th>
+                        <th>Subscription</th>
+                        <th>Academic Year</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.StudentId</td>
+                            <td>@item.UserId</td>
+                            <td>@item.ParentName</td>
+                            <td>@item.ParentPhone</td>
+                            <td>@item.ParentMail</td>
+                            <td>@item.StudentDB?.ToShortDateString()</td>
+                            <td>@item.EnrollmentDate.ToShortDateString()</td>
+                            <td>@item.EmergencyContact</td>
+                            <td>@item.AttendancePercent</td>
+                            <td>@item.StudentNotes</td>
+                            <td>@item.Subscription?.Code</td>
+                            <td>@item.AcademicYear?.Name</td>
+                            <td>
+                                <a href="/Admin/Student/Edit?id=@item.StudentId" class="btn btn-warning rounded-pill m-1">Edit</a>
+                                <a href="/Admin/Student/Details?id=@item.StudentId" class="btn btn-info rounded-pill m-1">Details</a>
+                                <button class="btn btn-danger rounded-pill m-1" onclick="confirmDelete(@item.StudentId)">Delete</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @if (TempData["notification"] != null)
+    {
+        <script>
+            toastr.success('@TempData["notification"]');
+        </script>
+    }
+
+    <script>
+        function confirmDelete(id) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "/Admin/Student/Delete?id=" + id;
+
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: "Student has been deleted.",
+                        icon: "success"
+                    });
+                }
+            });
+        }
+    </script>
+}

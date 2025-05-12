@@ -1,0 +1,52 @@
+﻿@model IdentityText.Models.Student
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="container">
+    <div class="col-sm-12 col-xl-6 col-xl-12">
+        <div class="bg-secondary rounded h-100 p-4">
+            <h6 class="mb-4">Details of Student</h6>
+            <dl class="row">
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.UserId)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.UserId)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.ParentName)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.ParentName)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.ParentPhone)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.ParentPhone)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.ParentMail)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.ParentMail)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.StudentDB)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.StudentDB)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.EnrollmentDate)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.EnrollmentDate)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.EmergencyContact)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.EmergencyContact)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.AttendancePercent)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.AttendancePercent)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.StudentNotes)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.StudentNotes)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Subscription)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Subscription.Code)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.AcademicYear)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.AcademicYear.Name)</dd>
+            </dl>
+        </div>
+
+        <div class="mt-3">
+            <a class="btn btn-warning" asp-action="Edit" asp-route-id="@Model?.StudentId">Edit</a>
+            <a class="btn btn-light" asp-action="Index">Back to List</a>
+        </div>
+    </div>
+</div>

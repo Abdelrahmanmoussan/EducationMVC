@@ -1,0 +1,79 @@
+﻿@model IdentityText.Models.Lecture
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="container mt-5">
+    <div class="col-sm-12 col-xl-6 col-xl-12">
+        <div class="bg-secondary rounded h-100 p-4">
+            <h6 class="mb-4">Edit Lecture Item</h6>
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="LectureId" />
+
+                <div class="form-group">
+                    <label asp-for="Title" class="form-label">Lecture Title</label>
+                    <input asp-for="Title" class="form-control" value="@Model.Title" />
+                    <span class="text-danger" asp-validation-for="Title"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Description" class="form-label">Lecture Description</label>
+                    <input asp-for="Description" class="form-control" value="@Model.Description" />
+                    <span class="text-danger" asp-validation-for="Description"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="LectureDate" class="form-label">Lecture Date</label>
+                    <input asp-for="LectureDate" class="form-control" value="@Model.LectureDate" />
+                    <span class="text-danger" asp-validation-for="LectureDate"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="VideoURL" class="form-label">Video URL</label>
+                    <input asp-for="VideoURL" class="form-control" value="@Model.VideoURL" />
+                    <span class="text-danger" asp-validation-for="VideoURL"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="CreatedAt" class="form-label">Created At</label>
+                    <input asp-for="CreatedAt" class="form-control" value="@Model.CreatedAt" />
+                    <span class="text-danger" asp-validation-for="CreatedAt"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="AttendanceId" class="form-label">Attendance</label>
+                    <select asp-for="AttendanceId" class="form-control" asp-items="ViewBag.AttendanceId"></select>
+                    <span asp-validation-for="AttendanceId" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="AssessmentId" class="form-label">Assessment</label>
+                    <select asp-for="AssessmentId" class="form-control" asp-items="ViewBag.AssessmentId"></select>
+                    <span asp-validation-for="AssessmentId" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ClassGroupId" class="form-label">Class Group</label>
+                    <select asp-for="ClassGroupId" class="form-control" asp-items="ViewBag.ClassGroupId"></select>
+                    <span asp-validation-for="ClassGroupId" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

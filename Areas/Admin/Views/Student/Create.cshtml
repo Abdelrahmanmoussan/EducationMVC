@@ -1,0 +1,86 @@
+﻿@model IdentityText.Models.Student
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="container">
+    <div class="col-sm-12 col-xl-6 col-xl-12 mt-5">
+        <div class="bg-secondary rounded h-100 p-4">
+            <h6 class="mb-4">Create New Student</h6>
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="mb-3">
+                    <label asp-for="UserId" class="form-label"></label>
+                    <input asp-for="UserId" class="form-control" />
+                    <span asp-validation-for="UserId" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ParentName" class="form-label"></label>
+                    <input asp-for="ParentName" class="form-control" />
+                    <span asp-validation-for="ParentName" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ParentPhone" class="form-label"></label>
+                    <input asp-for="ParentPhone" class="form-control" />
+                    <span asp-validation-for="ParentPhone" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ParentMail" class="form-label"></label>
+                    <input asp-for="ParentMail" class="form-control" />
+                    <span asp-validation-for="ParentMail" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="StudentDB" class="form-label"></label>
+                    <input asp-for="StudentDB" class="form-control" />
+                    <span asp-validation-for="StudentDB" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="EnrollmentDate" class="form-label"></label>
+                    <input asp-for="EnrollmentDate" class="form-control" />
+                    <span asp-validation-for="EnrollmentDate" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="AttendancePercent" class="form-label"></label>
+                    <input asp-for="AttendancePercent" class="form-control" />
+                    <span asp-validation-for="AttendancePercent" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="StudentNotes" class="form-label"></label>
+                    <input asp-for="StudentNotes" class="form-control" />
+                    <span asp-validation-for="StudentNotes" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="SubscriptionId" class="form-label"></label>
+                    <select asp-for="SubscriptionId" class="form-control" asp-items="ViewBag.SubscriptionId"></select>
+                    <span asp-validation-for="SubscriptionId" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="AcademicYearId" class="form-label"></label>
+                    <select asp-for="AcademicYearId" class="form-control" asp-items="ViewBag.AcademicYearId">
+                        <option value="">-- اختر السنة الدراسية --</option>
+                    </select>
+                    <span asp-validation-for="AcademicYearId" class="text-danger"></span>
+                </div>
+
+                <input type="submit" value="Create" class="btn btn-primary w-100" />
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

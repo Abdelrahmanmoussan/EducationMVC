@@ -1,0 +1,41 @@
+﻿@model IdentityText.Models.ClassGroup
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="container">
+    <div class="col-sm-12 col-xl-6 col-xl-12 mt-5">
+        <div class="bg-secondary rounded h-100 p-4">
+            <h6 class="mb-4">Class Group Details</h6>
+
+            <dl class="row text-light">
+                <dt class="col-sm-4">Title</dt>
+                <dd class="col-sm-8">@Model.Title</dd>
+
+                <dt class="col-sm-4">Location</dt>
+                <dd class="col-sm-8">@Model.Location</dd>
+
+                <dt class="col-sm-4">Price</dt>
+                <dd class="col-sm-8">@Model.Price</dd>
+
+                <dt class="col-sm-4">Start Date</dt>
+                <dd class="col-sm-8">@Model.StartDate.ToShortDateString()</dd>
+
+                <dt class="col-sm-4">End Date</dt>
+                <dd class="col-sm-8">@Model.EndDate.ToShortDateString()</dd>
+
+                <dt class="col-sm-4">Subject</dt>
+                <dd class="col-sm-8">@Model.Subject?.Title</dd>
+
+                <dt class="col-sm-4">Teacher</dt>
+                <dd class="col-sm-8">@Model.Teacher?.UserId</dd>
+            </dl>
+
+            <div class="d-flex gap-2 mt-4">
+                <a asp-action="Edit" asp-route-id="@Model.ClassGroupId" class="btn btn-warning w-50">Edit</a>
+                <a asp-action="Index" class="btn btn-outline-light w-50">Back to List</a>
+            </div>
+        </div>
+    </div>
+</div>

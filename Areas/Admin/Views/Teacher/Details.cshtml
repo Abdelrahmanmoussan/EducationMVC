@@ -1,0 +1,61 @@
+﻿@model IdentityText.Models.Teacher
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="container">
+    <div class="col-sm-12 col-xl-6 col-xl-12">
+        <div class="bg-secondary rounded h-100 p-4">
+            <h6 class="mb-4">Details of Teacher</h6>
+            <dl class="row text-white">
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.UserId)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.UserId)
+                </dd>
+
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.TeacherHireDate)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.TeacherHireDate)
+                </dd>
+
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.TeacherDB)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.TeacherDB)
+                </dd>
+
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.TeacherNetAmount)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.TeacherNetAmount)
+                </dd>
+
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.TeacherNotes)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.TeacherNotes)
+                </dd>
+
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Subject)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Subject.Title)
+                </dd>
+            </dl>
+        </div>
+
+        <div class="mt-3">
+            <a asp-action="Edit" asp-route-id="@Model?.TeacherId" class="btn btn-warning">Edit</a>
+            <a asp-action="Index" class="btn btn-light">Back to List</a>
+        </div>
+    </div>
+</div>
