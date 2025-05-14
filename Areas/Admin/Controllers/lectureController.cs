@@ -22,7 +22,7 @@ namespace IdentityText.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            var lectures = _lectureRepository.Get(includes: [l => l.Attendance, l => l.Assessment, l => l.ClassGroup]);
+            var lectures = _lectureRepository.Get(includes: [ l => l.Assessment, l => l.ClassGroup]);
             var classGroups = _classGroupRepository.Get();
             return View(lectures);
         }

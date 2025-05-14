@@ -54,6 +54,11 @@ namespace IdentityText.Enums
     {
         Online,
         Offline
-    } 
+    }
+    public enum SubjectType
+    {
+        General,    // مادة أساسية
+        Optional    // مادة اختيارية
+    }
 
 }

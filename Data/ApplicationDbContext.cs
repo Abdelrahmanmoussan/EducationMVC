@@ -150,11 +150,11 @@ namespace IdentityText.Data
                    UserId = "7aafd540-fdf8-482b-804d-780fb6726703",
                    RoleId = "5aa54943-8b55-4399-91b7-d247ab235cf3"
                },
-                   new IdentityUserRole<string>
-                   {
-                       UserId = "9b4cd611-6c35-4c98-a0dc-1d2e1349ab91", // Abdelrahman
-                       RoleId = "5aa54943-8b55-4399-91b7-d247ab235cf3"
-                   }
+                new IdentityUserRole<string>
+                {
+                    UserId = "9b4cd611-6c35-4c98-a0dc-1d2e1349ab91", // Abdelrahman
+                    RoleId = "5aa54943-8b55-4399-91b7-d247ab235cf3"
+                }
            );
 
             // seeding data for subject table
@@ -162,27 +162,37 @@ namespace IdentityText.Data
                 new Subject
                 {
                     SubjectId = 1,
-                    Title = "الرياضيات"
+                    Title = "الرياضيات",
+                    Description = "مادة الرياضيات الأساسية",
+                    SubjectType = SubjectType.General
                 },
                 new Subject
                 {
                     SubjectId = 2,
-                    Title = "العلوم"
+                    Title = "العلوم",
+                    Description = "مادة العلوم الأساسية",
+                    SubjectType = SubjectType.General
                 },
                 new Subject
                 {
                     SubjectId = 3,
-                    Title = "اللغة العربية"
+                    Title = "اللغة العربية",
+                    Description = "مادة اللغة العربية الأساسية",
+                    SubjectType = SubjectType.General
                 },
                 new Subject
                 {
                     SubjectId = 4,
-                    Title = "اللغة الإنجليزية"
+                    Title = "اللغة الإنجليزية",
+                    Description = "مادة اللغة الإنجليزية الأساسية",
+                    SubjectType = SubjectType.Optional
                 },
                 new Subject
                 {
                     SubjectId = 5,
-                    Title = "الدراسات الاجتماعية"
+                    Title = "الدراسات الاجتماعية",
+                    Description = "مادة الدراسات الاجتماعية الأساسية",
+                    SubjectType = SubjectType.Optional
                 }
             );
             builder.Entity<AcademicYear>().HasData(

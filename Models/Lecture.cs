@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -21,15 +22,18 @@ namespace IdentityText.Models
 
         public string VideoURL { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public int? AttendanceId { get; set; }
-        public Attendance Attendance { get; set; }
-
+        //public int? AttendanceId { get; set; }
+        //public Attendance Attendance { get; set; }
+        
         public int? AssessmentId { get; set; }
 
         public Assessment Assessment { get; set; }
         [Required]
         public int ClassGroupId { get; set; }
         public ClassGroup ClassGroup { get; set; }
+        [BindNever]
+        public ICollection<Attendance> Attendances { get; set; }
+
     }
 
 }

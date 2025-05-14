@@ -29,7 +29,6 @@ namespace IdentityText.Models
         public DateTime EnrollmentDate { get; set; }
 
         [Required]
-        [MaxLength(20)]
         public EnrollmentStatus EnrollmentStatus { get; set; } 
 
         public string Notes { get; set; }
