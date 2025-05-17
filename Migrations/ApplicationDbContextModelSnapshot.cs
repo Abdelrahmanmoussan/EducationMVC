@@ -157,7 +157,7 @@ namespace IdentityText.Migrations
                             Id = "7aafd540-fdf8-482b-804d-780fb6726703",
                             AccessFailedCount = 0,
                             Address = "Quesna,Menofia",
-                            ConcurrencyStamp = "6bffa4e1-2a2e-4337-bbb0-664bf6be5b02",
+                            ConcurrencyStamp = "4edd07e0-f782-4ec3-b1c2-0ded7db31a7b",
                             Email = "amin@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Amin",
@@ -165,10 +165,10 @@ namespace IdentityText.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "AMIN@GMAIL.COM",
                             NormalizedUserName = "AMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEJqcCBeI+I7GFjf6CSw1jBqyVYhSgAT1Ch6stNst4GqTqDOE6NbrbB6ASdDWX+O1JA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEH7oKojAPNbGjhgKrBTplQcjpOOUM0/loBEB0QAjUOFcKb1+NED+goCHL2GScKy0cg==",
                             PhoneNumberConfirmed = false,
                             Photo = "admin.jpg",
-                            SecurityStamp = "6936b79c-25d0-419f-82cf-4a7be3f91793",
+                            SecurityStamp = "9e2f6018-3a73-4f00-83ae-abd6f6788b21",
                             TwoFactorEnabled = false,
                             UserName = "amin"
                         },
@@ -177,7 +177,7 @@ namespace IdentityText.Migrations
                             Id = "9b4cd611-6c35-4c98-a0dc-1d2e1349ab91",
                             AccessFailedCount = 0,
                             Address = "Port Said",
-                            ConcurrencyStamp = "01210eb7-3a2f-444d-8570-84208fc81825",
+                            ConcurrencyStamp = "d49a563d-134b-4379-ab11-5f4757ab4a28",
                             Email = "abdelrahmanmoussan@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Abdelrahman",
@@ -185,10 +185,10 @@ namespace IdentityText.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ABDELRAHMANMOUSSAN@GMAIL.COM",
                             NormalizedUserName = "ABDELRAHMAN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOzP1ElxBc/Vy9sG0/ILMXZyTubGiKSh4iTQ0Jv7e3hiKGXuArDPtsrIdZSQ0eZ+Ow==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEJhXd2Wi2vPtMNImUCyFvbrthTd/yr8ZrkLigDyfGk78K87lpIJ9pRrK7DlbllsImQ==",
                             PhoneNumberConfirmed = false,
                             Photo = "Moussan.jpg",
-                            SecurityStamp = "8c5436b6-1707-4cb2-b61c-7ea98e9b6bf3",
+                            SecurityStamp = "3ab11783-6f7c-4688-a0c1-14fb4e0b10d3",
                             TwoFactorEnabled = false,
                             UserName = "abdelrahman"
                         });
@@ -319,6 +319,9 @@ namespace IdentityText.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ClassGroupId"));
 
+                    b.Property<int>("AcademicYearId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
@@ -344,6 +347,8 @@ namespace IdentityText.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ClassGroupId");
+
+                    b.HasIndex("AcademicYearId");
 
                     b.HasIndex("SubjectId");
 
@@ -769,9 +774,6 @@ namespace IdentityText.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TeacherId"));
 
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int>("SubjectId")
                         .HasColumnType("int");
 
@@ -789,13 +791,13 @@ namespace IdentityText.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("TeacherId");
 
-                    b.HasIndex("ApplicationUserId");
-
                     b.HasIndex("SubjectId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Teachers");
                 });
@@ -1068,6 +1070,12 @@ namespace IdentityText.Migrations
 
             modelBuilder.Entity("IdentityText.Models.ClassGroup", b =>
                 {
+                    b.HasOne("IdentityText.Models.AcademicYear", "AcademicYear")
+                        .WithMany("ClassGroups")
+                        .HasForeignKey("AcademicYearId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("IdentityText.Models.Subject", "Subject")
                         .WithMany("ClassGroups")
                         .HasForeignKey("SubjectId")
@@ -1079,6 +1087,8 @@ namespace IdentityText.Migrations
                         .HasForeignKey("TeacherId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("AcademicYear");
 
                     b.Navigation("Subject");
 
@@ -1246,14 +1256,16 @@ namespace IdentityText.Migrations
 
             modelBuilder.Entity("IdentityText.Models.Teacher", b =>
                 {
-                    b.HasOne("IdentityText.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId");
-
                     b.HasOne("IdentityText.Models.Subject", "Subject")
                         .WithMany("Teachers")
                         .HasForeignKey("SubjectId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("IdentityText.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("ApplicationUser");
@@ -1333,6 +1345,8 @@ namespace IdentityText.Migrations
 
             modelBuilder.Entity("IdentityText.Models.AcademicYear", b =>
                 {
+                    b.Navigation("ClassGroups");
+
                     b.Navigation("Students");
 
                     b.Navigation("SubjectAcademicYears");

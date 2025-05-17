@@ -25,6 +25,8 @@
             public ICollection<TeacherAcademicYear> TeacherAcademicYears { get; set; } = new List<TeacherAcademicYear>();
             [BindNever]
             public ICollection<SubjectAcademicYear> SubjectAcademicYears { get; set; } = new List<SubjectAcademicYear>();
+            [BindNever]
+            public ICollection<ClassGroup> ClassGroups { get; set; } = new List<ClassGroup>();
         }
 
     }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace IdentityText.Repository.IRepository
 {
@@ -14,6 +15,7 @@ namespace IdentityText.Repository.IRepository
 
         Task<IEnumerable<Teacher>> GetAllWithIncludesAsync();
         Task<Teacher?> GetByIdWithIncludesAsync(int id);
+        Task<IEnumerable<SelectListItem>> SelectListTeacherAsync();
 
     }
 }

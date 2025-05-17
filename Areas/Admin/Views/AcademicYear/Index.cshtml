@@ -27,7 +27,6 @@
                             <td>@item.Name</td>
                             <td>
                                 <a href="/Admin/AcademicYear/Edit?id=@item.AcademicYearId" type="button" class="btn btn-warning rounded-pill m-2">Updata</a>
-                                <a asp-action="Details" asp-route-id="@item.AcademicYearId" class="btn btn-info rounded-pill m-2">Details</a>
                                 <button class="btn btn-primary rounded-pill m-2" onclick="confirmDelete(@item.AcademicYearId)">Delete</button>
                             </td>
                         </tr>

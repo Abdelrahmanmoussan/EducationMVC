@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace IdentityText.Migrations
 {
     /// <inheritdoc />
-    public partial class initmigration : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -75,7 +75,9 @@ namespace IdentityText.Migrations
                 {
                     SubjectId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SubjectType = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -257,25 +259,22 @@ namespace IdentityText.Migrations
                 {
                     TeacherId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     TeacherHireDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TeacherDB = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Specialty = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    Salary = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     TeacherNetAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     TeacherNotes = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TeacherIsActive = table.Column<bool>(type: "bit", nullable: true),
                     SubjectId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Teachers", x => x.TeacherId);
                     table.ForeignKey(
-                        name: "FK_Teachers_AspNetUsers_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
+                        name: "FK_Teachers_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Teachers_Subjects_SubjectId",
                         column: x => x.SubjectId,
@@ -297,11 +296,9 @@ namespace IdentityText.Migrations
                     ParentMail = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     StudentDB = table.Column<DateTime>(type: "datetime2", nullable: true),
                     EnrollmentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    GradeLevel = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     EmergencyContact = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     AttendancePercent = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     StudentNotes = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    StudentIsActive = table.Column<bool>(type: "bit", nullable: false),
                     SubscriptionId = table.Column<int>(type: "int", nullable: false),
                     AcademicYearId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -384,11 +381,18 @@ namespace IdentityText.Migrations
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     SubjectId = table.Column<int>(type: "int", nullable: false),
-                    TeacherId = table.Column<int>(type: "int", nullable: false)
+                    TeacherId = table.Column<int>(type: "int", nullable: false),
+                    AcademicYearId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ClassGroups", x => x.ClassGroupId);
+                    table.ForeignKey(
+                        name: "FK_ClassGroups_AcademicYears_AcademicYearId",
+                        column: x => x.AcademicYearId,
+                        principalTable: "AcademicYears",
+                        principalColumn: "AcademicYearId",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_ClassGroups_Subjects_SubjectId",
                         column: x => x.SubjectId,
@@ -524,7 +528,7 @@ namespace IdentityText.Migrations
                     StudentId = table.Column<int>(type: "int", nullable: false),
                     ClassGroupId = table.Column<int>(type: "int", nullable: false),
                     EnrollmentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EnrollmentStatus = table.Column<int>(type: "int", maxLength: 20, nullable: false),
+                    EnrollmentStatus = table.Column<int>(type: "int", nullable: false),
                     Notes = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -598,6 +602,36 @@ namespace IdentityText.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Lectures",
+                columns: table => new
+                {
+                    LectureId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LectureDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    VideoURL = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    AssessmentId = table.Column<int>(type: "int", nullable: true),
+                    ClassGroupId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Lectures", x => x.LectureId);
+                    table.ForeignKey(
+                        name: "FK_Lectures_Assessments_AssessmentId",
+                        column: x => x.AssessmentId,
+                        principalTable: "Assessments",
+                        principalColumn: "AssessmentId");
+                    table.ForeignKey(
+                        name: "FK_Lectures_ClassGroups_ClassGroupId",
+                        column: x => x.ClassGroupId,
+                        principalTable: "ClassGroups",
+                        principalColumn: "ClassGroupId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Attendances",
                 columns: table => new
                 {
@@ -609,6 +643,7 @@ namespace IdentityText.Migrations
                     Notes = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     StudentId = table.Column<int>(type: "int", nullable: false),
                     EnrollmentId = table.Column<int>(type: "int", nullable: false),
+                    LectureId = table.Column<int>(type: "int", nullable: false),
                     EnrollmentId1 = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -626,6 +661,12 @@ namespace IdentityText.Migrations
                         principalTable: "Enrollments",
                         principalColumn: "EnrollmentId");
                     table.ForeignKey(
+                        name: "FK_Attendances_Lectures_LectureId",
+                        column: x => x.LectureId,
+                        principalTable: "Lectures",
+                        principalColumn: "LectureId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_Attendances_Students_StudentId",
                         column: x => x.StudentId,
                         principalTable: "Students",
@@ -633,40 +674,14 @@ namespace IdentityText.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Lectures",
-                columns: table => new
+            migrationBuilder.InsertData(
+                table: "AcademicYears",
+                columns: new[] { "AcademicYearId", "Name" },
+                values: new object[,]
                 {
-                    LectureId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LectureDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    VideoURL = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    AttendanceId = table.Column<int>(type: "int", nullable: true),
-                    AssessmentId = table.Column<int>(type: "int", nullable: true),
-                    ClassGroupId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Lectures", x => x.LectureId);
-                    table.ForeignKey(
-                        name: "FK_Lectures_Assessments_AssessmentId",
-                        column: x => x.AssessmentId,
-                        principalTable: "Assessments",
-                        principalColumn: "AssessmentId");
-                    table.ForeignKey(
-                        name: "FK_Lectures_Attendances_AttendanceId",
-                        column: x => x.AttendanceId,
-                        principalTable: "Attendances",
-                        principalColumn: "AttendanceId");
-                    table.ForeignKey(
-                        name: "FK_Lectures_ClassGroups_ClassGroupId",
-                        column: x => x.ClassGroupId,
-                        principalTable: "ClassGroups",
-                        principalColumn: "ClassGroupId",
-                        onDelete: ReferentialAction.Cascade);
+                    { 1, "one" },
+                    { 2, "two" },
+                    { 3, "three" }
                 });
 
             migrationBuilder.InsertData(
@@ -683,12 +698,41 @@ namespace IdentityText.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "Address", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "Photo", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "7aafd540-fdf8-482b-804d-780fb6726703", 0, "Quesna,Menofia", "77b98271-8239-4bec-b549-2b28f45549c8", "amin@gmail.com", true, "Amin", "Mohamed", false, null, "AMIN@GMAIL.COM", "AMIN", "AQAAAAIAAYagAAAAEDHHmkRAuQifPPVB0c3Cf7DNkHok54hUtEq7yMatNaZwAm5Zt49AzOeYO6ktAEPZnQ==", null, false, "admin.jpg", "db95b525-04dd-48b6-9c5a-44b786a6bab9", false, "amin" });
+                values: new object[,]
+                {
+                    { "7aafd540-fdf8-482b-804d-780fb6726703", 0, "Quesna,Menofia", "4edd07e0-f782-4ec3-b1c2-0ded7db31a7b", "amin@gmail.com", true, "Amin", "Mohamed", false, null, "AMIN@GMAIL.COM", "AMIN", "AQAAAAIAAYagAAAAEH7oKojAPNbGjhgKrBTplQcjpOOUM0/loBEB0QAjUOFcKb1+NED+goCHL2GScKy0cg==", null, false, "admin.jpg", "9e2f6018-3a73-4f00-83ae-abd6f6788b21", false, "amin" },
+                    { "9b4cd611-6c35-4c98-a0dc-1d2e1349ab91", 0, "Port Said", "d49a563d-134b-4379-ab11-5f4757ab4a28", "abdelrahmanmoussan@gmail.com", true, "Abdelrahman", "Moussan", false, null, "ABDELRAHMANMOUSSAN@GMAIL.COM", "ABDELRAHMAN", "AQAAAAIAAYagAAAAEJhXd2Wi2vPtMNImUCyFvbrthTd/yr8ZrkLigDyfGk78K87lpIJ9pRrK7DlbllsImQ==", null, false, "Moussan.jpg", "3ab11783-6f7c-4688-a0c1-14fb4e0b10d3", false, "abdelrahman" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Subjects",
+                columns: new[] { "SubjectId", "Description", "SubjectType", "Title" },
+                values: new object[,]
+                {
+                    { 1, "مادة الرياضيات الأساسية", 0, "الرياضيات" },
+                    { 2, "مادة العلوم الأساسية", 0, "العلوم" },
+                    { 3, "مادة اللغة العربية الأساسية", 0, "اللغة العربية" },
+                    { 4, "مادة اللغة الإنجليزية الأساسية", 1, "اللغة الإنجليزية" },
+                    { 5, "مادة الدراسات الاجتماعية الأساسية", 1, "الدراسات الاجتماعية" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Subscriptions",
+                columns: new[] { "SubscriptionId", "Code", "EndDate", "StartDate", "SubscriptionStatus" },
+                values: new object[,]
+                {
+                    { 1, "SUBS2024A", new DateTime(2024, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0 },
+                    { 2, "SUBS2023B", new DateTime(2023, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1 }
+                });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
                 columns: new[] { "RoleId", "UserId" },
-                values: new object[] { "5aa54943-8b55-4399-91b7-d247ab235cf3", "7aafd540-fdf8-482b-804d-780fb6726703" });
+                values: new object[,]
+                {
+                    { "5aa54943-8b55-4399-91b7-d247ab235cf3", "7aafd540-fdf8-482b-804d-780fb6726703" },
+                    { "5aa54943-8b55-4399-91b7-d247ab235cf3", "9b4cd611-6c35-4c98-a0dc-1d2e1349ab91" }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AcademicYearTeacher_TeachersTeacherId",
@@ -760,9 +804,19 @@ namespace IdentityText.Migrations
                 column: "EnrollmentId1");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Attendances_LectureId",
+                table: "Attendances",
+                column: "LectureId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Attendances_StudentId",
                 table: "Attendances",
                 column: "StudentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ClassGroups_AcademicYearId",
+                table: "ClassGroups",
+                column: "AcademicYearId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ClassGroups_SubjectId",
@@ -788,11 +842,6 @@ namespace IdentityText.Migrations
                 name: "IX_Lectures_AssessmentId",
                 table: "Lectures",
                 column: "AssessmentId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Lectures_AttendanceId",
-                table: "Lectures",
-                column: "AttendanceId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Lectures_ClassGroupId",
@@ -860,14 +909,14 @@ namespace IdentityText.Migrations
                 column: "AcademicYearId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Teachers_ApplicationUserId",
-                table: "Teachers",
-                column: "ApplicationUserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Teachers_SubjectId",
                 table: "Teachers",
                 column: "SubjectId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Teachers_UserId",
+                table: "Teachers",
+                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -895,7 +944,7 @@ namespace IdentityText.Migrations
                 name: "AssessmentResults");
 
             migrationBuilder.DropTable(
-                name: "Lectures");
+                name: "Attendances");
 
             migrationBuilder.DropTable(
                 name: "NotificationRecipients");
@@ -916,10 +965,10 @@ namespace IdentityText.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Assessments");
+                name: "Enrollments");
 
             migrationBuilder.DropTable(
-                name: "Attendances");
+                name: "Lectures");
 
             migrationBuilder.DropTable(
                 name: "Notifications");
@@ -928,22 +977,22 @@ namespace IdentityText.Migrations
                 name: "PrivateLessons");
 
             migrationBuilder.DropTable(
-                name: "Enrollments");
+                name: "Students");
+
+            migrationBuilder.DropTable(
+                name: "Assessments");
+
+            migrationBuilder.DropTable(
+                name: "Subscriptions");
 
             migrationBuilder.DropTable(
                 name: "ClassGroups");
 
             migrationBuilder.DropTable(
-                name: "Students");
-
-            migrationBuilder.DropTable(
-                name: "Teachers");
-
-            migrationBuilder.DropTable(
                 name: "AcademicYears");
 
             migrationBuilder.DropTable(
-                name: "Subscriptions");
+                name: "Teachers");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

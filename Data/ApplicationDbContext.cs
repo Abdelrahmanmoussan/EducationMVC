@@ -51,31 +51,48 @@ namespace IdentityText.Data
             builder.Entity<NotificationRecipient>()
                 .HasKey(x => new { x.NotificationId, x.NotificationRecipientId });
 
-            
+
+            builder.Entity<Teacher>()
+                .HasOne(t => t.ApplicationUser)
+                .WithMany()
+                .HasForeignKey(t => t.UserId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
+
             builder.Entity<Attendance>()
                 .HasOne(a => a.Enrollment)
                 .WithMany()
                 .HasForeignKey(a => a.EnrollmentId)
                 .OnDelete(DeleteBehavior.Restrict);
+
             builder.Entity<Attendance>()
                .HasOne(a => a.Student)
                .WithMany()
                .HasForeignKey(a => a.StudentId)
                .OnDelete(DeleteBehavior.Restrict);
+
             builder.Entity<Payment>()
                 .HasOne(p => p.Teacher)
                 .WithMany(t => t.Payments)
                 .HasForeignKey(p => p.TeacherId)
                 .OnDelete(DeleteBehavior.Restrict);
+
             builder.Entity<ClassGroup>()
                 .HasOne(cg => cg.Teacher)
                 .WithMany(t => t.ClassGroups)
                 .HasForeignKey(cg => cg.TeacherId)
                 .OnDelete(DeleteBehavior.Restrict);
+
             builder.Entity<PrivateLesson>()
                 .HasOne(pl => pl.Teacher)
                 .WithMany(t => t.PrivateLessons)
                 .HasForeignKey(pl => pl.TeacherId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<ClassGroup>()
+                .HasOne(cg => cg.AcademicYear)
+                .WithMany(ay => ay.ClassGroups)
+                .HasForeignKey(cg => cg.AcademicYearId)
                 .OnDelete(DeleteBehavior.Restrict);
 
 

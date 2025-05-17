@@ -45,7 +45,7 @@ namespace IdentityText.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Subject subject)
         {
-                await _subjectRepository.CreateAsync(subject);
+                _subjectRepository.Create(subject);
                 return RedirectToAction(nameof(Index));
         }
 
@@ -75,7 +75,7 @@ namespace IdentityText.Areas.Admin.Controllers
                 return NotFound();
             }
             _subjectRepository.Delete(subject);
-            _subjectRepository.CommitAsync();
+            _subjectRepository.Commit();
 
             return RedirectToAction("Index");
         }

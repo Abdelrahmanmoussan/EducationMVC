@@ -12,16 +12,16 @@ namespace IdentityText.Repository.IRepository
     public interface IRepository<T> where T : class
     {
 
-        Task<T> CreateAsync(T entity, CancellationToken cancellationToken = default);
+        void Create(T entity);
 
-        void Create(IEnumerable<T> entities);
+        void CreateAll(List<T> entities);
 
         public void Edit(T entity);
-        Task<bool> CommitAsync();
+        void Commit();
 
         public void Delete(T entity);
 
-        public void Delete(IEnumerable<T> entities);
+        public void DeleteAll(List<T> entities);
 
         public IEnumerable<T> Get(Expression<Func<T, bool>>? filter = null, Expression<Func<T, object>>[]? includes = null, bool tracked = true);
 

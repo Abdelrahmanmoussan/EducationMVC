@@ -59,7 +59,7 @@ namespace IdentityText.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                _privateLessonRepository.CreateAsync(privateLesson);
+                _privateLessonRepository.Create(privateLesson);
                 return RedirectToAction(nameof(Index));
             }
             return View(privateLesson);
@@ -96,7 +96,7 @@ namespace IdentityText.Areas.Admin.Controllers
                 return NotFound();
             }
             _privateLessonRepository.Delete(privateLesson);
-            _privateLessonRepository.CommitAsync();
+            _privateLessonRepository.Commit();
             return RedirectToAction(nameof(Index));
         }
 

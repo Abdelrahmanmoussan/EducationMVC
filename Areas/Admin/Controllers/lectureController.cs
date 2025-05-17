@@ -51,7 +51,7 @@ namespace IdentityText.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                _lectureRepository.CreateAsync(lecture);
+                _lectureRepository.Create(lecture);
                 return RedirectToAction(nameof(Index));
             }
             return View(lecture);
@@ -89,7 +89,7 @@ namespace IdentityText.Areas.Admin.Controllers
                 return NotFound();
             }
             _lectureRepository.Delete(lecture);
-            _lectureRepository.CommitAsync();
+            _lectureRepository.Commit();
             return RedirectToAction(nameof(Index));
         }
 

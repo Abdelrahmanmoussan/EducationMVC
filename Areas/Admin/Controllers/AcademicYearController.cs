@@ -22,16 +22,6 @@ namespace IdentityText.Areas.Admin.Controllers
             return View(academicYears);
         }
         [HttpGet]
-        public IActionResult Details(int id)
-        {
-            var academicYear = _academicYearRepository.GetOne(e => e.AcademicYearId == id);
-           
-            if (academicYear == null)
-            {
-                return NotFound();
-            }
-            return View(academicYear);
-        }
 
         [HttpGet]
         public IActionResult Create()
@@ -41,11 +31,12 @@ namespace IdentityText.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(AcademicYear academicYear)
+        public IActionResult Create(AcademicYear academicYear)
         {
             if (ModelState.IsValid)
             {
-                await _academicYearRepository.CreateAsync(academicYear);
+                _academicYearRepository.Create(academicYear);
+                _academicYearRepository.Commit();
                 TempData["notification"] = "Successfully Create ";
                 return RedirectToAction(nameof(Index));
             }
@@ -68,6 +59,7 @@ namespace IdentityText.Areas.Admin.Controllers
         {
  
              _academicYearRepository.Edit(academicYear);
+            _academicYearRepository.Commit();
             TempData["notification"] = "Successfully Edit ";
             return RedirectToAction(nameof(Index));
         }
@@ -80,7 +72,7 @@ namespace IdentityText.Areas.Admin.Controllers
                 return NotFound();
             }
             _academicYearRepository.Delete(academicYear);
-            _academicYearRepository.CommitAsync();
+            _academicYearRepository.Commit();
             TempData["notification"] = "Successfully Delete ";
             return RedirectToAction("Index");
         }
