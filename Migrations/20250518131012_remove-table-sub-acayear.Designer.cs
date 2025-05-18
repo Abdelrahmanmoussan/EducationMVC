@@ -4,6 +4,7 @@ using IdentityText.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IdentityText.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250518131012_remove-table-sub-acayear")]
+    partial class removetablesubacayear
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -157,7 +160,7 @@ namespace IdentityText.Migrations
                             Id = "7aafd540-fdf8-482b-804d-780fb6726703",
                             AccessFailedCount = 0,
                             Address = "Quesna,Menofia",
-                            ConcurrencyStamp = "94d9439c-3d46-4d68-b48c-538f9b2e4e8c",
+                            ConcurrencyStamp = "06fd97ff-a069-456a-a27c-1766861456b8",
                             Email = "amin@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Amin",
@@ -165,10 +168,10 @@ namespace IdentityText.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "AMIN@GMAIL.COM",
                             NormalizedUserName = "AMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEMh8TKly8x08Vrimm2vKwDENXU8/X44/TcB3LktnqjxxjmyowWETXYXxwAwS6zdu2w==",
+                            PasswordHash = "AQAAAAIAAYagAAAAELHO9RcX8MhmHFpQKHbxNdHIFVuha2rRntppUVSBippLUu0Clg5LFfJbJR2vF2Fgjw==",
                             PhoneNumberConfirmed = false,
                             Photo = "admin.jpg",
-                            SecurityStamp = "5f6f4f95-d908-4c1e-a543-eb00df544d87",
+                            SecurityStamp = "57c147bc-308f-403e-81dc-a340199a745f",
                             TwoFactorEnabled = false,
                             UserName = "amin"
                         },
@@ -177,7 +180,7 @@ namespace IdentityText.Migrations
                             Id = "9b4cd611-6c35-4c98-a0dc-1d2e1349ab91",
                             AccessFailedCount = 0,
                             Address = "Port Said",
-                            ConcurrencyStamp = "d2f80657-babe-4460-80ce-81b59378beda",
+                            ConcurrencyStamp = "0fe16132-4c9d-46fa-8c40-901b54ad3522",
                             Email = "abdelrahmanmoussan@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Abdelrahman",
@@ -185,10 +188,10 @@ namespace IdentityText.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ABDELRAHMANMOUSSAN@GMAIL.COM",
                             NormalizedUserName = "ABDELRAHMAN",
-                            PasswordHash = "AQAAAAIAAYagAAAAELktJHjH6rnNN0c85I+IAcYvM/IdETCKMBsx1xzZHILr2tamh4CMbgCPVYSD44KuRQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAELBVX3b2p4iQenrO+Oq9AFB04C9Vl+occtZHNaNWfUsJbpnsFfdl6WhhWJ6zLEEqXw==",
                             PhoneNumberConfirmed = false,
                             Photo = "Moussan.jpg",
-                            SecurityStamp = "867bc1e8-3f1b-4bf3-b2a7-1f4613352bb7",
+                            SecurityStamp = "f5442fd3-5cc3-40ec-b688-3b3fac4e3d5a",
                             TwoFactorEnabled = false,
                             UserName = "abdelrahman"
                         });
@@ -203,9 +206,10 @@ namespace IdentityText.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AssessmentId"));
 
                     b.Property<string>("AssessmentLink")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ClassGroupId")
+                    b.Property<int>("ClassGroupId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
@@ -217,9 +221,6 @@ namespace IdentityText.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("LectureId")
-                        .HasColumnType("int");
-
                     b.Property<int>("MaxScore")
                         .HasColumnType("int");
 
@@ -230,9 +231,6 @@ namespace IdentityText.Migrations
                     b.HasKey("AssessmentId");
 
                     b.HasIndex("ClassGroupId");
-
-                    b.HasIndex("LectureId")
-                        .IsUnique();
 
                     b.ToTable("Assessments");
                 });
@@ -413,6 +411,7 @@ namespace IdentityText.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("LectureDate")
@@ -423,9 +422,12 @@ namespace IdentityText.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("VideoURL")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("LectureId");
+
+                    b.HasIndex("AssessmentId");
 
                     b.HasIndex("ClassGroupId");
 
@@ -994,17 +996,13 @@ namespace IdentityText.Migrations
 
             modelBuilder.Entity("IdentityText.Models.Assessment", b =>
                 {
-                    b.HasOne("IdentityText.Models.ClassGroup", null)
+                    b.HasOne("IdentityText.Models.ClassGroup", "ClassGroup")
                         .WithMany("Assessments")
-                        .HasForeignKey("ClassGroupId");
-
-                    b.HasOne("IdentityText.Models.Lecture", "Lecture")
-                        .WithOne("Assessment")
-                        .HasForeignKey("IdentityText.Models.Assessment", "LectureId")
+                        .HasForeignKey("ClassGroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Lecture");
+                    b.Navigation("ClassGroup");
                 });
 
             modelBuilder.Entity("IdentityText.Models.AssessmentResult", b =>
@@ -1105,11 +1103,17 @@ namespace IdentityText.Migrations
 
             modelBuilder.Entity("IdentityText.Models.Lecture", b =>
                 {
+                    b.HasOne("IdentityText.Models.Assessment", "Assessment")
+                        .WithMany("Lectures")
+                        .HasForeignKey("AssessmentId");
+
                     b.HasOne("IdentityText.Models.ClassGroup", "ClassGroup")
                         .WithMany("Lectures")
                         .HasForeignKey("ClassGroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Assessment");
 
                     b.Navigation("ClassGroup");
                 });
@@ -1324,6 +1328,8 @@ namespace IdentityText.Migrations
             modelBuilder.Entity("IdentityText.Models.Assessment", b =>
                 {
                     b.Navigation("AssessmentResults");
+
+                    b.Navigation("Lectures");
                 });
 
             modelBuilder.Entity("IdentityText.Models.ClassGroup", b =>
@@ -1342,8 +1348,6 @@ namespace IdentityText.Migrations
 
             modelBuilder.Entity("IdentityText.Models.Lecture", b =>
                 {
-                    b.Navigation("Assessment");
-
                     b.Navigation("Attendances");
                 });
 

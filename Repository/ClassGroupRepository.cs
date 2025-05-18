@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using IdentityText.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace IdentityText.Repository
 {
@@ -49,9 +50,14 @@ namespace IdentityText.Repository
                 return query.ToList();
             }
 
-        public string? GetWithFullIncludes()
+        public async Task<IEnumerable<SelectListItem>> SelectListClassGroupAsync()
         {
-            throw new NotImplementedException();
+            return await dbSet.OrderBy(a => a.Title)
+                             .Select(a => new SelectListItem
+                             {
+                                 Value = a.ClassGroupId.ToString(),
+                                 Text = a.Title
+                             }).ToListAsync();
         }
     }
 

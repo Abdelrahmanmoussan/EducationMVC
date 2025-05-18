@@ -38,7 +38,7 @@ namespace IdentityText
             builder.Services.AddScoped<ISubjectRepository, SubjectRepository>();
             builder.Services.AddScoped<IAcademicYearRepository, AcademicYearRepository>();
             builder.Services.AddScoped<ILectureRepository, LectureRepository>();
-            builder.Services.AddScoped<IAcademicYearRepository, AcademicYearRepository>();
+            builder.Services.AddScoped<IAssessmentRepository, AssessmentRepository>();
             builder.Services.AddScoped<IPrivateLessonRepository, PrivateLessonRepository>();
             builder.Services.AddScoped<IClassGroupRepository, ClassGroupRepository>();
             builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();

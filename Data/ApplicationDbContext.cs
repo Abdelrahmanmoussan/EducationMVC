@@ -32,7 +32,6 @@ namespace IdentityText.Data
         public DbSet<Subscription> Subscriptions { get; set; }
         public DbSet<TeacherAcademicYear> TeacherAcademicYears { get; set; }
         public DbSet<PrivateLessonStudent> PrivateLessonStudents { get; set; }
-        public DbSet<SubjectAcademicYear> SubjectAcademicYears { get; set; }
         public DbSet<NotificationRecipient> NotificationRecipients { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -44,9 +43,6 @@ namespace IdentityText.Data
             // ===== PrivateLessonStudent =====
             builder.Entity<PrivateLessonStudent>()
                 .HasKey(x => new { x.PrivateLessonId, x.StudentId });
-            // ===== SubjectAcademicYear =====
-            builder.Entity<SubjectAcademicYear>()
-                .HasKey(x => new { x.SubjectId, x.AcademicYearId });
             // ===== NotificationRecipient =====
             builder.Entity<NotificationRecipient>()
                 .HasKey(x => new { x.NotificationId, x.NotificationRecipientId });
@@ -246,9 +242,7 @@ namespace IdentityText.Data
                     Code = "SUBS2023B",
                     SubscriptionStatus = SubscriptionStatus.Expired
                 }
-);
-
-
+            );
 
         }
 

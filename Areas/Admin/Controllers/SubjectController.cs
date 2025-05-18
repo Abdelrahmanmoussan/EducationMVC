@@ -1,7 +1,10 @@
-﻿using IdentityText.Models;
+﻿using IdentityText.Enums;
+using IdentityText.Models;
+using IdentityText.Models.ViewModel;
 using IdentityText.Repository.IRepository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace IdentityText.Areas.Admin.Controllers
 {
@@ -24,47 +27,80 @@ namespace IdentityText.Areas.Admin.Controllers
             return View(subjects);
         }
 
-        [HttpGet]
-        public IActionResult Details(int id)
-        {
-            var subject = _subjectRepository.GetOne(e=>e.SubjectId == id);
-            if (subject == null)
-            {
-                return NotFound();
-            }
-            return View(subject);
-        }
 
         [HttpGet]
         public IActionResult Create()
         {
+            ViewBag.SubjectTypeList = Enum.GetValues(typeof(SubjectType))
+            .Cast<SubjectType>()
+            .Select(e => new SelectListItem
+            {
+                Value = e.ToString(),
+                Text = e.ToString()
+            }).ToList();
+
             return View(new Subject());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Subject subject)
+        public IActionResult Create(Subject subject)
         {
-                _subjectRepository.Create(subject);
-                return RedirectToAction(nameof(Index));
+            if (!ModelState.IsValid)
+            {
+                ViewBag.SubjectTypeList = Enum.GetValues(typeof(SubjectType))
+                .Cast<SubjectType>()
+                .Select(e => new SelectListItem
+                {
+                Value = e.ToString(),
+                Text = e.ToString()
+            }).ToList();
+                return View(subject);
+            }
+            _subjectRepository.Create(subject);
+            _subjectRepository.Commit();
+            TempData["notification"] = "Subject created successfully!";
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]
         public IActionResult Edit(int id)
         {
             var subject = _subjectRepository.GetOne(e => e.SubjectId == id);
+           
             if (subject == null)
             {
                 return NotFound();
             }
+            ViewBag.SubjectTypeList = Enum.GetValues(typeof(SubjectType))
+              .Cast<SubjectType>()
+              .Select(e => new SelectListItem
+              {
+                  Value = e.ToString(),
+                  Text = e.ToString()
+              }).ToList();
             return View(subject);
         }
+
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Edit(Subject subject)
         {
-                _subjectRepository.Edit(subject);
-                return RedirectToAction(nameof(Index));
-
+            if (!ModelState.IsValid)
+            {
+                ViewBag.SubjectTypeList = Enum.GetValues(typeof(SubjectType))
+                .Cast<SubjectType>()
+                .Select(e => new SelectListItem
+                {
+                    Value = e.ToString(),
+                    Text = e.ToString()
+                }).ToList();
+                return View(subject);
+            }
+            _subjectRepository.Edit(subject);
+            _subjectRepository.Commit();
+            TempData["notification"] = "Subject Edited successfully!";
+            return RedirectToAction(nameof(Index));
         }
         [HttpGet]
         public IActionResult Delete(int id)
@@ -76,19 +112,8 @@ namespace IdentityText.Areas.Admin.Controllers
             }
             _subjectRepository.Delete(subject);
             _subjectRepository.Commit();
-
+            TempData["notification"] = "Subject Deleted successfully!";
             return RedirectToAction("Index");
         }
-
-
-
-
-
-
-
-
-
-
-
     }
 }

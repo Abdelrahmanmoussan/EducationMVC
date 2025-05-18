@@ -1,7 +1,12 @@
 ﻿using IdentityText.Models;
+using IdentityText.Models.ViewModel;
+using IdentityText.Repository;
 using IdentityText.Repository.IRepository;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Linq.Expressions;
 
 namespace IdentityText.Areas.Admin.Controllers
 {
@@ -11,73 +16,114 @@ namespace IdentityText.Areas.Admin.Controllers
     {
         private readonly ILectureRepository _lectureRepository;
         private readonly IClassGroupRepository _classGroupRepository;
+        private readonly IAssessmentRepository _assessmentRepository;
 
-        public LectureController(ILectureRepository lectureRepository, IClassGroupRepository classGroupRepository)
+        public LectureController(ILectureRepository lectureRepository, IClassGroupRepository classGroupRepository, IAssessmentRepository assessmentRepository)
         {
             _lectureRepository = lectureRepository;
             _classGroupRepository = classGroupRepository;
+            _assessmentRepository = assessmentRepository;
         }
 
 
         [HttpGet]
         public IActionResult Index()
         {
-            var lectures = _lectureRepository.Get(includes: [ l => l.Assessment, l => l.ClassGroup]);
-            var classGroups = _classGroupRepository.Get();
+            var lectures = _lectureRepository.Get(includes: [e=>e.Assessment,e=>e.ClassGroup] );
             return View(lectures);
         }
 
-
         [HttpGet]
-        public IActionResult Details(int id)
+        public async Task<IActionResult> CreateAsync()
         {
-            var lecture = _lectureRepository.GetOne(e => e.LectureId == id);
-            if (lecture == null)
+            var model = new LectureVM
             {
-                return NotFound();
-            }
-            return View(lecture);
-        }
+                AssessmentList = await _assessmentRepository.SelectListAssessmentAsync(),
+                ClassGroupList = await _classGroupRepository.SelectListClassGroupAsync()
+            };
 
-        [HttpGet]
-        public IActionResult Create()
-        {
-            var classGroups = _classGroupRepository.Get();
-            return View(new Lecture());
+            return View(model);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Lecture lecture)
+        public async Task<IActionResult> CreateAsync(LectureVM model)
         {
             if (ModelState.IsValid)
             {
+                var lecture = new Lecture
+                {
+                    Title = model.Title,
+                    Description= model.Description,
+                    LectureDate = model.LectureDate,
+                    VideoURL = model.VideoURL,
+                    CreatedAt = model.CreatedAt,
+                    ClassGroupId = model.ClassGroupId,
+                    AssessmentId = model.AssessmentId
+                };
                 _lectureRepository.Create(lecture);
+                _lectureRepository.Commit();
+                TempData["notification"] = "Successfully Created";
                 return RedirectToAction(nameof(Index));
             }
-            return View(lecture);
+            model.AssessmentList = await _assessmentRepository.SelectListAssessmentAsync();
+            model.ClassGroupList = await _classGroupRepository.SelectListClassGroupAsync();
+            return View(model);
         }
 
         [HttpGet]
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> EditAsync(int id)
         {
-            var lecture = _lectureRepository.GetOne(e => e.LectureId == id);
+            var lecture = _lectureRepository.GetOne( filter: e => e.LectureId == id);
+
             if (lecture == null)
             {
                 return NotFound();
             }
-            return View(lecture);
+
+            var model = new LectureVM
+            {
+                LectureId = lecture.LectureId,
+                Title = lecture.Title,
+                Description = lecture.Description,
+                LectureDate = lecture.LectureDate,
+                VideoURL = lecture.VideoURL,
+                CreatedAt = lecture.CreatedAt,
+                ClassGroupId = lecture.ClassGroupId,
+                AssessmentId = lecture.AssessmentId,
+                AssessmentList = await _assessmentRepository.SelectListAssessmentAsync(),
+                ClassGroupList = await _classGroupRepository.SelectListClassGroupAsync(),
+            };
+            return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Lecture lecture)
+        public async Task<IActionResult> EditAsync(LectureVM model)
         {
+
             if (ModelState.IsValid)
             {
+                var lecture = _lectureRepository.GetOne(filter: e => e.LectureId == model.LectureId);
+                if (lecture == null)
+                {
+                    return NotFound(); // Handle the case where classGroup is null
+                }
+                lecture.LectureId =model.LectureId;
+                lecture.Title = model.Title;
+                lecture.Description = model.Description;
+                lecture.LectureDate = model.LectureDate;
+                lecture.VideoURL = model.VideoURL;
+                lecture.CreatedAt = model.CreatedAt;
+                lecture.ClassGroupId = model.ClassGroupId;
+                lecture.AssessmentId = model.AssessmentId;
                 _lectureRepository.Edit(lecture);
+                _lectureRepository.Commit();
+                TempData["notification"] = "Successfully Edited";
                 return RedirectToAction(nameof(Index));
             }
-            return View(lecture);
+            model.AssessmentList = await _assessmentRepository.SelectListAssessmentAsync();
+            model.ClassGroupList = await _classGroupRepository.SelectListClassGroupAsync();
+            return View(model);
         }
 
         [HttpGet]

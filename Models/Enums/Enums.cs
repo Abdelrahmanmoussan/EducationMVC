@@ -58,7 +58,10 @@ namespace IdentityText.Enums
     public enum SubjectType
     {
         General,    // مادة أساسية
-        Optional    // مادة اختيارية
+        Optional,// مادة اختيارية
+        Theoretical,
+        Practical,
+        Mixed
     }
 
 }
