@@ -10,7 +10,7 @@ namespace IdentityText.Areas.Admin.Controllers
     [Authorize(Roles = "Admin")]
     public class TeacherController : Controller
     {
-            private readonly ITeacherRepository _teacherRepository;
+        private readonly ITeacherRepository _teacherRepository;
         private readonly ISubjectRepository _subjectRepository;
 
         public TeacherController(ITeacherRepository teacherRepository, ISubjectRepository subjectRepository)
@@ -46,7 +46,7 @@ namespace IdentityText.Areas.Admin.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    await _teacherRepository.CreateAsync(teacher);
+                    _teacherRepository.Create(teacher);
                     return RedirectToAction(nameof(Index));
                 }
                 return View(teacher);

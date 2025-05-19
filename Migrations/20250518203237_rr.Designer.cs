@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IdentityText.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250508211015_add-seeding")]
-    partial class addseeding
+    [Migration("20250518203237_rr")]
+    partial class rr
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -160,7 +160,7 @@ namespace IdentityText.Migrations
                             Id = "7aafd540-fdf8-482b-804d-780fb6726703",
                             AccessFailedCount = 0,
                             Address = "Quesna,Menofia",
-                            ConcurrencyStamp = "f2986c48-38a6-472a-8459-f19981eb3675",
+                            ConcurrencyStamp = "94d9439c-3d46-4d68-b48c-538f9b2e4e8c",
                             Email = "amin@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Amin",
@@ -168,12 +168,32 @@ namespace IdentityText.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "AMIN@GMAIL.COM",
                             NormalizedUserName = "AMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEBQ0FWzRU2dhRE5/gl1IC87poCPrjXuIV/cRprqSIsj7Em9UuKKKbQ0+S5BjsQJ3pQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEMh8TKly8x08Vrimm2vKwDENXU8/X44/TcB3LktnqjxxjmyowWETXYXxwAwS6zdu2w==",
                             PhoneNumberConfirmed = false,
                             Photo = "admin.jpg",
-                            SecurityStamp = "932a8cb1-a82f-41a2-aca5-0daf9c5fceaa",
+                            SecurityStamp = "5f6f4f95-d908-4c1e-a543-eb00df544d87",
                             TwoFactorEnabled = false,
                             UserName = "amin"
+                        },
+                        new
+                        {
+                            Id = "9b4cd611-6c35-4c98-a0dc-1d2e1349ab91",
+                            AccessFailedCount = 0,
+                            Address = "Port Said",
+                            ConcurrencyStamp = "d2f80657-babe-4460-80ce-81b59378beda",
+                            Email = "abdelrahmanmoussan@gmail.com",
+                            EmailConfirmed = true,
+                            FirstName = "Abdelrahman",
+                            LastName = "Moussan",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ABDELRAHMANMOUSSAN@GMAIL.COM",
+                            NormalizedUserName = "ABDELRAHMAN",
+                            PasswordHash = "AQAAAAIAAYagAAAAELktJHjH6rnNN0c85I+IAcYvM/IdETCKMBsx1xzZHILr2tamh4CMbgCPVYSD44KuRQ==",
+                            PhoneNumberConfirmed = false,
+                            Photo = "Moussan.jpg",
+                            SecurityStamp = "867bc1e8-3f1b-4bf3-b2a7-1f4613352bb7",
+                            TwoFactorEnabled = false,
+                            UserName = "abdelrahman"
                         });
                 });
 
@@ -186,10 +206,9 @@ namespace IdentityText.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AssessmentId"));
 
                     b.Property<string>("AssessmentLink")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ClassGroupId")
+                    b.Property<int?>("ClassGroupId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
@@ -201,6 +220,9 @@ namespace IdentityText.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("LectureId")
+                        .HasColumnType("int");
+
                     b.Property<int>("MaxScore")
                         .HasColumnType("int");
 
@@ -211,6 +233,9 @@ namespace IdentityText.Migrations
                     b.HasKey("AssessmentId");
 
                     b.HasIndex("ClassGroupId");
+
+                    b.HasIndex("LectureId")
+                        .IsUnique();
 
                     b.ToTable("Assessments");
                 });
@@ -271,6 +296,9 @@ namespace IdentityText.Migrations
                     b.Property<int?>("EnrollmentId1")
                         .HasColumnType("int");
 
+                    b.Property<int>("LectureId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Notes")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -284,6 +312,8 @@ namespace IdentityText.Migrations
 
                     b.HasIndex("EnrollmentId1");
 
+                    b.HasIndex("LectureId");
+
                     b.HasIndex("StudentId");
 
                     b.ToTable("Attendances");
@@ -296,6 +326,9 @@ namespace IdentityText.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ClassGroupId"));
+
+                    b.Property<int>("AcademicYearId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
@@ -323,6 +356,8 @@ namespace IdentityText.Migrations
 
                     b.HasKey("ClassGroupId");
 
+                    b.HasIndex("AcademicYearId");
+
                     b.HasIndex("SubjectId");
 
                     b.HasIndex("TeacherId");
@@ -345,7 +380,6 @@ namespace IdentityText.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int>("EnrollmentStatus")
-                        .HasMaxLength(20)
                         .HasColumnType("int");
 
                     b.Property<string>("Notes")
@@ -375,9 +409,6 @@ namespace IdentityText.Migrations
                     b.Property<int?>("AssessmentId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("AttendanceId")
-                        .HasColumnType("int");
-
                     b.Property<int>("ClassGroupId")
                         .HasColumnType("int");
 
@@ -385,7 +416,6 @@ namespace IdentityText.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("LectureDate")
@@ -396,14 +426,9 @@ namespace IdentityText.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("VideoURL")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("LectureId");
-
-                    b.HasIndex("AssessmentId");
-
-                    b.HasIndex("AttendanceId");
 
                     b.HasIndex("ClassGroupId");
 
@@ -572,8 +597,7 @@ namespace IdentityText.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StudentId"));
 
-                    b.Property<int?>("AcademicYearId")
-                        .IsRequired()
+                    b.Property<int>("AcademicYearId")
                         .HasColumnType("int");
 
                     b.Property<string>("ApplicationUserId")
@@ -589,10 +613,6 @@ namespace IdentityText.Migrations
                     b.Property<DateTime>("EnrollmentDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("GradeLevel")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
                     b.Property<string>("ParentMail")
                         .HasColumnType("nvarchar(max)");
 
@@ -606,14 +626,11 @@ namespace IdentityText.Migrations
                     b.Property<DateTime?>("StudentDB")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("StudentIsActive")
-                        .HasColumnType("bit");
-
                     b.Property<string>("StudentNotes")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<int?>("SubscriptionId")
+                    b.Property<int>("SubscriptionId")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
@@ -639,6 +656,12 @@ namespace IdentityText.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SubjectId"));
 
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SubjectType")
+                        .HasColumnType("int");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -651,43 +674,38 @@ namespace IdentityText.Migrations
                         new
                         {
                             SubjectId = 1,
+                            Description = "مادة الرياضيات الأساسية",
+                            SubjectType = 0,
                             Title = "الرياضيات"
                         },
                         new
                         {
                             SubjectId = 2,
+                            Description = "مادة العلوم الأساسية",
+                            SubjectType = 0,
                             Title = "العلوم"
                         },
                         new
                         {
                             SubjectId = 3,
+                            Description = "مادة اللغة العربية الأساسية",
+                            SubjectType = 0,
                             Title = "اللغة العربية"
                         },
                         new
                         {
                             SubjectId = 4,
+                            Description = "مادة اللغة الإنجليزية الأساسية",
+                            SubjectType = 1,
                             Title = "اللغة الإنجليزية"
                         },
                         new
                         {
                             SubjectId = 5,
+                            Description = "مادة الدراسات الاجتماعية الأساسية",
+                            SubjectType = 1,
                             Title = "الدراسات الاجتماعية"
                         });
-                });
-
-            modelBuilder.Entity("IdentityText.Models.SubjectAcademicYear", b =>
-                {
-                    b.Property<int>("SubjectId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("AcademicYearId")
-                        .HasColumnType("int");
-
-                    b.HasKey("SubjectId", "AcademicYearId");
-
-                    b.HasIndex("AcademicYearId");
-
-                    b.ToTable("SubjectAcademicYears");
                 });
 
             modelBuilder.Entity("IdentityText.Models.Subscription", b =>
@@ -716,6 +734,24 @@ namespace IdentityText.Migrations
                     b.HasKey("SubscriptionId");
 
                     b.ToTable("Subscriptions");
+
+                    b.HasData(
+                        new
+                        {
+                            SubscriptionId = 1,
+                            Code = "SUBS2024A",
+                            EndDate = new DateTime(2024, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SubscriptionStatus = 0
+                        },
+                        new
+                        {
+                            SubscriptionId = 2,
+                            Code = "SUBS2023B",
+                            EndDate = new DateTime(2023, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartDate = new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SubscriptionStatus = 1
+                        });
                 });
 
             modelBuilder.Entity("IdentityText.Models.Teacher", b =>
@@ -726,16 +762,6 @@ namespace IdentityText.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TeacherId"));
 
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<decimal?>("Salary")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Specialty")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
                     b.Property<int>("SubjectId")
                         .HasColumnType("int");
 
@@ -745,9 +771,6 @@ namespace IdentityText.Migrations
                     b.Property<DateTime>("TeacherHireDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("TeacherIsActive")
-                        .HasColumnType("bit");
-
                     b.Property<decimal?>("TeacherNetAmount")
                         .HasColumnType("decimal(18,2)");
 
@@ -756,13 +779,13 @@ namespace IdentityText.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("TeacherId");
 
-                    b.HasIndex("ApplicationUserId");
-
                     b.HasIndex("SubjectId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Teachers");
                 });
@@ -928,6 +951,11 @@ namespace IdentityText.Migrations
                         {
                             UserId = "7aafd540-fdf8-482b-804d-780fb6726703",
                             RoleId = "5aa54943-8b55-4399-91b7-d247ab235cf3"
+                        },
+                        new
+                        {
+                            UserId = "9b4cd611-6c35-4c98-a0dc-1d2e1349ab91",
+                            RoleId = "5aa54943-8b55-4399-91b7-d247ab235cf3"
                         });
                 });
 
@@ -969,13 +997,17 @@ namespace IdentityText.Migrations
 
             modelBuilder.Entity("IdentityText.Models.Assessment", b =>
                 {
-                    b.HasOne("IdentityText.Models.ClassGroup", "ClassGroup")
+                    b.HasOne("IdentityText.Models.ClassGroup", null)
                         .WithMany("Assessments")
-                        .HasForeignKey("ClassGroupId")
+                        .HasForeignKey("ClassGroupId");
+
+                    b.HasOne("IdentityText.Models.Lecture", "Lecture")
+                        .WithOne("Assessment")
+                        .HasForeignKey("IdentityText.Models.Assessment", "LectureId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ClassGroup");
+                    b.Navigation("Lecture");
                 });
 
             modelBuilder.Entity("IdentityText.Models.AssessmentResult", b =>
@@ -1009,6 +1041,12 @@ namespace IdentityText.Migrations
                         .WithMany("Attendances")
                         .HasForeignKey("EnrollmentId1");
 
+                    b.HasOne("IdentityText.Models.Lecture", "Lecture")
+                        .WithMany("Attendances")
+                        .HasForeignKey("LectureId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("IdentityText.Models.Student", "Student")
                         .WithMany()
                         .HasForeignKey("StudentId")
@@ -1017,11 +1055,19 @@ namespace IdentityText.Migrations
 
                     b.Navigation("Enrollment");
 
+                    b.Navigation("Lecture");
+
                     b.Navigation("Student");
                 });
 
             modelBuilder.Entity("IdentityText.Models.ClassGroup", b =>
                 {
+                    b.HasOne("IdentityText.Models.AcademicYear", "AcademicYear")
+                        .WithMany("ClassGroups")
+                        .HasForeignKey("AcademicYearId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("IdentityText.Models.Subject", "Subject")
                         .WithMany("ClassGroups")
                         .HasForeignKey("SubjectId")
@@ -1033,6 +1079,8 @@ namespace IdentityText.Migrations
                         .HasForeignKey("TeacherId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("AcademicYear");
 
                     b.Navigation("Subject");
 
@@ -1060,23 +1108,11 @@ namespace IdentityText.Migrations
 
             modelBuilder.Entity("IdentityText.Models.Lecture", b =>
                 {
-                    b.HasOne("IdentityText.Models.Assessment", "Assessment")
-                        .WithMany("Lectures")
-                        .HasForeignKey("AssessmentId");
-
-                    b.HasOne("IdentityText.Models.Attendance", "Attendance")
-                        .WithMany("Lectures")
-                        .HasForeignKey("AttendanceId");
-
                     b.HasOne("IdentityText.Models.ClassGroup", "ClassGroup")
                         .WithMany("Lectures")
                         .HasForeignKey("ClassGroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Assessment");
-
-                    b.Navigation("Attendance");
 
                     b.Navigation("ClassGroup");
                 });
@@ -1174,7 +1210,9 @@ namespace IdentityText.Migrations
 
                     b.HasOne("IdentityText.Models.Subscription", "Subscription")
                         .WithMany("Students")
-                        .HasForeignKey("SubscriptionId");
+                        .HasForeignKey("SubscriptionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("AcademicYear");
 
@@ -1183,35 +1221,18 @@ namespace IdentityText.Migrations
                     b.Navigation("Subscription");
                 });
 
-            modelBuilder.Entity("IdentityText.Models.SubjectAcademicYear", b =>
-                {
-                    b.HasOne("IdentityText.Models.AcademicYear", "AcademicYear")
-                        .WithMany("SubjectAcademicYears")
-                        .HasForeignKey("AcademicYearId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("IdentityText.Models.Subject", "Subject")
-                        .WithMany("SubjectAcademicYears")
-                        .HasForeignKey("SubjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AcademicYear");
-
-                    b.Navigation("Subject");
-                });
-
             modelBuilder.Entity("IdentityText.Models.Teacher", b =>
                 {
-                    b.HasOne("IdentityText.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId");
-
                     b.HasOne("IdentityText.Models.Subject", "Subject")
                         .WithMany("Teachers")
                         .HasForeignKey("SubjectId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("IdentityText.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("ApplicationUser");
@@ -1291,9 +1312,9 @@ namespace IdentityText.Migrations
 
             modelBuilder.Entity("IdentityText.Models.AcademicYear", b =>
                 {
-                    b.Navigation("Students");
+                    b.Navigation("ClassGroups");
 
-                    b.Navigation("SubjectAcademicYears");
+                    b.Navigation("Students");
 
                     b.Navigation("TeacherAcademicYears");
                 });
@@ -1306,13 +1327,6 @@ namespace IdentityText.Migrations
             modelBuilder.Entity("IdentityText.Models.Assessment", b =>
                 {
                     b.Navigation("AssessmentResults");
-
-                    b.Navigation("Lectures");
-                });
-
-            modelBuilder.Entity("IdentityText.Models.Attendance", b =>
-                {
-                    b.Navigation("Lectures");
                 });
 
             modelBuilder.Entity("IdentityText.Models.ClassGroup", b =>
@@ -1326,6 +1340,13 @@ namespace IdentityText.Migrations
 
             modelBuilder.Entity("IdentityText.Models.Enrollment", b =>
                 {
+                    b.Navigation("Attendances");
+                });
+
+            modelBuilder.Entity("IdentityText.Models.Lecture", b =>
+                {
+                    b.Navigation("Assessment");
+
                     b.Navigation("Attendances");
                 });
 
@@ -1355,8 +1376,6 @@ namespace IdentityText.Migrations
                     b.Navigation("ClassGroups");
 
                     b.Navigation("PrivateLessons");
-
-                    b.Navigation("SubjectAcademicYears");
 
                     b.Navigation("Teachers");
                 });

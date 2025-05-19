@@ -1,65 +1,64 @@
-﻿@model IdentityText.Models.Lecture
+﻿@model IdentityText.Models.ViewModel.LectureVM
 
 @{
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
 
-<h4>Lecture</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LectureDate" class="control-label"></label>
-                <input asp-for="LectureDate" class="form-control" />
-                <span asp-validation-for="LectureDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="VideoURL" class="control-label"></label>
-                <input asp-for="VideoURL" class="form-control" />
-                <span asp-validation-for="VideoURL" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CreatedAt" class="control-label"></label>
-                <input asp-for="CreatedAt" class="form-control" />
-                <span asp-validation-for="CreatedAt" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Attendance" class="control-label"></label>
-                <select asp-for="AttendanceId" class ="form-control" asp-items="ViewBag.AttendanceId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="Assessment" class="control-label"></label>
-                <select asp-for="AssessmentId" class ="form-control" asp-items="ViewBag.AssessmentId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="ClassGroup" class="control-label"></label>
-                <select asp-for="ClassGroupId" class ="form-control" asp-items="ViewBag.ClassGroupId"></select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+<div class="container">
+    <div class="col-sm-12 col-xl-6 col-xl-12 mt-5">
+        <div class="bg-secondary rounded h-100 p-4">
+            <h6 class="mb-4">Create New Lecture</h6>
+
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="mb-3">
+                    <label asp-for="Title" class="control-label"></label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                    <div class="mb-3">
+                    <label asp-for="Description" class="control-label"></label>
+                    <input asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                    <div class="mb-3">
+                    <label asp-for="LectureDate" class="control-label"></label>
+                    <input asp-for="LectureDate" class="form-control" type="datetime-local" />
+                    <span asp-validation-for="LectureDate" class="text-danger"></span>
+                </div>
+                    <div class="mb-3">
+                    <label asp-for="VideoURL" class="control-label"></label>
+                    <input asp-for="VideoURL" class="form-control" />
+                    <span asp-validation-for="VideoURL" class="text-danger"></span>
+                </div>
+                    <div class="mb-3">
+                    <label asp-for="CreatedAt" class="control-label"></label>
+                    <input asp-for="CreatedAt" class="form-control"  type="datetime-local"/>
+                    <span asp-validation-for="CreatedAt" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="AssessmentId" class="control-label"></label>
+                    <select asp-for="AssessmentId" class="form-control" asp-items="@Model.AssessmentList"></select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ClassGroupId" class="control-label"></label>
+                    <select asp-for="ClassGroupId" class="form-control" asp-items="@Model.ClassGroupList"></select>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
+
+

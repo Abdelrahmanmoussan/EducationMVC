@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+﻿using IdentityText.Enums;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -15,14 +16,15 @@ namespace IdentityText.Models
 
         [Required]
         public string Title { get; set; } = string.Empty;
-        [BindNever]
-        public ICollection<SubjectAcademicYear> SubjectAcademicYears { get; set; } = new List<SubjectAcademicYear>();
+        public string? Description { get; set; }
+        [Required]
+        public SubjectType SubjectType { get; set; } // Enum مثلاً: General, 
         [BindNever]
         public ICollection<Teacher> Teachers { get; set; } = new List<Teacher>();
         [BindNever]
-        public ICollection<ClassGroup> ClassGroups { get; set; }
+        public ICollection<ClassGroup> ClassGroups { get; set; } = new List<ClassGroup>();
         [BindNever]
-        public ICollection<PrivateLesson> PrivateLessons { get; set; }
+        public ICollection<PrivateLesson> PrivateLessons { get; set; } = new List<PrivateLesson>();
     }
 
 }

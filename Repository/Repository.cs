@@ -24,40 +24,67 @@ namespace IdentityText.Repository
         }
 
         // CRUD
-        public async Task<T> CreateAsync(T entity, CancellationToken cancellationToken = default)
+        public void Create(T entity)
         {
-            await dbSet.AddAsync(entity, cancellationToken);
-            await dbContext.SaveChangesAsync(cancellationToken);
-
-            return entity;
+            dbSet.Add(entity);
         }
-
-        public void Create(IEnumerable<T> entities)
+        public void CreateAll(List<T> entities)
         {
             dbSet.AddRange(entities);
-            dbContext.SaveChanges();
         }
-
         public void Edit(T entity)
         {
             dbSet.Update(entity);
-            dbContext.SaveChanges();
         }
-
         public void Delete(T entity)
         {
             dbSet.Remove(entity);
-            dbContext.SaveChanges();
-
         }
-
-        public void Delete(IEnumerable<T> entities)
+        public void DeleteAll(List<T> entities)
         {
             dbSet.RemoveRange(entities);
+        }
+        public void Commit()
+        {
             dbContext.SaveChanges();
         }
+        //public void Create(T entity, CancellationToken cancellationToken = default)
+        //{
+        //    dbSet.AddAsync(entity, cancellationToken);
+        //    dbContext.SaveChangesAsync(cancellationToken);
 
-        public IEnumerable<T> Get(Expression<Func<T, bool>>? filter = null, Expression<Func<T, object>>[]? includes = null, bool tracked = true)
+        //    return entity;
+        //}
+
+        //public void CreateAll(IEnumerable<T> entities)
+        //{
+        //    dbSet.AddRange(entities);
+        //    dbContext.SaveChanges();
+        //}
+
+        //public void Edit(T entity)
+        //{
+        //    dbSet.Update(entity);
+        //    dbContext.SaveChanges();
+        //}
+
+        //public void Delete(T entity)
+        //{
+        //    dbSet.Remove(entity);
+        //    dbContext.SaveChanges();
+
+        //}
+
+        //public void Delete(IEnumerable<T> entities)
+        //{
+        //    dbSet.RemoveRange(entities);
+        //    dbContext.SaveChanges();
+        //}
+
+        public IEnumerable<T> Get(
+                Expression<Func<T, bool>>? filter = null, 
+                Expression<Func<T, object>>[]? includes = null,
+                bool tracked = true)
         {
             IQueryable<T> query = dbSet;
 
@@ -100,14 +127,14 @@ namespace IdentityText.Repository
             }
         }
 
-        public T Create(T entity)
-        {
-            throw new NotImplementedException();
-        }
+        //public T Create(T entity)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        public void Comitt()
-        {
-            throw new NotImplementedException();
-        }
+        //public void Comitt()
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }

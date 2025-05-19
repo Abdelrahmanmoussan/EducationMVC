@@ -18,6 +18,7 @@ namespace IdentityText.Models
 
         [Required]
         public required string UserId { get; set; }
+        [ForeignKey("UserId")]
         public ApplicationUser ApplicationUser { get; set; }
 
         public DateTime TeacherHireDate { get; set; }
@@ -30,9 +31,8 @@ namespace IdentityText.Models
 
         public string? TeacherNotes { get; set; }
 
-
         /// <summary>
-        /// ///////add when registration//////////
+        //////////add when registration //////////
         /// </summary>
         [Required]
         public int SubjectId { get; set; }

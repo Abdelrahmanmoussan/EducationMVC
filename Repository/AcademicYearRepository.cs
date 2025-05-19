@@ -1,18 +1,15 @@
 ﻿using IdentityText.Repository;
 using IdentityText.Repository.IRepository;
 using IdentityText.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using IdentityText.Data;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace IdentityText.Repository
 {
-    public class AcademicYearRepository : Repository<AcademicYear> , IAcademicYearRepository
+    // Renamed the class to avoid conflict with an existing 'AssessmentRepository' class
+    public class AcademicYearRepository : Repository<AcademicYear>, IAcademicYearRepository
     {
         private readonly ApplicationDbContext dbContext;
 
@@ -30,5 +27,7 @@ namespace IdentityText.Repository
                                  Text = a.Name
                              }).ToListAsync();
         }
+
+        
     }
 }

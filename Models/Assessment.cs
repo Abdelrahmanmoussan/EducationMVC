@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,27 +15,28 @@ namespace IdentityText.Models
         public int AssessmentId { get; set; }
 
         [Required]
-        public string Title { get; set; }
+        public required string Title { get; set; }
 
         public string? Description { get; set; }
 
         public DateTime Date { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        [Url]
+        public string? AssessmentLink { get; set; }
 
-
-        public string AssessmentLink { get; set; }
-
-        [Required]
+        [Required]  
         public int MaxScore { get; set; }
 
+        // ربط Assessment بمحاضرة فقط
         [Required]
-        public int ClassGroupId { get; set; }
-        public ClassGroup ClassGroup { get; set; }
+        public int LectureId { get; set; }
+        [ForeignKey("LectureId")]
+        public Lecture Lecture { get; set; }
+
 
         [BindNever]
-        public ICollection<AssessmentResult> AssessmentResults { get; set; }
-        [BindNever]
-        public ICollection<Lecture> Lectures { get; set; }
+        public ICollection<AssessmentResult> AssessmentResults { get; set; } = new HashSet<AssessmentResult>();
+
     }
 
 }

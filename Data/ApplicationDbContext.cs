@@ -32,7 +32,6 @@ namespace IdentityText.Data
         public DbSet<Subscription> Subscriptions { get; set; }
         public DbSet<TeacherAcademicYear> TeacherAcademicYears { get; set; }
         public DbSet<PrivateLessonStudent> PrivateLessonStudents { get; set; }
-        public DbSet<SubjectAcademicYear> SubjectAcademicYears { get; set; }
         public DbSet<NotificationRecipient> NotificationRecipients { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -44,38 +43,52 @@ namespace IdentityText.Data
             // ===== PrivateLessonStudent =====
             builder.Entity<PrivateLessonStudent>()
                 .HasKey(x => new { x.PrivateLessonId, x.StudentId });
-            // ===== SubjectAcademicYear =====
-            builder.Entity<SubjectAcademicYear>()
-                .HasKey(x => new { x.SubjectId, x.AcademicYearId });
             // ===== NotificationRecipient =====
             builder.Entity<NotificationRecipient>()
                 .HasKey(x => new { x.NotificationId, x.NotificationRecipientId });
 
-            
+
+            builder.Entity<Teacher>()
+                .HasOne(t => t.ApplicationUser)
+                .WithMany()
+                .HasForeignKey(t => t.UserId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
+
             builder.Entity<Attendance>()
                 .HasOne(a => a.Enrollment)
                 .WithMany()
                 .HasForeignKey(a => a.EnrollmentId)
                 .OnDelete(DeleteBehavior.Restrict);
+
             builder.Entity<Attendance>()
                .HasOne(a => a.Student)
                .WithMany()
                .HasForeignKey(a => a.StudentId)
                .OnDelete(DeleteBehavior.Restrict);
+
             builder.Entity<Payment>()
                 .HasOne(p => p.Teacher)
                 .WithMany(t => t.Payments)
                 .HasForeignKey(p => p.TeacherId)
                 .OnDelete(DeleteBehavior.Restrict);
+
             builder.Entity<ClassGroup>()
                 .HasOne(cg => cg.Teacher)
                 .WithMany(t => t.ClassGroups)
                 .HasForeignKey(cg => cg.TeacherId)
                 .OnDelete(DeleteBehavior.Restrict);
+
             builder.Entity<PrivateLesson>()
                 .HasOne(pl => pl.Teacher)
                 .WithMany(t => t.PrivateLessons)
                 .HasForeignKey(pl => pl.TeacherId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<ClassGroup>()
+                .HasOne(cg => cg.AcademicYear)
+                .WithMany(ay => ay.ClassGroups)
+                .HasForeignKey(cg => cg.AcademicYearId)
                 .OnDelete(DeleteBehavior.Restrict);
 
 
@@ -150,11 +163,11 @@ namespace IdentityText.Data
                    UserId = "7aafd540-fdf8-482b-804d-780fb6726703",
                    RoleId = "5aa54943-8b55-4399-91b7-d247ab235cf3"
                },
-                   new IdentityUserRole<string>
-                   {
-                       UserId = "9b4cd611-6c35-4c98-a0dc-1d2e1349ab91", // Abdelrahman
-                       RoleId = "5aa54943-8b55-4399-91b7-d247ab235cf3"
-                   }
+                new IdentityUserRole<string>
+                {
+                    UserId = "9b4cd611-6c35-4c98-a0dc-1d2e1349ab91", // Abdelrahman
+                    RoleId = "5aa54943-8b55-4399-91b7-d247ab235cf3"
+                }
            );
 
             // seeding data for subject table
@@ -162,27 +175,37 @@ namespace IdentityText.Data
                 new Subject
                 {
                     SubjectId = 1,
-                    Title = "الرياضيات"
+                    Title = "الرياضيات",
+                    Description = "مادة الرياضيات الأساسية",
+                    SubjectType = SubjectType.General
                 },
                 new Subject
                 {
                     SubjectId = 2,
-                    Title = "العلوم"
+                    Title = "العلوم",
+                    Description = "مادة العلوم الأساسية",
+                    SubjectType = SubjectType.General
                 },
                 new Subject
                 {
                     SubjectId = 3,
-                    Title = "اللغة العربية"
+                    Title = "اللغة العربية",
+                    Description = "مادة اللغة العربية الأساسية",
+                    SubjectType = SubjectType.General
                 },
                 new Subject
                 {
                     SubjectId = 4,
-                    Title = "اللغة الإنجليزية"
+                    Title = "اللغة الإنجليزية",
+                    Description = "مادة اللغة الإنجليزية الأساسية",
+                    SubjectType = SubjectType.Optional
                 },
                 new Subject
                 {
                     SubjectId = 5,
-                    Title = "الدراسات الاجتماعية"
+                    Title = "الدراسات الاجتماعية",
+                    Description = "مادة الدراسات الاجتماعية الأساسية",
+                    SubjectType = SubjectType.Optional
                 }
             );
             builder.Entity<AcademicYear>().HasData(
@@ -219,9 +242,7 @@ namespace IdentityText.Data
                     Code = "SUBS2023B",
                     SubscriptionStatus = SubscriptionStatus.Expired
                 }
-);
-
-
+            );
 
         }
 

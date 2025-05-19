@@ -263,8 +263,8 @@ namespace IdentityText.Areas.Identity.Pages.Account
                             SubscriptionId = Input.SubscriptionId
                         };
 
-                        await _studentRepository.CreateAsync(student);
-                        await _studentRepository.CommitAsync();
+                        _studentRepository.Create(student);
+                       _studentRepository.Commit();
                     }
                     else if (Input.Role == "Teacher")
                     {
@@ -279,8 +279,8 @@ namespace IdentityText.Areas.Identity.Pages.Account
 
                         };
 
-                        await _teacherRepository.CreateAsync(teacher);
-                        await _teacherRepository.CommitAsync();
+                        _teacherRepository.Create(teacher);
+                        _teacherRepository.Commit();
                     }
                     // Add the additional properties to the user
 

@@ -33,8 +33,9 @@ namespace IdentityText.Models
 
         public Enrollment Enrollment { get; set; }
 
-        [BindNever]
-        public ICollection<Lecture> Lectures { get; set; }
+        [Required]
+        public int LectureId { get; set; }
+        public Lecture Lecture { get; set; }
     }
 
 }
