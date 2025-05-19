@@ -91,12 +91,12 @@ namespace IdentityText.Areas.Admin.Controllers
             var teachers = _teacherRepository.Get(includes: [t => t.ApplicationUser]);
             ViewBag.SubjectId = new SelectList(subjects, "SubjectId", "Title");
             ViewBag.TeacherId = new SelectList(teachers, "TeacherId", "ApplicationUser.Email");
-            return View(classGroup);
+            return View(model);
         }
 
 
         [HttpGet]
-        public async Task<IActionResult> EditAsync(int id)
+        public async Task<IActionResult> Edit(int id)
         {
             var classGroup = _classGroupRepository.GetOne(e => e.ClassGroupId == id);
             if (classGroup == null)

@@ -43,9 +43,12 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="TeacherId" class="control-label"></label>
-                    <select asp-for="TeacherId" class="form-control" id="teacherSelect"></select>
+                    <select asp-for="TeacherId" class="form-control" asp-items="Model.TeacherList">
+                        <option value="">-- Select Teacher --</option>
+                    </select>
                     <span asp-validation-for="TeacherId" class="text-danger"></span>
                 </div>
+
                 <div class="form-group">
                     <label asp-for="AcademicYearId" class="control-label"></label>
                     <select asp-for="AcademicYearId" class="form-control" asp-items="@Model.AcademicYearsList"></select>

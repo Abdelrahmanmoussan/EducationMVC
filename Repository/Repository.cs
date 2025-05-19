@@ -56,11 +56,11 @@ namespace IdentityText.Repository
         //    return entity;
         //}
 
-        //public void CreateAll(IEnumerable<T> entities)
-        //{
-        //    dbSet.AddRange(entities);
-        //    dbContext.SaveChanges();
-        //}
+        public void CreateAll(IEnumerable<T> entities)
+        {
+            dbSet.AddRange(entities);
+            dbContext.SaveChanges();
+        }
 
         //public void Edit(T entity)
         //{
@@ -75,11 +75,11 @@ namespace IdentityText.Repository
 
         //}
 
-        //public void Delete(IEnumerable<T> entities)
-        //{
-        //    dbSet.RemoveRange(entities);
-        //    dbContext.SaveChanges();
-        //}
+        public void Delete(IEnumerable<T> entities)
+        {
+            dbSet.RemoveRange(entities);
+            dbContext.SaveChanges();
+        }
 
         public IEnumerable<T> Get(
                 Expression<Func<T, bool>>? filter = null, 

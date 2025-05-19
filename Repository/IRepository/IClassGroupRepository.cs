@@ -11,6 +11,7 @@ namespace IdentityText.Repository.IRepository
 {
     public interface IClassGroupRepository : IRepository<ClassGroup>
     {
+        Task<IEnumerable<SelectListItem>> SelectListTeacherAsync();
 
         Task<IEnumerable<SelectListItem>> SelectListClassGroupAsync();
         Task<int> CountAsync();

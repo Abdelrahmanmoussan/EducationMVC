@@ -50,6 +50,24 @@ namespace IdentityText.Repository
                 return query.ToList();
             }
 
+
+
+
+
+        public async Task<IEnumerable<SelectListItem>> SelectListTeacherAsync()
+        {
+            var teachers = await dbContext.Teachers
+                .Include(t => t.ApplicationUser)
+                .ToListAsync();
+
+            return teachers.Select(t => new SelectListItem
+            {
+                Value = t.TeacherId.ToString(),
+                Text = t.ApplicationUser.Email // تأكد Email مش null
+            });
+        }
+
+
         public async Task<IEnumerable<SelectListItem>> SelectListClassGroupAsync()
         {
             return await dbSet.OrderBy(a => a.Title)
