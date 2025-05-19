@@ -96,7 +96,7 @@ namespace IdentityText.Areas.Admin.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> EditAsync(int id)
         {
             var classGroup = _classGroupRepository.GetOne(e => e.ClassGroupId == id);
             if (classGroup == null)
