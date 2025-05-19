@@ -49,17 +49,14 @@ namespace IdentityText.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult GetTeachersBySubject(int subjectId)
         {
-            var subjects = _subjectRepository.Get();
-            var teachers = _teacherRepository.Get(includes: [t => t.ApplicationUser]);
-            ViewBag.SubjectId = new SelectList(subjects, "SubjectId", "Title");
-            ViewBag.TeacherId = new SelectList(teachers, "TeacherId", "ApplicationUser.Email");
-
-            return View(new ClassGroup
+            var teachers = _teacherRepository.Get(
+                filter: t => t.SubjectId == subjectId,
+                includes: new Expression<Func<Teacher, object>>[] { t => t.ApplicationUser }
+            )
+            .Select(t => new
             {
-                Title = string.Empty, 
-                Location = string.Empty, 
-                Subject = new Subject { Title = string.Empty },   
-                Teacher = new Teacher { UserId = string.Empty } 
+                teacherId = t.TeacherId,
+                fullName = t.ApplicationUser.FirstName + " " + t.ApplicationUser.LastName
             });
             return Json(teachers);
         }
@@ -78,7 +75,7 @@ namespace IdentityText.Areas.Admin.Controllers
                     Price = model.Price,
                     StartDate = model.StartDate,
                     EndDate = model.EndDate,
-                    AcademicYearId=model.AcademicYearId,
+                    AcademicYearId = model.AcademicYearId,
                     SubjectId = model.SubjectId,
                     TeacherId = model.TeacherId
                 };
@@ -87,13 +84,11 @@ namespace IdentityText.Areas.Admin.Controllers
                 TempData["notification"] = "Successfully Created";
                 return RedirectToAction(nameof(Index));
             }
-            var subjects = _subjectRepository.Get();
-            var teachers = _teacherRepository.Get(includes: [t => t.ApplicationUser]);
-            ViewBag.SubjectId = new SelectList(subjects, "SubjectId", "Title");
-            ViewBag.TeacherId = new SelectList(teachers, "TeacherId", "ApplicationUser.Email");
+            model.AcademicYearsList = await _academicYearRepository.SelectListAcademicYearAsync();
+            model.SubjectsList = await _subjectRepository.SelectListSubjectAsync();
+            model.TeacherList = await _teacherRepository.SelectListTeacherAsync();
             return View(model);
         }
-
 
         [HttpGet]
         public async Task<IActionResult> EditAsync(int id)
@@ -106,7 +101,7 @@ namespace IdentityText.Areas.Admin.Controllers
 
             var model = new ClassGroupVM
             {
-                ClassGroupId = classGroup.ClassGroupId, 
+                ClassGroupId = classGroup.ClassGroupId,
                 Title = classGroup.Title,
                 Location = classGroup.Location,
                 Price = classGroup.Price,
@@ -149,7 +144,7 @@ namespace IdentityText.Areas.Admin.Controllers
             model.AcademicYearsList = await _academicYearRepository.SelectListAcademicYearAsync();
             model.SubjectsList = await _subjectRepository.SelectListSubjectAsync();
             model.TeacherList = await _teacherRepository.SelectListTeacherAsync();
-            return View(model);  
+            return View(model);
         }
 
         public IActionResult Delete(int id)
@@ -159,7 +154,6 @@ namespace IdentityText.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-
             _classGroupRepository.Delete(classGroup);
             _classGroupRepository.Commit();
             TempData["notification"] = "Successfully Deleted";

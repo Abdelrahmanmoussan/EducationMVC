@@ -11,14 +11,13 @@ namespace IdentityText.Repository.IRepository
 {
     public interface IClassGroupRepository : IRepository<ClassGroup>
     {
-        Task<IEnumerable<SelectListItem>> SelectListTeacherAsync();
 
         Task<IEnumerable<SelectListItem>> SelectListClassGroupAsync();
         Task<int> CountAsync();
-         IEnumerable<ClassGroup> GetWithFullIncludes(
-             Expression<Func<ClassGroup, bool>>? filter = null,
-             Expression<Func<ClassGroup, object>>[]? includes = null,
-             bool tracked = true);
-        
+        IEnumerable<ClassGroup> GetWithFullIncludes(
+            Expression<Func<ClassGroup, bool>>? filter = null,
+            Expression<Func<ClassGroup, object>>[]? includes = null,
+            bool tracked = true);
+
     }
 }

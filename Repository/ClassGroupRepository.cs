@@ -30,43 +30,25 @@ namespace IdentityText.Repository
              Expression<Func<ClassGroup, bool>>? filter = null,
              Expression<Func<ClassGroup, object>>[]? includes = null,
              bool tracked = true)
+        {
+            IQueryable<ClassGroup> query = dbContext.ClassGroups
+                .Include(cg => cg.Teacher)
+                    .ThenInclude(t => t.ApplicationUser)
+                .Include(cg => cg.Subject)
+                .Include(s => s.AcademicYear);
+
+            if (filter != null)
             {
-                IQueryable<ClassGroup> query = dbContext.ClassGroups
-                    .Include(cg => cg.Teacher)
-                        .ThenInclude(t => t.ApplicationUser)
-                    .Include(cg => cg.Subject)
-                    .Include(s=>s.AcademicYear);
-
-                if (filter != null)
-                {
-                    query = query.Where(filter);
-                }
-
-                if (!tracked)
-                {
-                    query = query.AsNoTracking();
-                }
-
-                return query.ToList();
+                query = query.Where(filter);
             }
 
-
-
-
-
-        public async Task<IEnumerable<SelectListItem>> SelectListTeacherAsync()
-        {
-            var teachers = await dbContext.Teachers
-                .Include(t => t.ApplicationUser)
-                .ToListAsync();
-
-            return teachers.Select(t => new SelectListItem
+            if (!tracked)
             {
-                Value = t.TeacherId.ToString(),
-                Text = t.ApplicationUser.Email // تأكد Email مش null
-            });
-        }
+                query = query.AsNoTracking();
+            }
 
+            return query.ToList();
+        }
 
         public async Task<IEnumerable<SelectListItem>> SelectListClassGroupAsync()
         {
