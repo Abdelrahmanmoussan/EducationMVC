@@ -31,9 +31,11 @@ namespace IdentityText.Models
 
         public string? TeacherNotes { get; set; }
 
-        /// <summary>
-        //////////add when registration //////////
-        /// </summary>
+        // ✅ هنا الإضافة الجديدة
+        [Range(0, 5)]
+        [Column(TypeName = "decimal(2,1)")]
+        public decimal Rating { get; set; } = 0;  // القيمة الافتراضية صفر
+
         [Required]
         public int SubjectId { get; set; }
 
