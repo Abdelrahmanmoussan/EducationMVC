@@ -13,5 +13,14 @@ namespace IdentityText.Repository.IRepository
     {
         Task<IEnumerable<SelectListItem>> SelectListAssessmentAsync();
 
+        IEnumerable<Assessment> GetWithFullIncludes(
+                Expression<Func<Assessment, bool>>? filter = null,
+                Func<IQueryable<Assessment>, IQueryable<Assessment>>? include = null,
+                bool tracked = true);
+        public Assessment? GetOneWithFullIncludes(
+              Expression<Func<Assessment, bool>>? filter = null,
+              Func<IQueryable<Assessment>, IQueryable<Assessment>>? include = null,
+              bool tracked = true);
+
     }
 }

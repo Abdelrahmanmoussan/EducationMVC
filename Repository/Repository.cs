@@ -109,7 +109,10 @@ namespace IdentityText.Repository
             return query.ToList();
         }
 
-        public T? GetOne(Expression<Func<T, bool>>? filter = null, Expression<Func<T, object>>[]? includes = null, bool tracked = true)
+        public T? GetOne(
+            Expression<Func<T, bool>>? filter = null,
+            Expression<Func<T, object>>[]? includes = null,
+            bool tracked = true)
         {
             return Get(filter, includes, tracked).FirstOrDefault();
         }

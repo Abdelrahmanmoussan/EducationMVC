@@ -136,6 +136,7 @@ namespace IdentityText.Areas.Admin.Controllers
             }
             _lectureRepository.Delete(lecture);
             _lectureRepository.Commit();
+            TempData["notification"] = "Successfully Deleted";
             return RedirectToAction(nameof(Index));
         }
 

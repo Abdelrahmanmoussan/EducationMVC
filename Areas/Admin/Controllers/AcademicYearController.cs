@@ -77,13 +77,5 @@ namespace IdentityText.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-
-
-
-
-
-
-
-
     }
 }

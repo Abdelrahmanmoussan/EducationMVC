@@ -1,0 +1,94 @@
+﻿
+@model IEnumerable<IdentityText.Models.Assessment>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<div class="container">
+    <div class="col-sm-12 col-xl-6 col-xl-12">
+        <div class="bg-secondary rounded h-100 p-4">
+            <h6 class="mb-4">All Assessment</h6>
+
+            <a href="/Admin/Assessment/Create" class="btn btn-success w-100 m-2" type="button">
+                <i class="fa fa-home"></i>
+                Create
+            </a>
+            <table class="table table-dark text-center">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col"> Title</th>
+                        <th scope="col"> Description</th>
+                        <th scope="col"> Date</th>
+                        <th scope="col"> Created At</th>
+                        <th scope="col"> Assessment Link</th>
+                        <th scope="col"> MaxScore</th>
+                        <th scope="col"> Class Group Title</th>
+                        <th scope="col"> Lecture Title</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model )
+                    {
+                        <tr>
+                            <th scope="row">@item.AssessmentId</th>
+                            <td>@item.Title</td>
+                            <td>@item.Description</td> 
+                            <td>@item.Date</td> 
+                            <td>@item.CreatedAt</td> 
+                            <td>@item.AssessmentLink</td> 
+                            <td>@item.MaxScore</td> 
+                            <td>@item.Lecture.ClassGroup.Title</td> 
+                            <td>@item.Lecture.Title</td>
+                            <td>
+                                <a href="/Admin/Assessment/Edit?id=@item.AssessmentId" type="button" class="btn btn-warning rounded-pill m-2">Updata</a>
+                                <button class="btn btn-primary rounded-pill m-2" onclick="confirmDelete(@item.AssessmentId)">Delete</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+@section Scripts {
+    @if (TempData["notification"] != null)
+    {
+        <script>
+            toastr.success('@TempData["notification"]');
+            // toastr.success('@Context.Request.Cookies["notification"]');
+        </script>
+    }
+
+    <script>
+
+          function confirmDelete(id){
+              Swal.fire({
+              title: "Are you sure?",
+              text: "You won't be able to revert this!",
+              icon: "warning",
+              showCancelButton: true,
+              confirmButtonColor: "#3085d6",
+              cancelButtonColor: "#d33",
+              confirmButtonText: "Yes, delete it!"
+              }).then((result) => {
+              if (result.isConfirmed)
+              {
+                  window.location.href = "/Admin/Assessment/Delete?id=" + id;
+
+                Swal.fire({
+                  title: "Deleted!",
+                  text: "Your file has been deleted.",
+                  icon: "success"
+                });
+              }
+            });
+        }
+
+    </script>
+
+
+}
+

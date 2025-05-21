@@ -64,7 +64,17 @@
                             <td><a href="@item.VideoURL" class="btn btn-light">Link</a></td>
                             <td>@item.CreatedAt.ToShortDateString()</td>
                             <td>@item.ClassGroup.Title</td>
-                            <td>@(item.Assessment != null ? item.Assessment.Title:"N/A")</td>
+                            @* <td>@(item.Assessment != null ? < a href = "item.Assessment.AssessmentLink" ></ a >:"N/A")</td> *@
+                            <td>
+                                @if (item.Assessment != null && !string.IsNullOrEmpty(item.Assessment.AssessmentLink))
+                                {
+                                    <a href="@item.Assessment.AssessmentLink" target="_blank" class="btn btn-info">Assessment</a>
+                                }
+                                else
+                                {
+                                    @:N/A
+                                }
+                            </td>
                             <td>
                                 <a href="/Admin/Lecture/Edit?id=@item.LectureId" type="button" class="btn btn-warning rounded-pill m-2">Updata</a>
                                 <button class="btn btn-primary rounded-pill m-2" onclick="confirmDelete(@item.LectureId)">Delete</button>
