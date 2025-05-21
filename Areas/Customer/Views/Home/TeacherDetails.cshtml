@@ -1,0 +1,59 @@
+﻿@* @using FontAwesome5 // Optional if using Font Awesome *@
+
+@using IdentityText.Models.ViewModel
+@model TeacherDetailsViewModel
+@{
+    ViewData["Title"] = "Teacher Details";
+}
+
+<div class="container py-5">
+    <div class="card shadow rounded-3 p-4">
+        <div class="row align-items-center mb-4">
+            <div class="col-md-2 text-center">
+                @* <i class="fas fa-chalkboard-teacher fa-4x text-primary"></i> *@
+                <img src="/images/@Model.Teacher.ApplicationUser.Photo"
+                     alt="@Model.Teacher.ApplicationUser.FirstName"
+                     class="img-fluid rounded-circle"
+                     style="width: 100px; height: 100px; object-fit: cover;" />
+
+            </div>
+            <div class="col-md-10">
+                <h2 class="mb-0">@Model.Teacher.ApplicationUser.FirstName</h2>
+                <p class="text-muted mb-0"><i class="fas fa-envelope"></i> @Model.Teacher.ApplicationUser.Email</p>
+                <p class="text-muted"><i class="fas fa-phone-alt"></i> @Model.Teacher.ApplicationUser.PhoneNumber</p>
+            </div>
+        </div>
+
+        <hr />
+
+        <h4 class="mb-3"><i class="fas fa-layer-group text-success"></i> Assigned Class Groups</h4>
+
+        @if (Model.ClassGroups.Any())
+        {
+            <div class="row row-cols-1 row-cols-md-2 g-3">
+                @foreach (var classGroup in Model.ClassGroups)
+                {
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title"><i class="fas fa-users text-info"></i> @classGroup.Title</h5>
+                                <p class="card-text"><strong>AcademicYear:</strong> @classGroup.AcademicYearId</p>
+                                <p class="card-text"><strong>Section:</strong> @classGroup.Lectures</p>
+                                <p class="card-text"><strong>Schedule:</strong> @classGroup.StartDate</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-warning mt-3">
+                <i class="fas fa-exclamation-circle"></i> This teacher is not assigned to any class groups.
+            </div>
+        }
+    </div>
+</div>
+
+<!-- FontAwesome CDN (add in _Layout.cshtml preferably) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />

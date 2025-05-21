@@ -1,237 +1,316 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" dir="ltr">
 <head>
-    <meta charset="utf-8">
-    <title>DarkPan - Bootstrap 5 Admin Template</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="" name="keywords">
-    <meta content="" name="description">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] - Education Center Admin Panel</title>
 
-    <!-- Favicon -->
-    <link href="~/Admin/img/favicon.ico" rel="icon">
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
 
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Roboto:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Base styles */
+        body {
+            overflow-x: hidden;
+            background: #f4f7fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            direction: ltr;
+            color: #334155;
+        }
 
-    <!-- Icon Font Stylesheet -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="~/lib/bootstrap-icons/font/bootstrap-icons.min" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+        /* Header */
+        header {
+            height: 60px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(90deg, #2c3e50, #3498db);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1.5rem;
+            z-index: 1050;
+            box-shadow: 0 2px 8px rgb(0 0 0 / 0.15);
+            user-select: none;
+        }
 
+            header .brand-title {
+                font-weight: 700;
+                font-size: 1.5rem;
+                letter-spacing: 1.2px;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
 
-    <!-- Libraries Stylesheet -->
-    <link href="~/Admin/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-    <link href="~/Admin/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+                header .brand-title i {
+                    color: #f39c12;
+                    font-size: 1.8rem;
+                }
 
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="~/Admin/css/bootstrap.min.css" rel="stylesheet">
+            header .user-welcome {
+                font-size: 1rem;
+                font-weight: 600;
+            }
 
-    <!-- Template Stylesheet -->
-    <link href="~/Admin/css/style.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            height: 100vh;
+            position: fixed;
+            top: 60px;
+            left: 0;
+            background: #1e293b;
+            color: #cbd5e1;
+            padding-top: 1.5rem;
+            transition: width 0.3s ease, left 0.3s ease;
+            overflow-y: auto;
+            box-shadow: 2px 0 8px rgb(0 0 0 / 0.1);
+            z-index: 1040;
+        }
 
+            .sidebar.collapsed {
+                width: 70px;
+            }
+
+            .sidebar .navbar-brand {
+                color: #fbbf24;
+                font-weight: 700;
+                font-size: 1.25rem;
+                padding: 0 1.5rem 1rem;
+                border-bottom: 1px solid #334155;
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                white-space: nowrap;
+                text-align: left;
+            }
+
+                .sidebar .navbar-brand i {
+                    font-size: 1.8rem;
+                }
+
+            .sidebar .profile {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                padding: 1rem 1.5rem;
+                border-bottom: 1px solid #334155;
+                transition: opacity 0.3s ease;
+            }
+
+            .sidebar.collapsed .profile {
+                opacity: 0;
+                pointer-events: none;
+                height: 0;
+                padding: 0;
+                margin: 0;
+                overflow: hidden;
+            }
+
+            .sidebar .profile img {
+                width: 45px;
+                height: 45px;
+                border-radius: 50%;
+                border: 2px solid #22c55e;
+                object-fit: cover;
+                transition: all 0.3s ease;
+            }
+
+            .sidebar.collapsed .profile img {
+                width: 35px;
+                height: 35px;
+                border-width: 1.5px;
+            }
+
+            .sidebar .profile-info h6 {
+                margin-bottom: 0;
+                font-weight: 600;
+                color: #f3f4f6;
+                text-align: left;
+            }
+
+            .sidebar .profile-info small {
+                color: #94a3b8;
+                text-align: left;
+                display: block;
+            }
+
+            /* Navigation */
+            .sidebar nav.nav {
+                margin-top: 1rem;
+            }
+
+            .sidebar .nav-link {
+                color: #cbd5e1;
+                padding: 0.75rem 1.5rem;
+                font-weight: 500;
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                transition: background-color 0.2s ease, color 0.2s ease;
+                white-space: nowrap;
+                cursor: pointer;
+                text-align: left;
+            }
+
+                .sidebar .nav-link:hover,
+                .sidebar .nav-link.active {
+                    background: #2563eb;
+                    color: white;
+                    border-radius: 0.375rem;
+                }
+
+                .sidebar .nav-link i {
+                    min-width: 20px;
+                    text-align: center;
+                    font-size: 1.2rem;
+                }
+
+            /* Dropdown menu */
+            .sidebar .dropdown-menu {
+                background: #334155;
+                border: none;
+                margin-left: 2rem;
+                border-radius: 0.375rem;
+                box-shadow: none;
+                padding: 0.25rem 0;
+                text-align: left;
+            }
+
+            .sidebar .dropdown-item {
+                color: #cbd5e1;
+                font-weight: 400;
+                padding: 0.5rem 1rem 0.5rem 2rem;
+                transition: background-color 0.2s ease;
+                white-space: nowrap;
+                text-align: left;
+            }
+
+                .sidebar .dropdown-item:hover {
+                    background: #3b82f6;
+                    color: white;
+                }
+
+        /* Sidebar toggle button */
+        #sidebarToggle {
+            position: fixed;
+            top: 12px;
+            left: 12px;
+            background: transparent;
+            border: none;
+            color: #fbbf24;
+            font-size: 1.6rem;
+            cursor: pointer;
+            z-index: 1100;
+            transition: transform 0.3s ease;
+        }
+
+        /* Content */
+        .content {
+            margin-left: 260px;
+            margin-top: 60px;
+            padding: 2rem;
+            transition: margin-left 0.3s ease;
+            min-height: 100vh;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgb(0 0 0 / 0.05);
+            color: #334155;
+            text-align: left;
+        }
+
+        .sidebar.collapsed ~ .content {
+            margin-left: 70px;
+        }
+
+        /* Scrollbar for sidebar */
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background-color: #2563eb;
+            border-radius: 3px;
+        }
+    </style>
+    @RenderSection("Styles", required: false)
 </head>
-
 <body>
-    <div class="container-fluid position-relative d-flex p-0">
-        <!-- Spinner Start -->
-        <div id="spinner" class="show bg-dark position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-                <span class="sr-only">Loading...</span>
+
+    <header>
+        <button id="sidebarToggle" aria-label="Toggle Sidebar"><i class="fas fa-bars"></i></button>
+        <a href="/Admin/Home" class="brand-title">
+            <i class="fa-solid fa-graduation-cap"></i> Education Center
+        </a>
+        <div class="user-welcome">
+            Welcome, <strong>Admin</strong>
+        </div>
+    </header>
+
+    <!-- Sidebar Start -->
+    <div class="sidebar" id="sidebar">
+        <a href="/Admin/Home" class="navbar-brand">
+            <i class="fa-solid fa-graduation-cap"></i> EduCenter
+        </a>
+        <div class="profile">
+            <img src="/img/user.jpg" alt="User profile picture" />
+            <div class="profile-info">
+                <h6>Admin</h6>
+                <small>System Manager</small>
             </div>
         </div>
-        <!-- Spinner End -->
-        <!-- Sidebar Start -->
-        <div class="sidebar pe-4 pb-3">
-            <nav class="navbar bg-secondary navbar-dark">
+        <nav class="nav flex-column">
+            <a href="/Admin/Home" class="nav-link active" aria-current="page">
+                <i class="fas fa-tachometer-alt"></i> Dashboard
+            </a>
 
-                <a href="/Admin/Home" class="navbar-brand mx-4 mb-3">
-                    <h3 class="text-primary"><i class="fa fa-user-edit me-2"></i>Admin Panal</h3>
-                </a>
-                <div class="d-flex align-items-center ms-4 mb-4">
-                    <div class="position-relative">
-                        <img class="rounded-circle" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
-                        <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
-                    </div>
-                    <div class="ms-3">
-                        <h6 class="mb-0">Admin</h6>
-                        <span>Admin</span>
-                    </div>
-                </div>
-                <div class="navbar-nav w-100">
-                    <a href="/Admin/Admin/Index" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>Models</a>
-                        <div class="dropdown-menu bg-transparent border-0">
-                            <a href="/Admin/Student" class="dropdown-item">Student</a>
-                            <a href="/Admin/Teacher" class="dropdown-item">Teacher</a>
-                            <a href="/Admin/Subject" class="dropdown-item">Subject</a>
-                            <a href="/Admin/AcademicYear" class="dropdown-item">Academic Year</a>
-                            <a href="/Admin/ClassGroup" class="dropdown-item">Class Gruop</a>
-                            <a href="/Admin/lecture" class="dropdown-item">Lecture</a>
-                            <a href="/Admin/Assessment" class="dropdown-item">Assessment</a>
-                            <a href="/Admin/PrivateLesson" class="dropdown-item">Private Lesson</a>
+            <a class="nav-link dropdown-toggle" href="#" id="modelsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fas fa-layer-group"></i> Models
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="modelsDropdown">
+                <li><a href="/Admin/Student" class="dropdown-item">Students</a></li>
+                <li><a href="/Admin/Teacher" class="dropdown-item">Teachers</a></li>
+                <li><a href="/Admin/Subject" class="dropdown-item">Subjects</a></li>
+                <li><a href="/Admin/AcademicYear" class="dropdown-item">Academic Year</a></li>
+                <li><a href="/Admin/ClassGroup" class="dropdown-item">Class Groups</a></li>
+                <li><a href="/Admin/Lecture" class="dropdown-item">Lectures</a></li>
+                <li><a href="/Admin/Assessment" class="dropdown-item">Assessments</a></li>
+                <li><a href="/Admin/Grade" class="dropdown-item">Grades</a></li>
+            </ul>
 
-                        </div>
-                    </div>
-                    <a href="widget.html" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Widgets</a>
-                    <a href="form.html" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Forms</a>
-                    <a href="table.html" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Tables</a>
-                    <a href="chart.html" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Charts</a>
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Pages</a>
-                        <div class="dropdown-menu bg-transparent border-0">
-                            <a href="signin.html" class="dropdown-item">Sign In</a>
-                            <a href="signup.html" class="dropdown-item">Sign Up</a>
-                            <a href="404.html" class="dropdown-item">404 Error</a>
-                            <a href="blank.html" class="dropdown-item">Blank Page</a>
-                        </div>
-                    </div>
-                </div>
-            </nav>
-        </div>
-        <!-- Sidebar End -->
-        <!-- Content Start -->
-        <div class="content">
-            <!-- Navbar Start -->
-            <nav class="navbar  navbar-expand bg-secondary navbar-dark sticky-top px-4 py-0">
-                <a href="index.html" class="navbar-brand d-flex d-lg-none me-4">
-                    <h2 class="text-primary mb-0"><i class="fa fa-user-edit"></i></h2>
-                </a>
-                <a href="#" class="sidebar-toggler flex-shrink-0">
-                    <i class="fa fa-bars"></i>
-                </a>
-                <form class="d-none d-md-flex ms-4">
-                    <input class="form-control bg-dark border-0" type="search" placeholder="Search">
-                </form>
-                <div class="navbar-nav align-items-center ms-auto">
-
-                    <a asp-area="customer" asp-controller="Home" asp-action="Index" class="nav-link">
-                        <i class="fa fa-home me-lg-2"></i>
-                        <span class="d-none d-lg-inline-flex">Web Site</span>
-                    </a>
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                            <i class="fa fa-envelope me-lg-2"></i>
-                            <span class="d-none d-lg-inline-flex">Message</span>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
-                            <a href="#" class="dropdown-item">
-                                <div class="d-flex align-items-center">
-                                    <img class="rounded-circle" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
-                                    <div class="ms-2">
-                                        <h6 class="fw-normal mb-0">Jhon send you a message</h6>
-                                        <small>15 minutes ago</small>
-                                    </div>
-                                </div>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
-                                <div class="d-flex align-items-center">
-                                    <img class="rounded-circle" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
-                                    <div class="ms-2">
-                                        <h6 class="fw-normal mb-0">Jhon send you a message</h6>
-                                        <small>15 minutes ago</small>
-                                    </div>
-                                </div>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
-                                <div class="d-flex align-items-center">
-                                    <img class="rounded-circle" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
-                                    <div class="ms-2">
-                                        <h6 class="fw-normal mb-0">Jhon send you a message</h6>
-                                        <small>15 minutes ago</small>
-                                    </div>
-                                </div>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item text-center">See all message</a>
-                        </div>
-                    </div>
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                            <i class="fa fa-bell me-lg-2"></i>
-                            <span class="d-none d-lg-inline-flex">Notificatin</span>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
-                            <a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">Profile updated</h6>
-                                <small>15 minutes ago</small>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">New user added</h6>
-                                <small>15 minutes ago</small>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">Password changed</h6>
-                                <small>15 minutes ago</small>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item text-center">See all notifications</a>
-                        </div>
-                    </div>
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                            <img class="rounded-circle me-lg-2" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
-                            <span class="d-none d-lg-inline-flex">John Doe</span>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
-                            <a href="#" class="dropdown-item">My Profile</a>
-                            <a href="#" class="dropdown-item">Settings</a>
-                            <a href="#" class="dropdown-item">Log Out</a>
-                        </div>
-                    </div>
-                </div>
-            </nav>
-            <!-- Navbar End -->
-           @RenderBody()
-            <!-- Footer Start -->
-            <div class="container-fluid pt-4 px-4">
-                <div class="bg-secondary rounded-top p-4">
-                    <div class="row">
-                        <div class="col-12 col-sm-6 text-center text-sm-start">
-                            &copy; <a href="#">Your Site Name</a>, All Right Reserved.
-                        </div>
-                        <div class="col-12 col-sm-6 text-center text-sm-end">
-                            <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-                            Designed By <a href="https://htmlcodex.com">HTML Codex</a>
-                            <br>Distributed By: <a href="https://themewagon.com" target="_blank">ThemeWagon</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Footer End -->
-        </div>
-        <!-- Content End -->
-        <!-- Back to Top -->
-        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+            <a class="nav-link dropdown-toggle" href="#" id="configDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fas fa-cogs"></i> Configuration
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="configDropdown">
+                <li><a href="/Admin/Settings" class="dropdown-item">Settings</a></li>
+                <li><a href="/Admin/Users" class="dropdown-item">User Management</a></li>
+            </ul>
+        </nav>
     </div>
+    <!-- Sidebar End -->
+    <!-- Main Content -->
+    <main class="content">
+        @RenderBody()
+    </main>
 
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/Admin/lib/chart/chart.min.js"></script>
-    <script src="~/Admin/lib/easing/easing.min.js"></script>
-    <script src="~/Admin/lib/waypoints/waypoints.min.js"></script>
-    <script src="~/Admin/lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="~/Admin/lib/tempusdominus/js/moment.min.js"></script>
-    <script src="~/Admin/lib/tempusdominus/js/moment-timezone.min.js"></script>
-    <script src="~/Admin/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
-    @await RenderSectionAsync("Scripts", required: false)
-    <!-- Template Javascript -->
-    <script src="~/Admin/js/main.js"></script>
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Sidebar toggle button logic
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebar = document.getElementById('sidebar');
+        const content = document.querySelector('.content');
+
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('collapsed');
+        });
+    </script>
+    @RenderSection("Scripts", required: false)
 </body>
-
 </html>

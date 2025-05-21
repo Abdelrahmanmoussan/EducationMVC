@@ -1,4 +1,5 @@
 ﻿using IdentityText.Models;
+using IdentityText.Models.ViewModel;
 using IdentityText.Repository.IRepository;
 using IdentityText.ViewModel.View;
 using Microsoft.AspNetCore.Mvc;
@@ -54,6 +55,43 @@ namespace IdentityText.Areas.Customer.Controllers
 
             return View(model);
         }
+
+        public async Task<IActionResult> TeacherDetails(int TeacherId)
+        {
+            var teacher = await _teacherRepository.GetByIdWithIncludesAsync(TeacherId);
+
+            if (teacher == null)
+            {
+                return NotFound();
+            }
+
+            var model = new TeacherDetailsViewModel
+            {
+                Teacher = teacher,
+                ClassGroups = (List<ClassGroup>)_classGroupRepository.GetWithFullIncludes(c => c.TeacherId == teacher.TeacherId)
+            };
+
+
+            return View(model);
+        }
+
+        //public IActionResult ClassGroupDetails(int classGroupId)
+        //{
+        //    var classGroup = _classGroupRepository.GetOne(includes: [c => c.Teacher, c => c.ApplicationUser], filter: c => c.ClassGroupId == classGroupId);
+        //    if (classGroup == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    var model = new ClassGroupVM
+        //    {
+        //        ClassGroup = classGroup,
+        //        Teacher = _teacherRepository.GetOne(filter: t => t.TeacherId == classGroup.TeacherId),
+        //        Enrollments = classGroup.Enrollments.ToList()
+        //    };
+        //    return View(model);
+        //}
+
+
 
 
 

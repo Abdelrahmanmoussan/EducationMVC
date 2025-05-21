@@ -22,13 +22,15 @@
             @foreach (var teacher in Model.PopularTeachers)
             {
                 <div class="col-md-4 mb-4">
+                        <a asp-area="Customer" asp-controller="Home" asp-action="TeacherDetails" asp-route-TeacherId="@teacher.TeacherId">
                     <div class="card h-100">
-                        <img src="@teacher.ApplicationUser.Photo" class="card-img-top" alt="@teacher.ApplicationUser.FirstName">
+                            <img src="/images/@teacher.ApplicationUser.Photo" class="card-img-top" alt="@teacher.ApplicationUser.FirstName">
                         <div class="card-body">
                             <h5 class="card-title">@teacher.ApplicationUser.FirstName</h5>
                             <p class="card-text">@teacher.Rating</p>
                         </div>
                     </div>
+                            </a>
                 </div>
             }
         </div>
@@ -78,27 +80,6 @@
     </div>
 </section>
 
-@* <!-- Testimonials --> *@
-@* <section class="py-5 bg-light"> *@
-@*     <div class="container"> *@
-@*         <h2 class="text-center mb-4">What Our Students Say</h2> *@
-@*         <div class="row"> *@
-@*             @foreach (var testimonial in Model.PopularTeachers) *@
-@*             { *@
-@*                 <div class="col-md-4 mb-4"> *@
-@*                     <div class="card h-100"> *@
-@*                         <div class="card-body"> *@
-@*                             <p class="card-text">"@testimonial.Message"</p> *@
-@*                             <h6 class="card-subtitle text-muted">- @testimonial.StudentName</h6> *@
-@*                         </div> *@
-@*                     </div> *@
-@*                 </div> *@
-@*             } *@
-@*         </div> *@
-@*     </div> *@
-@* </section> *@
-
-<!-- Contact Section -->
 <section class="py-5">
     <div class="container">
         <h2 class="text-center mb-4">Contact Us</h2>
