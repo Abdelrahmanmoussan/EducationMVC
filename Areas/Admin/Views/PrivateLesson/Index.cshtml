@@ -35,8 +35,8 @@
                         <td>@item.Subject.Title</td>
                         <td>@(item.Teacher != null ? item.Teacher.ApplicationUser.FirstName + " " + item.Teacher.ApplicationUser.LastName : "N/A")</td>
                         <td>
-                            <a asp-action="Edit" asp-route-id="@item.PrivateLessonId" type="button" class="btn btn-warning rounded-pill m-2">Updata</a> |
-                            <button class="btn btn-primary rounded-pill m-2" onclick="confirmDelete(@item.PrivateLessonId)">Delete</button>
+                            <a asp-action="Edit" asp-route-id="@item.PrivateLessonId" type="button" class="btn btn-warning rounded-pill m-2">Updata</a>
+                           <button class="btn btn-primary rounded-pill m-2" onclick="confirmDelete(@item.PrivateLessonId)">Delete</button>
                         </td>
                     </tr>
             }
@@ -51,7 +51,6 @@
     {
         <script>
             toastr.success('@TempData["notification"]');
-            // toastr.success('@Context.Request.Cookies["notification"]');
         </script>
     }
 
