@@ -1,65 +1,87 @@
 ﻿@model IEnumerable<IdentityText.Models.PrivateLesson>
-
 @{
     ViewData["Title"] = "Index";
 }
+<div class="container">
+    <div class="col-sm-12 col-xl-6 col-xl-12">
+        <div class="bg-secondary rounded h-100 p-4">
+            <h6 class="mb-4">All Private Lesson</h6>
+            <a href="/Admin/PrivateLesson/Create" class="btn btn-success w-100 m-2" type="button">
+                <i class="fa fa-home"></i>
+                Create
+            </a>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col"> Title</th>
+                        <th scope="col"> Price</th>
+                        <th scope="col"> StartDate</th>
+                        <th scope="col"> EndDate</th>
+                        <th scope="col"> Subject</th>
+                        <th scope="col"> Teacher</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+            @foreach (var item in Model) 
+            {
+                    <tr>
+                        <th scope="row">@item.PrivateLessonId</th>
+                        <td>@item.Title</td>
+                        <td>@item.Price</td>
+                        <td>@item.StartDate</td>
+                        <td>@item.EndDate</td>
+                        <td>@item.Subject.Title</td>
+                        <td>@(item.Teacher != null ? item.Teacher.ApplicationUser.FirstName + " " + item.Teacher.ApplicationUser.LastName : "N/A")</td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.PrivateLessonId" type="button" class="btn btn-warning rounded-pill m-2">Updata</a> |
+                            <button class="btn btn-primary rounded-pill m-2" onclick="confirmDelete(@item.PrivateLessonId)">Delete</button>
+                        </td>
+                    </tr>
+            }
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-<h1>Index</h1>
+</div>
+@section Scripts {
+    @if (TempData["notification"] != null)
+    {
+        <script>
+            toastr.success('@TempData["notification"]');
+            // toastr.success('@Context.Request.Cookies["notification"]');
+        </script>
+    }
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StartDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Subject)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Teacher)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Subject.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Teacher.UserId)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.PrivateLessonId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.PrivateLessonId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.PrivateLessonId">Delete</a>
-            </td>
-        </tr>
+    <script>
+
+          function confirmDelete(id){
+              Swal.fire({
+              title: "Are you sure?",
+              text: "You won't be able to revert this!",
+              icon: "warning",
+              showCancelButton: true,
+              confirmButtonColor: "#3085d6",
+              cancelButtonColor: "#d33",
+              confirmButtonText: "Yes, delete it!"
+              }).then((result) => {
+              if (result.isConfirmed)
+              {
+                  window.location.href = "/Admin/PrivateLesson/Delete?id=" + id;
+
+                Swal.fire({
+                  title: "Deleted!",
+                  text: "Your file has been deleted.",
+                  icon: "success"
+                });
+              }
+            });
+        }
+
+    </script>
+
+
 }
-    </tbody>
-</table>
+

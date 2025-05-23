@@ -10,7 +10,7 @@ using System.Linq.Expressions;
 namespace IdentityText.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = "Admin, Teacher")]
+    //[Authorize(Roles = "Admin, Teacher")]
 
     public class AssessmentController : Controller
     {

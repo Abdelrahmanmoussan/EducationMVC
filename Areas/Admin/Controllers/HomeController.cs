@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace IdentityText.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public class HomeController : Controller
     {
         private readonly IStudentRepository _studentRepository;

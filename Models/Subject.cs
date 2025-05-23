@@ -25,6 +25,8 @@ namespace IdentityText.Models
         public ICollection<ClassGroup> ClassGroups { get; set; } = new List<ClassGroup>();
         [BindNever]
         public ICollection<PrivateLesson> PrivateLessons { get; set; } = new List<PrivateLesson>();
+
+        
     }
 
 }

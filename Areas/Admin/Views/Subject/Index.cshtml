@@ -24,9 +24,9 @@
                 @foreach (var item in Model) {
                     <tr>
                         <th scope="row">@item.SubjectId</th>
-                            <td>@item.Title</td>
-                            <td>@item.Description</td>
-                            <td>@item.SubjectType</td>
+                        <td>@item.Title</td>
+                        <td>@item.Description</td>
+                        <td>@item.SubjectType</td>
                         <td>
                                 <a href="/Admin/Subject/Edit?id=@item.SubjectId" type="button" class="btn btn-warning rounded-pill m-2">Updata</a>
                                 <button class="btn btn-primary rounded-pill m-2" onclick="confirmDelete(@item.SubjectId)">Delete</button>

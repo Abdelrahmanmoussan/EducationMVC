@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace IdentityText.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public class ClassGroupController : Controller
     {
         private readonly IClassGroupRepository _classGroupRepository;

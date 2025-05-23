@@ -22,13 +22,15 @@ namespace IdentityText.Models
 
         [Required]
         public DateTime StartDate { get; set; }
-
+        [Required]
         public DateTime EndDate { get; set; }
-
+        [Required]
         public int SubjectId { get; set; }
+        [ForeignKey("SubjectId")]
         public Subject Subject { get; set; }
         [Required]
         public int TeacherId { get; set; }
+        [ForeignKey("TeacherId")]
         public Teacher Teacher { get; set; }
         [BindNever]
         public ICollection<PrivateLessonStudent> PrivateLessonStudents { get; set; }

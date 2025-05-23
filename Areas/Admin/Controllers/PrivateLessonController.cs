@@ -1,14 +1,17 @@
 ﻿using IdentityText.Models;
+using IdentityText.Models.ViewModel;
 using IdentityText.Repository;
 using IdentityText.Repository.IRepository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace IdentityText.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public class PrivateLessonController : Controller
     {
         private readonly IPrivateLessonRepository _privateLessonRepository;
@@ -26,43 +29,54 @@ namespace IdentityText.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            var privateLessons = _privateLessonRepository.Get();
-            return View(privateLessons);
-        }
+            var privateLessons = _privateLessonRepository.Get(includes: [e => e.Teacher.ApplicationUser,e=>e.Subject]  );
+            //var privateLessons = _privateLessonRepository.GetWithFullIncludes(
+            //   include: c => c.Include(a => a.Teacher).ThenInclude(l => l.ApplicationUser)
+            //      .Include(a => a.Subject));
 
-        [HttpGet]
-        public IActionResult Details(int id)
-        {
-            var privateLesson = _privateLessonRepository.GetOne(p => p.PrivateLessonId == id);
-            if (privateLesson == null)
+            if (privateLessons == null)
             {
                 return NotFound();
             }
-            return View(privateLesson);
-        }   
+            return View(privateLessons);
+        }
+  
 
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            var subjects = _subjectRepository.Get();
-            var teachers = _teacherRepository.Get(includes: [t => t.ApplicationUser]);
+            var model = new PrivateLessonVM
+            {
+                TeacherList = await _teacherRepository.SelectListTeacherAsync(),
+                SubjectList = await _subjectRepository.SelectListSubjectAsync()
+            };
 
-
-            ViewBag.SubjectId = new SelectList(subjects, "SubjectId", "Title");
-            ViewBag.TeacherId = new SelectList(teachers, "TeacherId", "ApplicationUser.Email");
-            return View(new PrivateLesson());
+            return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(PrivateLesson privateLesson)
+        public async Task<IActionResult> CreateAsync(PrivateLessonVM model)
         {
             if (ModelState.IsValid)
             {
+                var privateLesson = new PrivateLesson
+                {
+                    Price = model.Price,
+                    Title = model.Title,
+                    StartDate = model.StartDate,
+                    EndDate = model.EndDate,
+                    SubjectId = model.SubjectId,
+                    TeacherId = model.TeacherId,
+                };
                 _privateLessonRepository.Create(privateLesson);
+                _privateLessonRepository.Commit();
+                TempData["notification"] = "Successfully Created";
                 return RedirectToAction(nameof(Index));
             }
-            return View(privateLesson);
+            model.TeacherList = await _teacherRepository.SelectListTeacherAsync();
+            model.SubjectList = await _subjectRepository.SelectListSubjectAsync();
+            return View(model);
         }
 
         [HttpGet]
@@ -99,6 +113,21 @@ namespace IdentityText.Areas.Admin.Controllers
             _privateLessonRepository.Commit();
             return RedirectToAction(nameof(Index));
         }
+
+       [HttpGet]
+public JsonResult GetTeachersBySubject(int subjectId)
+{
+    // جلب المدرسين المرتبطين بالمادة
+    var teachers = _teacherRepository.Get(s => s.SubjectId == subjectId, includes: [e=>e.ApplicationUser])
+        .Select(t => new
+        {
+            TeacherId = t.TeacherId,
+            FullName = t.ApplicationUser.FirstName + " " + t.ApplicationUser.LastName
+        }).ToList();
+
+    return Json(teachers);
+}
+
 
 
 
