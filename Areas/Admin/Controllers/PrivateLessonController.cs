@@ -80,25 +80,50 @@ namespace IdentityText.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> EditAsync(int id)
         {
-            var privateLesson = _privateLessonRepository.Get(p => p.PrivateLessonId == id).FirstOrDefault();
+            var privateLesson = _privateLessonRepository.GetOne(p => p.PrivateLessonId == id);
             if (privateLesson == null)
             {
                 return NotFound();
             }
-            return View(privateLesson);
+            var model = new PrivateLessonVM
+            {
+                PrivateLessonId = privateLesson.PrivateLessonId,
+                Price = privateLesson.Price,
+                Title = privateLesson.Title,
+                StartDate = privateLesson.StartDate,
+                EndDate = privateLesson.EndDate,
+                SubjectId = privateLesson.SubjectId,
+                TeacherId = privateLesson.TeacherId,
+                TeacherList = await _teacherRepository.SelectListTeacherAsync(),
+                SubjectList = await _subjectRepository.SelectListSubjectAsync()
+            };
+
+            return View(model);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(PrivateLesson privateLesson)
+        public async Task<IActionResult> EditAsync(PrivateLessonVM model)
         {
             if (ModelState.IsValid)
             {
-                _privateLessonRepository.Edit(privateLesson);
+                var PLesson = _privateLessonRepository.GetOne(e => e.PrivateLessonId == model.PrivateLessonId);
+                PLesson.Price = model.Price;
+                PLesson.Title = model.Title;
+                PLesson.StartDate = model.StartDate;
+                PLesson.EndDate = model.EndDate;
+                PLesson.SubjectId = model.SubjectId;
+                PLesson.TeacherId = model.TeacherId;
+
+                _privateLessonRepository.Edit(PLesson);
+                _privateLessonRepository.Commit();
+                TempData["notification"] = "Successfully Edited";
                 return RedirectToAction(nameof(Index));
             }
-            return View(privateLesson);
+            model.TeacherList = await _teacherRepository.SelectListTeacherAsync();
+            model.SubjectList = await _subjectRepository.SelectListSubjectAsync();
+            return View(model);
         }
 
         [HttpGet]
@@ -111,22 +136,23 @@ namespace IdentityText.Areas.Admin.Controllers
             }
             _privateLessonRepository.Delete(privateLesson);
             _privateLessonRepository.Commit();
+            TempData["notification"] = "Successfully Deleted";
             return RedirectToAction(nameof(Index));
         }
 
        [HttpGet]
-public JsonResult GetTeachersBySubject(int subjectId)
-{
-    // جلب المدرسين المرتبطين بالمادة
-    var teachers = _teacherRepository.Get(s => s.SubjectId == subjectId, includes: [e=>e.ApplicationUser])
-        .Select(t => new
+        public JsonResult GetTeachersBySubject(int subjectId)
         {
-            TeacherId = t.TeacherId,
-            FullName = t.ApplicationUser.FirstName + " " + t.ApplicationUser.LastName
-        }).ToList();
+            // جلب المدرسين المرتبطين بالمادة
+            var teachers = _teacherRepository.Get(s => s.SubjectId == subjectId, includes: [e=>e.ApplicationUser])
+                .Select(t => new
+                {
+                    TeacherId = t.TeacherId,
+                    FullName = t.ApplicationUser.FirstName + " " + t.ApplicationUser.LastName
+                }).ToList();
 
-    return Json(teachers);
-}
+            return Json(teachers);
+        }
 
 
 

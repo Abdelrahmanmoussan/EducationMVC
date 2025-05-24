@@ -1,82 +1,90 @@
 ﻿@model IdentityText.Models.Student
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create Student";
 }
 
-<div class="container bg-dark text-white">
-    <div class="col-sm-12 col-xl-12 mt-5">
-        <div class="bg-dark shadow rounded p-4">
-            <h5 class="mb-4 text-light"><i class="bi bi-person-plus-fill text-danger"></i> Create New Student</h5>
+<div class="container d-flex justify-content-center mt-5">
+    <div class="col-md-6">
+        <div class="chart-header mb-4 rounded-3 shadow-sm d-flex justify-content-center align-items-center text-warning">
+            <i class="bi bi-person-plus-fill me-2"></i> Add New Student
+        </div>
+
+        <div class="form-container p-4 rounded-3 shadow-sm bg-white">
             <form asp-action="Create">
-                <div asp-validation-summary="ModelOnly" class="text-success"></div>
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
                 <div class="mb-3">
-                    <label asp-for="UserId" class="form-label text-light"><i class="bi bi-person-badge"></i> User ID</label>
-                    <input asp-for="UserId" class="form-control bg-secondary text-white" />
-                    <span asp-validation-for="UserId" class="text-success"></span>
+                    <label asp-for="UserId" class="form-label"><i class="bi bi-person-badge"></i> User ID</label>
+                    <input asp-for="UserId" class="form-control rounded-pill" />
+                    <span asp-validation-for="UserId" class="text-danger small"></span>
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="ParentName" class="form-label text-light"><i class="bi bi-person-vcard"></i> Parent Name</label>
-                    <input asp-for="ParentName" class="form-control bg-secondary text-white" />
-                    <span asp-validation-for="ParentName" class="text-success"></span>
+                    <label asp-for="ParentName" class="form-label"><i class="bi bi-person-vcard"></i> Parent Name</label>
+                    <input asp-for="ParentName" class="form-control rounded-pill" />
+                    <span asp-validation-for="ParentName" class="text-danger small"></span>
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="ParentPhone" class="form-label text-light"><i class="bi bi-telephone"></i> Parent Phone</label>
-                    <input asp-for="ParentPhone" class="form-control bg-secondary text-white" />
-                    <span asp-validation-for="ParentPhone" class="text-success"></span>
+                    <label asp-for="ParentPhone" class="form-label"><i class="bi bi-telephone"></i> Parent Phone</label>
+                    <input asp-for="ParentPhone" class="form-control rounded-pill" />
+                    <span asp-validation-for="ParentPhone" class="text-danger small"></span>
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="ParentMail" class="form-label text-light"><i class="bi bi-envelope"></i> Parent Email</label>
-                    <input asp-for="ParentMail" class="form-control bg-secondary text-white" />
-                    <span asp-validation-for="ParentMail" class="text-success"></span>
+                    <label asp-for="ParentMail" class="form-label"><i class="bi bi-envelope"></i> Parent Email</label>
+                    <input asp-for="ParentMail" class="form-control rounded-pill" />
+                    <span asp-validation-for="ParentMail" class="text-danger small"></span>
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="StudentDB" class="form-label text-light"><i class="bi bi-calendar-heart"></i> Student Date of Birth</label>
-                    <input asp-for="StudentDB" type="date" class="form-control bg-secondary text-white" />
-                    <span asp-validation-for="StudentDB" class="text-success"></span>
+                    <label asp-for="StudentDB" class="form-label"><i class="bi bi-calendar-heart"></i> Student Date of Birth</label>
+                    <input asp-for="StudentDB" type="date" class="form-control rounded-pill" />
+                    <span asp-validation-for="StudentDB" class="text-danger small"></span>
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="EnrollmentDate" class="form-label text-light"><i class="bi bi-calendar-check"></i> Enrollment Date</label>
-                    <input asp-for="EnrollmentDate" type="date" class="form-control bg-secondary text-white" />
-                    <span asp-validation-for="EnrollmentDate" class="text-success"></span>
+                    <label asp-for="EnrollmentDate" class="form-label"><i class="bi bi-calendar-check"></i> Enrollment Date</label>
+                    <input asp-for="EnrollmentDate" type="date" class="form-control rounded-pill" />
+                    <span asp-validation-for="EnrollmentDate" class="text-danger small"></span>
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="AttendancePercent" class="form-label text-light"><i class="bi bi-graph-up-arrow"></i> Attendance %</label>
-                    <input asp-for="AttendancePercent" class="form-control bg-secondary text-white" />
-                    <span asp-validation-for="AttendancePercent" class="text-success"></span>
+                    <label asp-for="AttendancePercent" class="form-label"><i class="bi bi-graph-up-arrow"></i> Attendance %</label>
+                    <input asp-for="AttendancePercent" class="form-control rounded-pill" />
+                    <span asp-validation-for="AttendancePercent" class="text-danger small"></span>
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="StudentNotes" class="form-label text-light"><i class="bi bi-journal-text"></i> Notes</label>
-                    <input asp-for="StudentNotes" class="form-control bg-secondary text-white" />
-                    <span asp-validation-for="StudentNotes" class="text-success"></span>
+                    <label asp-for="StudentNotes" class="form-label"><i class="bi bi-journal-text"></i> Notes</label>
+                    <input asp-for="StudentNotes" class="form-control rounded-pill" />
+                    <span asp-validation-for="StudentNotes" class="text-danger small"></span>
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="SubscriptionId" class="form-label text-light"><i class="bi bi-receipt"></i> Subscription</label>
-                    <select asp-for="SubscriptionId" class="form-select bg-secondary text-white" asp-items="ViewBag.SubscriptionId"></select>
+                    <label asp-for="SubscriptionId" class="form-label"><i class="bi bi-receipt"></i> Subscription</label>
+                    <select asp-for="SubscriptionId" class="form-select rounded-pill" asp-items="ViewBag.SubscriptionId"></select>
+                    <span asp-validation-for="SubscriptionId" class="text-danger small"></span>
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="AcademicYearId" class="form-label text-light"><i class="bi bi-calendar-range"></i> Academic Year</label>
-                    <select asp-for="AcademicYearId" class="form-select bg-secondary text-white" asp-items="ViewBag.AcademicYearId">
+                    <label asp-for="AcademicYearId" class="form-label"><i class="bi bi-calendar-range"></i> Academic Year</label>
+                    <select asp-for="AcademicYearId" class="form-select rounded-pill" asp-items="ViewBag.AcademicYearId">
                         <option value="">-- اختر السنه الدراسيه --</option>
                     </select>
+                    <span asp-validation-for="AcademicYearId" class="text-danger small"></span>
                 </div>
 
-                <button type="submit" class="btn btn-danger">
-                    <i class="bi bi-check2-circle"></i> Create
-                </button>
-                <a asp-action="Index" class="btn btn-outline-light ms-2">
-                    <i class="bi bi-arrow-left-circle"></i> Back to List
-                </a>
+                <div class="d-flex gap-2 mt-4 justify-content-center">
+                    <button type="submit" class="btn btn-outline-success px-4 rounded-pill shadow-sm">
+                        <i class="bi bi-check-circle me-2"></i> Create
+                    </button>
+
+                    <a asp-action="Index" class="btn btn-outline-secondary px-4 rounded-pill shadow-sm">
+                        <i class="bi bi-arrow-left-circle me-2"></i> Back to List
+                    </a>
+                </div>
             </form>
         </div>
     </div>
@@ -87,3 +95,22 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
+<style>
+    .chart-header {
+        background: linear-gradient(to right, #0d6efd, #6610f2);
+        color: white;
+        padding: 12px 20px;
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+
+    .form-label {
+        font-weight: 500;
+    }
+
+    .form-control,
+    .form-select {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+</style>

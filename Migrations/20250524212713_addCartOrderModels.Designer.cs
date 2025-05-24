@@ -4,6 +4,7 @@ using IdentityText.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IdentityText.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250524212713_addCartOrderModels")]
+    partial class addCartOrderModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -157,7 +160,7 @@ namespace IdentityText.Migrations
                             Id = "7aafd540-fdf8-482b-804d-780fb6726703",
                             AccessFailedCount = 0,
                             Address = "Quesna,Menofia",
-                            ConcurrencyStamp = "01ab85b5-d05d-4727-b737-ff78bd284372",
+                            ConcurrencyStamp = "2686ac76-2b35-477e-8470-4bf30cd92f31",
                             Email = "amin@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Amin",
@@ -165,10 +168,10 @@ namespace IdentityText.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "AMIN@GMAIL.COM",
                             NormalizedUserName = "AMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEAKSbtNYq2NaVtI34WyLTW4xmKqzzWRm8/j4Q+TxQw6qy43gaQqF5nok5WjuSHhzmQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEG9VnedMKEEQ5LunBf34QsJ9YSBobTRojTNKJGEErdShK7D0kyP5yOd23XpfSyIHKw==",
                             PhoneNumberConfirmed = false,
                             Photo = "admin.jpg",
-                            SecurityStamp = "46ef2715-3227-4608-96c8-022031d8b476",
+                            SecurityStamp = "3732c270-c130-4ae8-9ed2-0fb837741e3e",
                             TwoFactorEnabled = false,
                             UserName = "amin"
                         },
@@ -177,7 +180,7 @@ namespace IdentityText.Migrations
                             Id = "9b4cd611-6c35-4c98-a0dc-1d2e1349ab91",
                             AccessFailedCount = 0,
                             Address = "Port Said",
-                            ConcurrencyStamp = "7a0c51a0-284e-4b77-a0ca-8dcbdf1db970",
+                            ConcurrencyStamp = "a227665a-06d9-4b3b-84ff-8b99f1d5789d",
                             Email = "abdelrahmanmoussan@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Abdelrahman",
@@ -185,10 +188,10 @@ namespace IdentityText.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ABDELRAHMANMOUSSAN@GMAIL.COM",
                             NormalizedUserName = "ABDELRAHMAN",
-                            PasswordHash = "AQAAAAIAAYagAAAAELH0cRSsOyjGbuoVJt9Uw7zLXdxaMd6hp55aUCanwgC05wZI1+dUrnOF1ZHwlR4GVg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEDny48EO8ONL9w93OGGDoMTJJviflp6qlAhzY+ybR9fCU2AsSmIVwYQwphJ7ImQOfw==",
                             PhoneNumberConfirmed = false,
                             Photo = "Moussan.jpg",
-                            SecurityStamp = "a1e80074-9911-4ef7-9eec-c4e9c71e5df3",
+                            SecurityStamp = "075c5f70-056d-45e9-bb61-56d8c95c473d",
                             TwoFactorEnabled = false,
                             UserName = "abdelrahman"
                         });
@@ -589,6 +592,9 @@ namespace IdentityText.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("ClassGroupId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CourseId")
                         .HasColumnType("int");
 
                     b.Property<int>("OrderId")
