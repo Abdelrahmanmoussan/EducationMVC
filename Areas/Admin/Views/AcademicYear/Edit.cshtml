@@ -1,27 +1,71 @@
 ﻿@model IdentityText.Models.AcademicYear
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Academic Year";
 }
-<div class="container mt-5">
-    <div class="col-sm-12 col-xl-6 col-xl-12">
-        <div class="bg-secondary rounded h-100 p-4">
-            <h6 class="mb-4">Edit Academic Year Item</h6>
+
+<div class="row">
+    <div class="col-md-6">
+        <!-- عنوان الصفحة -->
+        <div class="chart-header mb-4 rounded-3 shadow-sm d-flex justify-content-center align-items-center text-warning">
+            <i class="bi bi-pencil-square me-2"></i> Edit Academic Year
+        </div>
+        <div class="form-container p-4 rounded-3 shadow-sm bg-white">
             <form asp-action="Edit">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
                 <input type="hidden" asp-for="AcademicYearId" />
+
                 <div class="mb-3">
-                    <label asp-for="Name" class="form-label">Academic Year name</label>
-                    <input asp-for="Name" type="text" class="form-control" value="@Model.Name" />
-                    <span class="text-danger" asp-validation-for="Name"></span>
+                    <label asp-for="Name" class="form-label"></label>
+                    <input asp-for="Name" type="text" class="form-control rounded-pill" value="@Model.Name" />
+                    <span asp-validation-for="Name" class="text-danger small"></span>
                 </div>
-                <button type="submit" class="btn btn-primary">Update</button>
+
+                <div class="d-flex justify-content-between align-items-center mt-4">
+                    <button type="submit" class="btn btn-outline-primary px-4 rounded-pill shadow-sm">
+                        <i class="bi bi-check-circle me-2"></i> Update
+                    </button>
+                    <a asp-action="Index" class="btn btn-outline-secondary rounded-pill">
+                        <i class="bi bi-arrow-left-circle me-1"></i> Back to List
+                    </a>
+                </div>
             </form>
         </div>
     </div>
-
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
+
+<style>
+    .chart-header {
+        background: linear-gradient(to right, #0d6efd, #6610f2);
+        color: white;
+        padding: 12px 20px;
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+
+    .form-label {
+        font-weight: 500;
+    }
+
+    .form-container {
+        background-color: #ffffff;
+    }
+
+    .form-control,
+    .form-select {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .row {
+        display: flex;
+        justify-content: center;
+    }
+</style>
