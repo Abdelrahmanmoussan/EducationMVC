@@ -4,6 +4,7 @@ using IdentityText.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IdentityText.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250524201208_addsssss")]
+    partial class addsssss
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -157,7 +160,7 @@ namespace IdentityText.Migrations
                             Id = "7aafd540-fdf8-482b-804d-780fb6726703",
                             AccessFailedCount = 0,
                             Address = "Quesna,Menofia",
-                            ConcurrencyStamp = "01ab85b5-d05d-4727-b737-ff78bd284372",
+                            ConcurrencyStamp = "8088e531-3ab8-406a-83c3-36c8ba51166b",
                             Email = "amin@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Amin",
@@ -165,10 +168,10 @@ namespace IdentityText.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "AMIN@GMAIL.COM",
                             NormalizedUserName = "AMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEAKSbtNYq2NaVtI34WyLTW4xmKqzzWRm8/j4Q+TxQw6qy43gaQqF5nok5WjuSHhzmQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEGzWUzhx0gxWNR03Mso+SKOTolF6s1qjrXdmlJ/tN5SN23UQDoqngPYHhHtw6/pHlw==",
                             PhoneNumberConfirmed = false,
                             Photo = "admin.jpg",
-                            SecurityStamp = "46ef2715-3227-4608-96c8-022031d8b476",
+                            SecurityStamp = "1d61cec0-9e82-487e-b029-42f79b6d5d5a",
                             TwoFactorEnabled = false,
                             UserName = "amin"
                         },
@@ -177,7 +180,7 @@ namespace IdentityText.Migrations
                             Id = "9b4cd611-6c35-4c98-a0dc-1d2e1349ab91",
                             AccessFailedCount = 0,
                             Address = "Port Said",
-                            ConcurrencyStamp = "7a0c51a0-284e-4b77-a0ca-8dcbdf1db970",
+                            ConcurrencyStamp = "f9308ced-65aa-4b8e-a97b-b6e0686896ac",
                             Email = "abdelrahmanmoussan@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Abdelrahman",
@@ -185,10 +188,10 @@ namespace IdentityText.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ABDELRAHMANMOUSSAN@GMAIL.COM",
                             NormalizedUserName = "ABDELRAHMAN",
-                            PasswordHash = "AQAAAAIAAYagAAAAELH0cRSsOyjGbuoVJt9Uw7zLXdxaMd6hp55aUCanwgC05wZI1+dUrnOF1ZHwlR4GVg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEP8089Li0uwRaqCOTrbaH6eg0ig9uf+p/t2ZVKv2nyHGxtoC4B++B2hx6J2IGJoCUQ==",
                             PhoneNumberConfirmed = false,
                             Photo = "Moussan.jpg",
-                            SecurityStamp = "a1e80074-9911-4ef7-9eec-c4e9c71e5df3",
+                            SecurityStamp = "1c3e6e94-a969-4a0e-a121-38303ea4a428",
                             TwoFactorEnabled = false,
                             UserName = "abdelrahman"
                         });
@@ -316,49 +319,6 @@ namespace IdentityText.Migrations
                     b.ToTable("Attendances");
                 });
 
-            modelBuilder.Entity("IdentityText.Models.Cart", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Carts");
-                });
-
-            modelBuilder.Entity("IdentityText.Models.CartItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CartId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ClassGroupId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CartId");
-
-                    b.HasIndex("ClassGroupId");
-
-                    b.ToTable("CartItems");
-                });
-
             modelBuilder.Entity("IdentityText.Models.ClassGroup", b =>
                 {
                     b.Property<int>("ClassGroupId")
@@ -436,28 +396,6 @@ namespace IdentityText.Migrations
                     b.HasIndex("StudentId");
 
                     b.ToTable("Enrollments");
-                });
-
-            modelBuilder.Entity("IdentityText.Models.Favorite", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ClassGroupId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ClassGroupId");
-
-                    b.ToTable("favorites");
                 });
 
             modelBuilder.Entity("IdentityText.Models.Lecture", b =>
@@ -551,62 +489,6 @@ namespace IdentityText.Migrations
                     b.HasIndex("NotificationId1");
 
                     b.ToTable("NotificationRecipients");
-                });
-
-            modelBuilder.Entity("IdentityText.Models.Order", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("OrderDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("PaymentStatus")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("TotalAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("orders");
-                });
-
-            modelBuilder.Entity("IdentityText.Models.OrderItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ClassGroupId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("UnitPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ClassGroupId");
-
-                    b.HasIndex("OrderId");
-
-                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("IdentityText.Models.Payment", b =>
@@ -1181,25 +1063,6 @@ namespace IdentityText.Migrations
                     b.Navigation("Student");
                 });
 
-            modelBuilder.Entity("IdentityText.Models.CartItem", b =>
-                {
-                    b.HasOne("IdentityText.Models.Cart", "Cart")
-                        .WithMany("Items")
-                        .HasForeignKey("CartId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("IdentityText.Models.ClassGroup", "ClassGroup")
-                        .WithMany()
-                        .HasForeignKey("ClassGroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Cart");
-
-                    b.Navigation("ClassGroup");
-                });
-
             modelBuilder.Entity("IdentityText.Models.ClassGroup", b =>
                 {
                     b.HasOne("IdentityText.Models.AcademicYear", "AcademicYear")
@@ -1246,17 +1109,6 @@ namespace IdentityText.Migrations
                     b.Navigation("Student");
                 });
 
-            modelBuilder.Entity("IdentityText.Models.Favorite", b =>
-                {
-                    b.HasOne("IdentityText.Models.ClassGroup", "ClassGroup")
-                        .WithMany()
-                        .HasForeignKey("ClassGroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ClassGroup");
-                });
-
             modelBuilder.Entity("IdentityText.Models.Lecture", b =>
                 {
                     b.HasOne("IdentityText.Models.ClassGroup", "ClassGroup")
@@ -1288,25 +1140,6 @@ namespace IdentityText.Migrations
                         .IsRequired();
 
                     b.Navigation("Notification");
-                });
-
-            modelBuilder.Entity("IdentityText.Models.OrderItem", b =>
-                {
-                    b.HasOne("IdentityText.Models.ClassGroup", "ClassGroup")
-                        .WithMany()
-                        .HasForeignKey("ClassGroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("IdentityText.Models.Order", "Order")
-                        .WithMany("Items")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ClassGroup");
-
-                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("IdentityText.Models.Payment", b =>
@@ -1499,11 +1332,6 @@ namespace IdentityText.Migrations
                     b.Navigation("AssessmentResults");
                 });
 
-            modelBuilder.Entity("IdentityText.Models.Cart", b =>
-                {
-                    b.Navigation("Items");
-                });
-
             modelBuilder.Entity("IdentityText.Models.ClassGroup", b =>
                 {
                     b.Navigation("Assessments");
@@ -1528,11 +1356,6 @@ namespace IdentityText.Migrations
             modelBuilder.Entity("IdentityText.Models.Notification", b =>
                 {
                     b.Navigation("NotificationRecipients");
-                });
-
-            modelBuilder.Entity("IdentityText.Models.Order", b =>
-                {
-                    b.Navigation("Items");
                 });
 
             modelBuilder.Entity("IdentityText.Models.PrivateLesson", b =>

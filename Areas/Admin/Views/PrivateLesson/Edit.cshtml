@@ -1,88 +1,56 @@
-﻿@model IdentityText.Models.ViewModel.PrivateLessonVM
+﻿@model IdentityText.Models.PrivateLesson
 
 @{
     ViewData["Title"] = "Edit";
 }
-<div class="container mt-5">
+<div class="container mt-5 d-flex justify-content-center">
     <div class="col-sm-12 col-xl-6 col-xl-12">
         <div class="bg-secondary rounded h-100 p-4">
-            <h6 class="mb-4">Edit Private Lesson Item</h6>
-             <form asp-action="Edit">
-                <div asp-validation-summary="All" class="text-danger"></div>
+            <h6 class="mb-4 text-white bg-gradient p-2 rounded">Edit Private Lesson Item</h6>
+            <form asp-action="Edit" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="PrivateLessonId" />
-                <div class="form-group">
-                    <label asp-for="Price" class="control-label"></label>
+
+                <div class="mb-3">
+                    <label asp-for="Price" class="form-label text-white"></label>
                     <input asp-for="Price" class="form-control" />
                     <span asp-validation-for="Price" class="text-danger"></span>
                 </div>
-                <div class="form-group">
-                    <label asp-for="Title" class="control-label"></label>
+                <div class="mb-3">
+                    <label asp-for="Title" class="form-label text-white"></label>
                     <input asp-for="Title" class="form-control" />
                     <span asp-validation-for="Title" class="text-danger"></span>
                 </div>
-                <div class="form-group">
-                    <label asp-for="StartDate" class="control-label"></label>
-                    <input asp-for="StartDate" class="form-control" />
+                <div class="mb-3">
+                    <label asp-for="StartDate" class="form-label text-white"></label>
+                    <input asp-for="StartDate" class="form-control" type="datetime-local" />
                     <span asp-validation-for="StartDate" class="text-danger"></span>
                 </div>
-                <div class="form-group">
-                    <label asp-for="EndDate" class="control-label"></label>
-                    <input asp-for="EndDate" class="form-control" />
+                <div class="mb-3">
+                    <label asp-for="EndDate" class="form-label text-white"></label>
+                    <input asp-for="EndDate" class="form-control" type="datetime-local" />
                     <span asp-validation-for="EndDate" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
-                    <label asp-for="SubjectId" class="control-label"></label>
-                    <select asp-for="SubjectId" class="form-control" asp-items="@Model.SubjectList" id="SubjectId">
-                        <option value="">-- اختر المادة --</option>
-                    </select>
+                    <label asp-for="SubjectId" class="form-label text-white"></label>
+                    <select asp-for="SubjectId" class="form-control" asp-items="ViewBag.SubjectId"></select>
                     <span asp-validation-for="SubjectId" class="text-danger"></span>
                 </div>
-
                 <div class="mb-3">
-                    <label asp-for="TeacherId" class="control-label"></label>
-                    <select asp-for="TeacherId" class="form-control" asp-items="@Model.TeacherList" id="TeacherId">
-                        <option value="">-- اختر المدرس --</option>
-                    </select>
+                    <label asp-for="TeacherId" class="form-label text-white"></label>
+                    <select asp-for="TeacherId" class="form-control" asp-items="ViewBag.TeacherId"></select>
                     <span asp-validation-for="TeacherId" class="text-danger"></span>
                 </div>
-                <div class="form-group">
-                    <input type="submit" value="Save" class="btn btn-primary" />
+                <div class="mb-3">
+                    <input type="submit" value="Save" class="btn btn-outline-success px-4 rounded-pill shadow-sm" />
                 </div>
-		    </form>
+            </form>
         </div>
     </div>
-
 </div>
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('#SubjectId').change(function () {
-                var subjectId = $(this).val();
-                if (subjectId) {
-                    $.ajax({
-                        url: '@Url.Action("GetTeachersBySubject", "PrivateLesson", new { area = "Admin" })',
-                        type: 'GET',
-                        data: { subjectId: subjectId },
-                        success: function (data) {
-                            var teacherSelect = $('#TeacherId');
-                            teacherSelect.empty();
-                            teacherSelect.append('<option value="">-- اختر المدرس --</option>');
-                            $.each(data, function (i, teacher) {
-                                teacherSelect.append('<option value="' + teacher.teacherId + '">' + teacher.fullName + '</option>');
-                            });
-                        },
-                        error: function () {
-                            alert('حدث خطأ أثناء جلب المدرسين.');
-                        }
-                    });
-                } else {
-                    $('#TeacherId').empty();
-                    $('#TeacherId').append('<option value="">-- اختر المدرس --</option>');
-                }
-            });
-        });
-    </script>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

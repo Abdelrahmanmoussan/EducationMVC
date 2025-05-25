@@ -1,61 +1,77 @@
 ﻿@model IdentityText.Models.ViewModel.AssessmentVM
 
-
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Assessment";
 }
-<div class="container mt-5">
-    <div class="col-sm-12 col-xl-6 col-xl-12">
-        <div class="bg-secondary rounded h-100 p-4">
-            <h6 class="mb-4">Edit Assessment Item</h6>
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6">
+        <!-- العنوان بنفس تصميم اساس صفحة التعديل -->
+        <div class="chart-header mb-4 rounded-3 shadow-sm d-flex justify-content-center align-items-center">
+            <i class="bi bi-pencil-square me-2"></i> Edit Assessment
+        </div>
+
+        <div class="form-container p-4 rounded-3 shadow-sm bg-white">
             <form asp-action="Edit" method="post">
-                <div asp-validation-summary="All" class="text-danger"></div>
+                <div asp-validation-summary="All" class="text-danger mb-3"></div>
                 <input type="hidden" asp-for="AssessmentId" />
+
                 <div class="mb-3">
-                    <label asp-for="Title" class="control-label"></label>
-                    <input asp-for="Title" class="form-control" />
-                    <span asp-validation-for="Title" class="text-danger"></span>
+                    <label asp-for="Title" class="form-label"></label>
+                    <input asp-for="Title" class="form-control rounded-pill" />
+                    <span asp-validation-for="Title" class="text-danger small"></span>
                 </div>
+
                 <div class="mb-3">
-                    <label asp-for="Description" class="control-label"></label>
-                    <input asp-for="Description" class="form-control" />
-                    <span asp-validation-for="Description" class="text-danger"></span>
+                    <label asp-for="Description" class="form-label"></label>
+                    <input asp-for="Description" class="form-control rounded-pill" />
+                    <span asp-validation-for="Description" class="text-danger small"></span>
                 </div>
+
                 <div class="mb-3">
-                    <label asp-for="Date" class="control-label"></label>
-                    <input asp-for="Date" class="form-control" type="datetime-local" />
-                    <span asp-validation-for="Date" class="text-danger"></span>
+                    <label asp-for="Date" class="form-label"></label>
+                    <input asp-for="Date" type="datetime-local" class="form-control rounded-pill" />
+                    <span asp-validation-for="Date" class="text-danger small"></span>
                 </div>
+
                 <div class="mb-3">
-                    <label asp-for="CreatedAt" class="control-label"></label>
-                    <input asp-for="CreatedAt" class="form-control" type="datetime-local" />
-                    <span asp-validation-for="CreatedAt" class="text-danger"></span>
+                    <label asp-for="CreatedAt" class="form-label"></label>
+                    <input asp-for="CreatedAt" type="datetime-local" class="form-control rounded-pill" />
+                    <span asp-validation-for="CreatedAt" class="text-danger small"></span>
                 </div>
+
                 <div class="mb-3">
-                    <label asp-for="AssessmentLink" class="control-label"></label>
-                    <input asp-for="AssessmentLink" class="form-control" />
-                    <span asp-validation-for="AssessmentLink" class="text-danger"></span>
+                    <label asp-for="AssessmentLink" class="form-label"></label>
+                    <input asp-for="AssessmentLink" class="form-control rounded-pill" />
+                    <span asp-validation-for="AssessmentLink" class="text-danger small"></span>
                 </div>
+
                 <div class="mb-3">
-                    <label asp-for="MaxScore" class="control-label"></label>
-                    <input asp-for="MaxScore" class="form-control" type="number" />
-                    <span asp-validation-for="MaxScore" class="text-danger"></span>
+                    <label asp-for="MaxScore" class="form-label"></label>
+                    <input asp-for="MaxScore" type="number" class="form-control rounded-pill" />
+                    <span asp-validation-for="MaxScore" class="text-danger small"></span>
                 </div>
-                <div class="form-group">
-                    <label asp-for="ClassGroupId" class="control-label"></label>
-                    <select asp-for="ClassGroupId" class="form-control" asp-items="@Model.ClassGroupList" id="ClassGroupId"></select>
+
+                <div class="mb-3">
+                    <label asp-for="ClassGroupId" class="form-label"></label>
+                    <select asp-for="ClassGroupId" id="ClassGroupId" class="form-select rounded-pill" asp-items="@Model.ClassGroupList"></select>
+                    <span asp-validation-for="ClassGroupId" class="text-danger small"></span>
                 </div>
-                <div class="form-group">
-                    <label asp-for="LectureId" class="control-label"></label>
-                    <select asp-for="LectureId" class="form-control" asp-items="@Model.LectureList" id="LectureId"></select>
+
+                <div class="mb-3">
+                    <label asp-for="LectureId" class="form-label"></label>
+                    <select asp-for="LectureId" id="LectureId" class="form-select rounded-pill" asp-items="@Model.LectureList"></select>
+                    <span asp-validation-for="LectureId" class="text-danger small"></span>
                 </div>
-                <div class="md-3 mt-3">
-                    <input type="submit" value="Edit" class="btn btn-primary" />
+
+                <div class="d-flex justify-content-center mt-4">
+                    <button type="submit" class="btn btn-outline-primary px-4 rounded-pill shadow-sm">
+                        <i class="bi bi-check-circle me-2"></i> Edit
+                    </button>
                 </div>
             </form>
         </div>
     </div>
-
 </div>
 
 @section Scripts {
@@ -71,7 +87,7 @@
                         data: { classGroupId: classGroupId },
                         success: function (data) {
                             var lectureSelect = $('#LectureId');
-                            lectureSelect.empty(); // امسح الخيارات القديمة
+                            lectureSelect.empty();
                             lectureSelect.append($('<option>').val('').text('Select Lecture'));
                             $.each(data, function (i, lecture) {
                                 lectureSelect.append($('<option>').val(lecture.lectureId).text(lecture.title));
@@ -93,3 +109,29 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
+
+<style>
+    .chart-header {
+        background: linear-gradient(to right, #0d6efd, #6610f2);
+        color: white;
+        padding: 12px 20px;
+        font-size: 1.2rem;
+        font-weight: bold;
+        border-radius: 12px;
+    }
+
+    .form-label {
+        font-weight: 500;
+        color: black;
+    }
+
+    .form-container {
+        background-color: #ffffff;
+    }
+
+    .form-control,
+    .form-select {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+</style>

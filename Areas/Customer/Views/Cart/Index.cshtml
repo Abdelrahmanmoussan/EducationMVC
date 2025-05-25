@@ -1,0 +1,55 @@
+﻿@* @model IdentityText.Models.Cart *@
+
+@* @{ *@
+@*     ViewData["Title"] = "My Cart"; *@
+@* } *@
+
+@* <h2 class="mb-4">🛒 My Cart</h2> *@
+
+@* @if (Model.Items != null && Model.Items.Any()) *@
+@* { *@
+@*     <table class="table table-bordered table-striped"> *@
+@*         <thead class="table-dark"> *@
+@*             <tr> *@
+@*                 <th>Class Name</th> *@
+@*                 <th>Price</th> *@
+@*                 <th>Quantity</th> *@
+@*                 <th>Subtotal</th> *@
+@*                 <th></th> *@
+@*             </tr> *@
+@*         </thead> *@
+@*         <tbody> *@
+@*             @foreach (var item in Model.Items) *@
+@*             { *@
+@*                 <tr> *@
+@*                     <td>@item.ClassName</td> *@
+@*                     <td>@item.Price.ToString("C")</td> *@
+@*                     <td>@item.Quantity</td> *@
+@*                     <td>@(item.Price * item.Quantity).ToString("C")</td> *@
+@*                     <td> *@
+@*                         <form asp-action="RemoveFromCart" method="post"> *@
+@*                             <input type="hidden" name="classGroupId" value="@item.ClassGroupId" /> *@
+@*                             <button type="submit" class="btn btn-danger btn-sm">Remove</button> *@
+@*                         </form> *@
+@*                     </td> *@
+@*                 </tr> *@
+@*             } *@
+@*         </tbody> *@
+@*         <tfoot> *@
+@*             <tr> *@
+@*                 <td colspan="3" class="text-end fw-bold">Total:</td> *@
+@*                 <td colspan="2" class="fw-bold text-success">@Model.TotalPrice.ToString("C")</td> *@
+@*             </tr> *@
+@*         </tfoot> *@
+@*     </table> *@
+
+@*     <form asp-action="ClearCart" method="post" class="d-inline"> *@
+@*         <button type="submit" class="btn btn-warning">Clear Cart</button> *@
+@*     </form> *@
+
+@*     <a asp-area="Customer" asp-controller="Payment" asp-action="Checkout" class="btn btn-success">Proceed to Checkout</a> *@
+@* } *@
+@* else *@
+@* { *@
+@*     <div class="alert alert-info">Your cart is empty.</div> *@
+@* } *@
