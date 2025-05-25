@@ -34,14 +34,14 @@ namespace IdentityText.Areas.Customer.Controllers
             var allTeachers =  _teacherRepository.GetAllWithIncludesAsync(include: q => q.Include(a => a.ApplicationUser).Include(l => l.Subject)); // تأكد انه بيعمل Include(ApplicationUser) داخليًا
             var popularTeachers = allTeachers
                 .OrderByDescending(t => t.Rating) // لازم يكون عندك خاصية Rating
-                .Take(5)
+                .Take(6)
                 .ToList();
 
             // جلب الكورسات (Include داخلي من GetWithFullIncludes)
             var allCourses = _classGroupRepository.GetWithFullIncludes(); // تأكد انه بيعمل Include لـ Teacher و ApplicationUser
             var popularCourses = allCourses
                 .OrderByDescending(c => c.Enrollments.Count)
-                .Take(5)
+                .Take(6)
                 .ToList();
 
             var portfolio = popularCourses;

@@ -1,4 +1,4 @@
-/**
+﻿/**
 * Template Name: Maxim
 * Template URL: https://bootstrapmade.com/maxim-free-onepage-bootstrap-theme/
 * Updated: Aug 07 2024 with Bootstrap v5.3.3
@@ -203,7 +203,7 @@ h6 {
 
   .navmenu>ul>li {
     white-space: nowrap;
-    padding: 15px 14px;
+    padding: 10px 9px;
   }
 
   .navmenu>ul>li:last-child {
@@ -748,15 +748,15 @@ section,
   position: relative;
 }
 
-.section-title h2 {
-  font-size: 32px;
-  font-weight: 300;
-  margin-bottom: 15px;
-}
+    .section-title h2 {
+        font-size: 32px;
+        font-weight: 300;
+        margin-bottom: 15px;
+    }
 
     .section-title p {
         margin-bottom: 0;
-        color: #1bac91;
+        color: var(--heading-color);
     }
 
 /*--------------------------------------------------------------
@@ -2219,7 +2219,7 @@ section,
     position: relative;
 }
 
-    .section-title h2 {
+/*    .section-title h2 {
         font-size: 13px;
         letter-spacing: 1px;
         font-weight: 700;
@@ -2231,7 +2231,7 @@ section,
         text-transform: uppercase;
         border-radius: 50px;
         font-family: var(--default-font);
-    }
+    }*/
 
     .section-title div {
         color: var(--heading-color);
@@ -2646,74 +2646,6 @@ section,
         transform: scale(1.1);
     }
 
-/*--------------------------------------------------------------
-# Team Section
---------------------------------------------------------------*/
-.team .member {
-    background-color: var(--surface-color);
-    box-shadow: 0px 2px 25px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    border-radius: 15px;
-    padding: 15px;
-    overflow: hidden;
-}
-
-    .team .member img {
-        border-radius: 15px;
-        overflow: hidden;
-    }
-
-    .team .member .member-content {
-        padding: 0 20px 30px 20px;
-    }
-
-    .team .member h4 {
-        font-weight: 700;
-        margin-top: 16px;
-        margin-bottom: 2px;
-        font-size: 20px;
-    }
-
-    .team .member span {
-        font-style: italic;
-        display: block;
-        font-size: 14px;
-        color: color-mix(in srgb, var(--default-color), transparent 40%);
-    }
-
-    .team .member .social {
-        margin-top: 15px;
-        margin-bottom: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: space-around;
-    }
-
-        .team .member .social a {
-            color: color-mix(in srgb, var(--default-color), transparent 60%);
-            transition: 0.3s;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid color-mix(in srgb, var(--default-color), transparent 60%);
-        }
-
-            .team .member .social a:hover {
-                color: var(--accent-color);
-                border-color: var(--accent-color);
-            }
-
-        .team .member .social i {
-            font-size: 18px;
-            margin: 0 2px;
-        }
-
-/*--------------------------------------------------------------
-# Testimonials Section
---------------------------------------------------------------*/
 .testimonials {
     padding: 80px 0;
     position: relative;
@@ -3434,31 +3366,7 @@ section,
         color: var(--accent-color);
     }
 
-/*--------------------------------------------------------------
-# Starter Section Section
---------------------------------------------------------------*/
-.starter-section {
-    /* Add your styles here */
-}
 
 
-.course-card {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.course-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
-}
-
-.section-title h2 {
-    font-weight: 800;
-    color: #0d6efd;
-}
-
-.section-title p span.description-title {
-    color: #0d6efd;
-    font-weight: 600;
-}
 
 

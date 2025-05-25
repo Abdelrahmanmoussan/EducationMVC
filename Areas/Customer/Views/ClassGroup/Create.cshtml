@@ -1,0 +1,213 @@
+﻿@model IdentityText.Models.ViewModel.ClassGroupVM
+
+@{
+    ViewData["Title"] = "Create Class Group";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Header Card -->
+            <div class="card-header-gradient rounded-top-4 py-4">
+                <h2 class="h3 mb-0 text-center text-white">
+                    <i class="bi bi-people-fill me-2"></i>Create New Class Group
+                </h2>
+            </div>
+
+            <!-- Form Card -->
+            <div class="card shadow-lg rounded-bottom-4 border-0">
+                <div class="card-body p-5">
+                    <form asp-action="Create" method="post" class="needs-validation" novalidate>
+                        <div asp-validation-summary="All" class="alert alert-danger"></div>
+
+                        <!-- Form Grid -->
+                        <div class="row g-4">
+                            <!-- Left Column -->
+                            <div class="col-md-6">
+                                <!-- Title -->
+                                <div class="form-floating">
+                                    <input asp-for="Title" class="form-control form-control-lg"
+                                           placeholder="Class Title" />
+                                    <label asp-for="Title" class="form-label"></label>
+                                    <span asp-validation-for="Title" class="invalid-feedback"></span>
+                                </div>
+
+                                <!-- Location -->
+                                <div class="form-floating mt-4">
+                                    <input asp-for="Location" class="form-control form-control-lg"
+                                           placeholder="Location" />
+                                    <label asp-for="Location" class="form-label"></label>
+                                    <span asp-validation-for="Location" class="invalid-feedback"></span>
+                                </div>
+
+                                <!-- Price -->
+                                <div class="form-floating mt-4">
+                                    <input asp-for="Price" class="form-control form-control-lg"
+                                           placeholder="Price" />
+                                    <label asp-for="Price" class="form-label"></label>
+                                    <span asp-validation-for="Price" class="invalid-feedback"></span>
+                                </div>
+                            </div>
+
+                            <!-- Right Column -->
+                            <div class="col-md-6">
+                                <!-- Date Picker -->
+                                <div class="form-group">
+                                    <label class="form-label text-muted small">Course Dates</label>
+                                    <div class="input-daterange">
+                                        <div class="form-floating mb-3">
+                                            <input asp-for="StartDate" type="date"
+                                                   class="form-control form-control-lg" />
+                                            <label asp-for="StartDate"></label>
+                                        </div>
+                                        <div class="form-floating">
+                                            <input asp-for="EndDate" type="date"
+                                                   class="form-control form-control-lg" />
+                                            <label asp-for="EndDate"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Dropdown Section -->
+                        <div class="row g-4 mt-2">
+                            <div class="col-md-4">
+                                <div class="form-floating">
+                                    <select asp-for="AcademicYearId" class="form-select form-select-lg"
+                                            asp-items="@Model.AcademicYearsList">
+                                        <option value="">Select Year</option>
+                                    </select>
+                                    <label asp-for="AcademicYearId"></label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4"> 
+                                 <div class="form-floating"> 
+                                    <input asp-for="SubjectId"
+                                           class="form-control form-control-lg" value="@Model.SubjectId" readonly />
+                                    <label asp-for="SubjectId"></label> 
+                                 </div> 
+                             </div>
+
+                             <div class="col-md-4"> 
+                                 <div class="form-floating">
+                                    <input asp-for="TeacherId"
+                                           class="form-control form-control-lg" value="@Model.TeacherId" readonly />
+                                     <label asp-for="TeacherId"></label> 
+                        
+                                 </div> 
+                             </div> 
+                         </div> 
+
+                        <!-- Form Actions -->
+                        <div class="d-flex justify-content-between mt-5">
+                            <button type="submit" class="btn btn-primary btn-lg px-5 rounded-pill">
+                                <i class="bi bi-save me-2"></i>Create Class
+                            </button>
+                            <a asp-controller="Home" asp-action="Index"
+                               class="btn btn-outline-secondary btn-lg px-4 rounded-pill">
+                                <i class="bi bi-x-circle me-2"></i>Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Styles {
+<style>
+    .card-header-gradient {
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-control-lg {
+        font-size: 1.1rem;
+        padding: 1.2rem 1.5rem;
+        border: 2px solid #e2e8f0;
+        transition: all 0.3s ease;
+    }
+
+        .form-control-lg:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+
+    .form-floating label {
+        color: #64748b;
+        font-weight: 500;
+    }
+
+    .input-daterange {
+        background: #f8fafc;
+        padding: 1.5rem;
+        border-radius: 0.75rem;
+        border: 2px solid #f1f5f9;
+    }
+
+    .form-select-lg {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+        background-position: right 1.25rem center;
+        background-size: 16px 12px;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        border: none;
+        transition: transform 0.2s ease;
+    }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+        }
+</style>
+}
+    
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            function loadTeachers(subjectId, selectedTeacherId) {
+                const teacherSelect = $('#teacherSelect');
+                const loadingSpinner = $('#teacherLoading');
+
+                teacherSelect.prop('disabled', true);
+                loadingSpinner.removeClass('d-none');
+
+                teacherSelect.empty().append('<option value="">-- Select Teacher --</option>');
+
+                if (subjectId) {
+                    $.ajax({
+                        url: '@Url.Action("GetTeachersBySubject")',
+                        data: { subjectId: subjectId },
+                        success: function (data) {
+                            data.forEach(teacher => {
+                                teacherSelect.append(
+                                    $('<option></option>').val(teacher.teacherId)
+                                        .text(teacher.fullName)
+                                        .prop('selected', teacher.teacherId == selectedTeacherId)
+                                );
+                            });
+                        },
+                        complete: function () {
+                            teacherSelect.prop('disabled', false);
+                            loadingSpinner.addClass('d-none');
+                        }
+                    });
+                }
+            }
+
+            $('#subjectSelect').change(function () {
+                loadTeachers($(this).val(), null);
+            });
+
+            loadTeachers($('#subjectSelect').val(), '@Model.TeacherId');
+        });
+    </script>
+}
