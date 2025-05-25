@@ -31,7 +31,7 @@ namespace IdentityText.Areas.Customer.Controllers
             ViewBag.ContactUs = "يمكنك التواصل معنا على البريد الإلكتروني: info@example.com أو عبر الهاتف 0123456789";
 
             // جلب المدرسين مع ApplicationUser
-            var allTeachers = await _teacherRepository.GetAllWithIncludesAsync(); // تأكد انه بيعمل Include(ApplicationUser) داخليًا
+            var allTeachers =  _teacherRepository.GetAllWithIncludesAsync(include: q => q.Include(a => a.ApplicationUser).Include(l => l.Subject)); // تأكد انه بيعمل Include(ApplicationUser) داخليًا
             var popularTeachers = allTeachers
                 .OrderByDescending(t => t.Rating) // لازم يكون عندك خاصية Rating
                 .Take(5)
@@ -59,6 +59,7 @@ namespace IdentityText.Areas.Customer.Controllers
         public async Task<IActionResult> TeacherDetails(int TeacherId)
         {
             var teacher = await _teacherRepository.GetByIdWithIncludesAsync(TeacherId);
+            var related = _teacherRepository.GetAllWithIncludesAsync(filter:e=>e.SubjectId == teacher.SubjectId ,include: q => q.Include(a => a.ApplicationUser).Include(l => l.Subject));
 
             if (teacher == null)
             {
@@ -71,7 +72,10 @@ namespace IdentityText.Areas.Customer.Controllers
                 ClassGroups = (List<ClassGroup>)_classGroupRepository.GetWithFullIncludes(c => c.TeacherId == teacher.TeacherId)
             };
 
-
+            ViewBag.relatedTeachers = related
+                .OrderByDescending(t => t.Rating)
+                .Take(5)
+                .ToList();
             return View(model);
         }
 

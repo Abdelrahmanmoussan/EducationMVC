@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,12 +26,36 @@ namespace IdentityText.Repository
             return await dbContext.Teachers.CountAsync();
         }
 
-        public async Task<IEnumerable<Teacher>> GetAllWithIncludesAsync()
+        //public async Task<IEnumerable<Teacher>> GetAllWithIncludesAsync()
+        //{
+        //    return await dbContext.Teachers
+        //        .Include(t => t.ApplicationUser)
+        //        .Include(t => t.Subject)
+        //        .ToListAsync();
+        //}
+        public IEnumerable<Teacher> GetAllWithIncludesAsync(
+            Expression<Func<Teacher, bool>>? filter = null,
+            Func<IQueryable<Teacher>, IQueryable<Teacher>>? include = null,
+            bool tracked = true)
         {
-            return await dbContext.Teachers
-                .Include(t => t.ApplicationUser)
-                .Include(t => t.Subject)
-                .ToListAsync();
+            IQueryable<Teacher> query = dbSet;
+
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+
+            if (include != null)
+            {
+                query = include(query);
+            }
+
+            if (!tracked)
+            {
+                query = query.AsNoTracking();
+            }
+
+            return query.ToList();
         }
 
         public async Task<Teacher?> GetByIdWithIncludesAsync(int id)

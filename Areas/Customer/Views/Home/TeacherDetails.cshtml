@@ -18,7 +18,7 @@
 
             </div>
             <div class="col-md-10">
-                <h2 class="mb-0">@Model.Teacher.ApplicationUser.FirstName</h2>
+                <h2 class="mb-0">@Model.Teacher.ApplicationUser.FirstName @Model.Teacher.ApplicationUser.LastName</h2>
                 <p class="text-muted mb-0"><i class="fas fa-envelope"></i> @Model.Teacher.ApplicationUser.Email</p>
                 <p class="text-muted"><i class="fas fa-phone-alt"></i> @Model.Teacher.ApplicationUser.PhoneNumber</p>
             </div>
@@ -37,9 +37,9 @@
                         <div class="card h-100 border-0 shadow-sm">
                             <div class="card-body">
                                 <h5 class="card-title"><i class="fas fa-users text-info"></i> @classGroup.Title</h5>
-                                <p class="card-text"><strong>AcademicYear:</strong> @classGroup.AcademicYearId</p>
-                                <p class="card-text"><strong>Section:</strong> @classGroup.Lectures</p>
-                                <p class="card-text"><strong>Schedule:</strong> @classGroup.StartDate</p>
+                                <p class="card-text"><strong>AcademicYear:</strong> @classGroup.AcademicYear.Name</p>
+                                <p class="card-text"><strong>Subject:@classGroup.Subject.Title</strong></p>
+                                <p class="card-text"><strong>Schedule:</strong> @classGroup.StartDate.ToString("dd/MM/yyyy")</p>
                             </div>
                         </div>
                     </div>
@@ -54,6 +54,42 @@
         }
     </div>
 </div>
+<!-- Related Teachers -->
+<hr class="my-5" />
 
+<h4 class="mb-3"><i class="fas fa-user-friends text-secondary"></i> Related Teachers</h4>
+@{
+    var relatedTeachers = ViewBag.relatedTeachers as List<IdentityText.Models.Teacher>;
+}
+@if (relatedTeachers != null && relatedTeachers.Any())
+{
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+    @foreach (var related in relatedTeachers)
+    {
+            <div class="col">
+                <div class="card h-100 border-0 shadow-sm text-center p-3">
+                    <img src="/images/@related.ApplicationUser.Photo"
+                         alt="@related.ApplicationUser.FirstName"
+                         class="rounded-circle mx-auto mb-3"
+                         style="width: 80px; height: 80px; object-fit: cover;" />
+                    <h6 class="card-title mb-1">@related.ApplicationUser.FirstName @related.ApplicationUser.LastName</h6>
+                    <p class="text-muted small mb-2">@related.ApplicationUser.Email</p>
+                    <a asp-area="Customer" asp-controller="Home" class="btn btn-sm btn-outline-primary" asp-action="TeacherDetails" asp-route-TeacherId="@related.TeacherId">View Details</a>
+
+                </div>
+      </div>
+        }
+    </div>
+}
+else
+{
+    <div class="alert alert-info">
+        <i class="fas fa-info-circle"></i> No related teachers to show.
+    </div>
+}
+
+
+
+<!-- FontAwesome CDN for icons -->
 <!-- FontAwesome CDN (add in _Layout.cshtml preferably) -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />

@@ -9,6 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
     <style>
         /* Base styles */
@@ -257,6 +258,7 @@
         <a href="/Admin/Home" class="navbar-brand">
             <i class="fa-solid fa-graduation-cap"></i> EduCenter
         </a>
+
         <div class="profile">
             <img src="/img/user.jpg" alt="User profile picture" />
             <div class="profile-info">
@@ -264,33 +266,38 @@
                 <small>System Manager</small>
             </div>
         </div>
+
         <nav class="nav flex-column">
-            <a href="/Admin/Home" class="nav-link active" aria-current="page">
+            <a href="/Admin/Home" class="nav-link active">
                 <i class="fas fa-tachometer-alt"></i> Dashboard
             </a>
 
-            <a class="nav-link dropdown-toggle" href="#" id="modelsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="fas fa-layer-group"></i> Models
+            <!-- Models Collapsible Menu -->
+            <a class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse" data-bs-target="#modelsMenu" role="button" aria-expanded="false" aria-controls="modelsMenu">
+                <span><i class="fas fa-layer-group me-2"></i> Models</span>
+                <i class="fas fa-chevron-down small"></i>
             </a>
-            <ul class="dropdown-menu" aria-labelledby="modelsDropdown">
-                <li><a href="/Admin/Student" class="dropdown-item">Students</a></li>
-                <li><a href="/Admin/Teacher" class="dropdown-item">Teachers</a></li>
-                <li><a href="/Admin/Subject" class="dropdown-item">Subjects</a></li>
-                <li><a href="/Admin/AcademicYear" class="dropdown-item">Academic Year</a></li>
-                <li><a href="/Admin/ClassGroup" class="dropdown-item">Class Groups</a></li>
-                <li><a href="/Admin/Lecture" class="dropdown-item">Lectures</a></li>
-                <li><a href="/Admin/Assessment" class="dropdown-item">Assessments</a></li>
-                <li><a href="/Admin/PrivateLesson" class="dropdown-item">Private Lesson</a></li>
-                <li><a href="/Admin/Grade" class="dropdown-item">Grades</a></li>
-            </ul>
+            <div class="collapse ps-4" id="modelsMenu">
+                <a class="nav-link" href="/Admin/Student">Students</a>
+                <a class="nav-link" href="/Admin/Teacher">Teachers</a>
+                <a class="nav-link" href="/Admin/Subject">Subjects</a>
+                <a class="nav-link" href="/Admin/AcademicYear">Academic Year</a>
+                <a class="nav-link" href="/Admin/ClassGroup">Class Groups</a>
+                <a class="nav-link" href="/Admin/Lecture">Lectures</a>
+                <a class="nav-link" href="/Admin/Assessment">Assessments</a>
+                <a class="nav-link" href="/Admin/PrivateLesson">Private Lesson</a>
+                <a class="nav-link" href="/Admin/Grade">Grades</a>
+            </div>
 
-            <a class="nav-link dropdown-toggle" href="#" id="configDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+
+            <!-- Configuration Collapsible Menu -->
+            <a class="nav-link" data-bs-toggle="collapse" href="#configMenu" role="button" aria-expanded="false" aria-controls="configMenu">
                 <i class="fas fa-cogs"></i> Configuration
             </a>
-            <ul class="dropdown-menu" aria-labelledby="configDropdown">
-                <li><a href="/Admin/Settings" class="dropdown-item">Settings</a></li>
-                <li><a href="/Admin/Users" class="dropdown-item">User Management</a></li>
-            </ul>
+            <div class="collapse ps-4" id="configMenu">
+                <a class="nav-link" href="/Admin/Settings">Settings</a>
+                <a class="nav-link" href="/Admin/Users">User Management</a>
+            </div>
         </nav>
     </div>
     <!-- Sidebar End -->
@@ -312,6 +319,15 @@
             sidebar.classList.toggle('collapsed');
         });
     </script>
+                <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
     @RenderSection("Scripts", required: false)
 </body>
 </html>

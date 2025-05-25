@@ -6,51 +6,91 @@
 }
 
 <!-- Hero Section -->
-<section class="hero text-center py-5 bg-primary text-white">
-    <div class="container">
-        <h1 class="display-4">Welcome to Our Education Platform</h1>
-        <p class="lead">Learn from the best teachers anytime, anywhere.</p>
-        <a href="/Courses" class="btn btn-light btn-lg mt-3">Explore Courses</a>
-    </div>
-</section>
+<section id="hero" class="hero section dark-background">
 
-<!-- Most Popular Teachers -->
-<section class="py-5">
-    <div class="container">
-        <h2 class="text-center mb-4">Most Popular Teachers</h2>
-        <div class="row">
-            @foreach (var teacher in Model.PopularTeachers)
-            {
-                <div class="col-md-4 mb-4">
-                        <a asp-area="Customer" asp-controller="Home" asp-action="TeacherDetails" asp-route-TeacherId="@teacher.TeacherId">
-                    <div class="card h-100">
-                            <img src="/images/@teacher.ApplicationUser.Photo" class="card-img-top" alt="@teacher.ApplicationUser.FirstName">
-                        <div class="card-body">
-                            <h5 class="card-title">@teacher.ApplicationUser.FirstName</h5>
-                            <p class="card-text">@teacher.Rating</p>
-                        </div>
-                    </div>
-                            </a>
-                </div>
-            }
+    <img src="assets/img/hero-bg.jpg" alt="" data-aos="fade-in">
+
+    <div class="container text-center" data-aos="fade-up" data-aos-delay="100">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <h2>Welcome to Our Education Center</h2>
+                <p>We are team of talented designers making websites with Bootstrap</p>
+                <a href="#about" class="btn-get-started">Get Started</a>
+            </div>
         </div>
     </div>
+
+</section>
+<!-- Team Section -->
+<section id="team" class="team section">
+
+    <!-- Section Title -->
+    <div class="container section-title">
+        <h2>Most Popular Teachers</h2>
+        <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+    </div><!-- End Section Title -->
+
+    <div class="container">
+
+        <div class="row gy-4">
+            @foreach (var teacher in Model.PopularTeachers)
+            {
+                <div class="col-xl-3 col-lg-4 col-md-6" >
+                    <div class="member">
+                        <img src="/images/@teacher.ApplicationUser.Photo" class="card-img-top" alt="@teacher.ApplicationUser.FirstName">
+                        <a asp-area="Customer" asp-controller="Home" asp-action="TeacherDetails" asp-route-TeacherId="@teacher.TeacherId">
+                            <div class="member-info">
+                                <div class="member-info-content">
+                                    <h4>@teacher.ApplicationUser.FirstName @teacher.ApplicationUser.LastName</h4>
+                                    <span>@teacher.Rating</span>
+                                </div>
+
+                                <div class="social">
+                                    <a href=""><i class="bi bi-twitter-x"></i></a>
+                                    <a href=""><i class="bi bi-facebook"></i></a>
+                                    <a href=""><i class="bi bi-instagram"></i></a>
+                                    <a href=""><i class="bi bi-linkedin"></i></a>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div><!-- End Team Member -->
+            }
+        </div>
+
+    </div>
+
 </section>
 
 <!-- Latest Courses -->
-<section class="py-5 bg-light">
-    <div class="container">
-        <h2 class="text-center mb-4">Latest Courses</h2>
-        <div class="row">
+<section id="why-us" class="py-5 bg-light">
+    <div class="container" data-aos="fade-up">
+        <!-- Section Title -->
+        <div class="text-center mb-5">
+            <h2 class="fw-bold display-5 text-primary">Latest Courses</h2>
+            <p class="text-muted fs-5">
+                <span>Check Out</span> <span class="fw-semibold text-dark">your course</span>
+            </p>
+        </div>
+
+        <!-- Courses Grid -->
+        <div class="row g-4">
             @foreach (var course in Model.PopularClassGroups)
             {
-                <div class="col-md-4 mb-4">
-                    <div class="card h-100">
-                        <img src="" class="card-img-top" alt="@course.Title">
-                        <div class="card-body">
-                            <h5 class="card-title">@course.Title</h5>
-                            <p class="card-text">@course.Price</p>
-                            <a href="/Courses/Details/@course.ClassGroupId" class="btn btn-primary">View Course</a>
+                <div class="col-lg-4 col-md-6">
+                    <div class="card border-0 shadow-lg h-100 course-card position-relative rounded-4 overflow-hidden">
+                        <div class="card-body p-4 d-flex flex-column justify-content-between">
+                            <div>
+                                <span class="badge bg-success rounded-pill px-3 py-2 mb-2 fs-6">
+                                    @course.Price EGP
+                                </span>
+                                <h5 class="card-title fw-bold text-dark">@course.Title</h5>
+                                <p class="mb-1 text-muted"><i class="fas fa-book me-2 text-info"></i>@course.Subject.Title</p>
+                                <p class="text-muted"><i class="fas fa-calendar-alt me-2 text-warning"></i>@course.AcademicYear.Name</p>
+                            </div>
+                            <a href="Customer/ClassGroup/Details/@course.ClassGroupId" class="btn btn-primary mt-3 w-100 rounded-pill">
+                                View Course <i class="fas fa-arrow-right ms-2"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -59,26 +99,7 @@
     </div>
 </section>
 
-<!-- Portfolio Section -->
-<section class="py-5">
-    <div class="container">
-        <h2 class="text-center mb-4">Our Portfolio</h2>
-        <div class="row">
-            @foreach (var item in Model.Portfolio)
-            {
-                <div class="col-md-4 mb-4">
-                    <div class="card h-100">
-                        <img src="" class="card-img-top" alt="@item.Title">
-                        <div class="card-body">
-                            <h5 class="card-title">@item.Title</h5>
-                            <p class="card-text">@item.Location</p>
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
-    </div>
-</section>
+<!-- /Why Us Section -->
 
 <section class="py-5">
     <div class="container">

@@ -21,8 +21,8 @@ namespace IdentityText.Areas.Admin.Controllers
 
             public async Task<IActionResult> Index()
             {
-                var teachers = await _teacherRepository.GetAllWithIncludesAsync();
-                return View(teachers);
+                //var teachers = await _teacherRepository.GetAllWithIncludesAsync();
+                return View();
             }
 
             public async Task<IActionResult> Details(int id)
