@@ -19,10 +19,10 @@ namespace IdentityText.Areas.Admin.Controllers
                 _subjectRepository = subjectRepository;
         }
 
-            public async Task<IActionResult> Index()
+            public  IActionResult Index()
             {
-                //var teachers = await _teacherRepository.GetAllWithIncludesAsync();
-                return View();
+                var teachers =  _teacherRepository.Get();
+            return View(teachers);
             }
 
             public async Task<IActionResult> Details(int id)
@@ -52,18 +52,26 @@ namespace IdentityText.Areas.Admin.Controllers
                 return View(teacher);
             }
 
+            [HttpGet]
             public IActionResult Edit(int id)
             {
-                var teacher =  _teacherRepository.GetOne(e => e.TeacherId == id);
-                if (teacher == null) return NotFound();
-                return View(teacher);
+                    var teacher =  _teacherRepository.GetOne(e => e.TeacherId == id, includes: [a=>a.ApplicationUser, e=>e.Subject]);
+            if (ModelState.IsValid)
+            {
+                var subjects = _subjectRepository.Get();
+                ViewBag.SubjectId = new SelectList(subjects, "SubjectId", "Title", teacher.SubjectId);
+            }
+                    if (teacher == null) return NotFound();
+                    return View(teacher);
             }
 
             [HttpPost]
             [ValidateAntiForgeryToken]
             public IActionResult Edit(int id, Teacher teacher)
             {
-                if (id != teacher.TeacherId) return NotFound();
+            var existingTeacher = _teacherRepository.GetOne(e => e.TeacherId == id);
+
+            if (id != teacher.TeacherId) return NotFound();
 
                 if (ModelState.IsValid)
                 {
@@ -76,6 +84,11 @@ namespace IdentityText.Areas.Admin.Controllers
             public IActionResult Delete(int id)
             {
                 var teacher =  _teacherRepository.GetOne(e=>e.TeacherId == id);
+            if (teacher != null)
+            {
+                _teacherRepository.Delete(teacher);
+                return RedirectToAction(nameof(Index));
+            }
                 if (teacher == null) return NotFound();
                 return View(teacher);
             }
