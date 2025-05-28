@@ -74,11 +74,11 @@ namespace IdentityText.Data
                .HasForeignKey(a => a.StudentId)
                .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<Payment>()
-                .HasOne(p => p.Teacher)
-                .WithMany(t => t.Payments)
-                .HasForeignKey(p => p.TeacherId)
-                .OnDelete(DeleteBehavior.Restrict);
+            //builder.Entity<Payment>()
+            //    .HasOne(p => p.Teacher)
+            //    .WithMany(t => t.Payments)
+            //    .HasForeignKey(p => p.TeacherId)
+            //    .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<ClassGroup>()
                 .HasOne(cg => cg.Teacher)

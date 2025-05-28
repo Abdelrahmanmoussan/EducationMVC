@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using IdentityText.Models;
 
 namespace IdentityText.Areas.Customer.Controllers
 {
@@ -10,15 +12,23 @@ namespace IdentityText.Areas.Customer.Controllers
     public class CartController : Controller
     {
         private readonly ICartRepository _cartRepository;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public CartController(ICartRepository cartRepository)
+        public CartController(ICartRepository cartRepository, UserManager<ApplicationUser> userManager)
         {
             _cartRepository = cartRepository;
+             _userManager = userManager;
         }
 
         public async Task<IActionResult> Index()
         {
-            var userId = User.Identity.Name;
+            
+            var currentUser = await _userManager.GetUserAsync(User);
+            var userId = currentUser.Id;
+            if (currentUser == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             var cart = await _cartRepository.GetCartByUserIdAsync(userId);
             return View(cart);
         }

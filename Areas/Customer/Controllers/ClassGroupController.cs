@@ -36,6 +36,10 @@ namespace IdentityText.Areas.Customer.Controllers
         public IActionResult Details(int id)
         {
             var classGroup = _classGroupRepository.GetWithFullIncludes(e=>e.ClassGroupId == id).FirstOrDefault();
+            if(classGroup == null)
+            {
+                return NotFound();
+            }
             return View(classGroup);
         }
 
@@ -60,23 +64,6 @@ namespace IdentityText.Areas.Customer.Controllers
 
             return View(model);
         }
-
-
-        //[HttpGet]
-        //public IActionResult GetTeachersBySubject(int subjectId)
-        //{
-        //    var teachers = _teacherRepository.Get(
-        //        filter: t => t.SubjectId == subjectId,
-        //        includes: new Expression<Func<Teacher, object>>[] { t => t.ApplicationUser }
-        //    )
-        //    .Select(t => new
-        //    {
-        //        teacherId = t.TeacherId,
-        //        fullName = t.ApplicationUser.FirstName + " " + t.ApplicationUser.LastName
-        //    });
-        //    return Json(teachers);
-        //}
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -105,5 +92,7 @@ namespace IdentityText.Areas.Customer.Controllers
             model.TeacherList = await _teacherRepository.SelectListTeacherAsync();
             return View(model);
         }
+
+
     }
 }

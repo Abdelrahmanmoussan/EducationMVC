@@ -23,7 +23,8 @@ namespace IdentityText.Enums
     {
         Active,
         Canceled,
-        Completed
+        Completed,
+        PendingPayment
     }
 
     public enum AttendanceStatus
@@ -38,17 +39,23 @@ namespace IdentityText.Enums
         Expired
     }
 
-    public enum PaymentStatus
-    {
-        Paid,
-        Pending
-    }
-
     public enum PaymentMethod
     {
         Cash,
-        Visa
+        Visa,
+        MasterCard,
+        BankTransfer,
+        Other
     }
+
+    public enum PaymentStatus
+    {
+        Pending,
+        Paid,
+        Failed,
+        Cancelled
+    }
+
 
     public enum TeacherStatus
     {

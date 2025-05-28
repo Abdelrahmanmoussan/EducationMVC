@@ -61,20 +61,6 @@ namespace IdentityText.Repository
             dbSet.AddRange(entities);
             dbContext.SaveChanges();
         }
-
-        //public void Edit(T entity)
-        //{
-        //    dbSet.Update(entity);
-        //    dbContext.SaveChanges();
-        //}
-
-        //public void Delete(T entity)
-        //{
-        //    dbSet.Remove(entity);
-        //    dbContext.SaveChanges();
-
-        //}
-
         public void Delete(IEnumerable<T> entities)
         {
             dbSet.RemoveRange(entities);

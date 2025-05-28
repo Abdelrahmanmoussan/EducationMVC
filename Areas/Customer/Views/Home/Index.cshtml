@@ -121,3 +121,12 @@
         </form>
     </div>
 </section>
+
+@section Scripts {
+    @if (TempData["notification"] != null)
+    {
+        <script>
+            toastr.success('@TempData["notification"]');
+        </script>
+    }
+}

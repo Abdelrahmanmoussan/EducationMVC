@@ -16,9 +16,8 @@ namespace IdentityText.Repository
 
         public async Task<Cart> GetCartByUserIdAsync(string userId)
         {
-            return await _context.Carts
-                .Include(c => c.Items)
-                    .ThenInclude(i => i.ClassGroup)
+            return await _context.Carts.Include(c => c.Items)
+                 .ThenInclude(i => i.ClassGroup)
                 .FirstOrDefaultAsync(c => c.UserId == userId);
         }
 

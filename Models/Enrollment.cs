@@ -31,7 +31,7 @@ namespace IdentityText.Models
         [Required]
         public EnrollmentStatus EnrollmentStatus { get; set; } 
 
-        public string Notes { get; set; }
+        public string? Notes { get; set; }
         [BindNever]
         public ICollection<Attendance> Attendances { get; set; }
     }
