@@ -27,27 +27,32 @@
                             </h5>
 
                             <p class="text-muted mb-2">
+                                <i class="bi bi-currency-dollar me-1"></i>
+                                <strong>Price : </strong> @enrollment.ClassGroup.Price
+                            </p>
+
+                            <p class="text-muted mb-2">
                                 <i class="bi bi-calendar-event me-1"></i>
-                                <strong>تاريخ التسجيل:</strong> @enrollment.EnrollmentDate.ToString("dd MMM yyyy")
+                                <strong>Enroll Data : </strong> @enrollment.EnrollmentDate.ToString("dd MMM yyyy")
                             </p>
 
                             <div class="mb-3">
-                                <strong>الحالة:</strong>
+                                <strong>Status : </strong>
                                 @switch (enrollment.EnrollmentStatus)
                                 {
                                     case IdentityText.Enums.EnrollmentStatus.PendingPayment:
                                         <span class="badge status-badge bg-warning text-dark">
-                                            <i class="bi bi-clock-history me-1"></i> انتظار الدفع
+                                            <i class="bi bi-clock-history me-1"></i> Waiting for payment
                                         </span>
                                         break;
                                     case IdentityText.Enums.EnrollmentStatus.Active:
                                         <span class="badge status-badge bg-success">
-                                            <i class="bi bi-check-circle me-1"></i> نشط
+                                            <i class="bi bi-check-circle me-1"></i> Active
                                         </span>
                                         break;
                                     case IdentityText.Enums.EnrollmentStatus.Canceled:
                                         <span class="badge status-badge bg-danger">
-                                            <i class="bi bi-x-circle me-1"></i> ملغي
+                                            <i class="bi bi-x-circle me-1"></i> Canceled
                                         </span>
                                         break;
                                     default:
@@ -58,19 +63,19 @@
 
                             <p class="text-secondary small">
                                 <i class="bi bi-chat-left-text me-1"></i>
-                                <strong>ملاحظات:</strong> @enrollment.Notes
+                                <strong>Notes : </strong> @enrollment.Notes
                             </p>
                         </div>
 
                         <div class="d-flex justify-content-center gap-3 mt-4">
                             <button type="button" class="btn btn-glow-danger btn-sm rounded-pill" onclick="confirmDelete(@enrollment.EnrollmentId)">
-                                <i class="bi bi-trash"></i> حذف
+                                <i class="bi bi-trash"></i> Delete
                             </button>
 
                             @if (enrollment.EnrollmentStatus == IdentityText.Enums.EnrollmentStatus.PendingPayment)
                             {
                                 <a asp-action="ProcessPayment" asp-route-id="@enrollment.EnrollmentId" class="btn btn-glow-success btn-sm rounded-pill">
-                                    <i class="bi bi-credit-card"></i> دفع
+                                    <i class="bi bi-credit-card"></i> Pay
                                 </a>
                             }
                         </div>

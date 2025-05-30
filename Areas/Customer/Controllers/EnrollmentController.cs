@@ -1,9 +1,12 @@
 ﻿using IdentityText.Enums;
 using IdentityText.Models;
+using IdentityText.Models.ViewModel;
 using IdentityText.Repository.IRepository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Stripe.Checkout;
+using Stripe.Climate;
 using System.Linq.Expressions;
 
 namespace IdentityText.Areas.Customer.Controllers
@@ -17,13 +20,16 @@ namespace IdentityText.Areas.Customer.Controllers
         private readonly IPaymentRepository _paymentRepository;
         private readonly IStudentRepository _studentRepository;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly StripePaymentService _stripePaymentService;
+
 
         public EnrollmentController(
             IClassGroupRepository clasGroupRepository,
             IEnrollmentRepository enrollmentRepository,
             IPaymentRepository paymentRepository,
             IStudentRepository studentRepository,
-            UserManager<ApplicationUser> userManager
+            UserManager<ApplicationUser> userManager,
+            StripePaymentService stripePaymentService
             )
         {
             _clasGroupRepository = clasGroupRepository;
@@ -31,6 +37,7 @@ namespace IdentityText.Areas.Customer.Controllers
             _enrollmentRepository = enrollmentRepository;
             _paymentRepository = paymentRepository;
             _studentRepository = studentRepository;
+            _stripePaymentService = stripePaymentService;
         }
 
         public IActionResult Index()
@@ -38,7 +45,8 @@ namespace IdentityText.Areas.Customer.Controllers
             var userId = _userManager.GetUserId(User);
 
             var enrollments = _enrollmentRepository
-                .Get(e => e.Student.UserId == userId, includes: [e => e.ClassGroup, e => e.Student.ApplicationUser])
+                .Get(e => e.Student.UserId == userId,
+                includes: [e => e.ClassGroup, e => e.Student.ApplicationUser])
                 .ToList();
             if (enrollments == null || !enrollments.Any())
             {
@@ -97,15 +105,55 @@ namespace IdentityText.Areas.Customer.Controllers
             return RedirectToAction("Index");
         }
 
+
+
+        [HttpGet]
         public IActionResult ProcessPayment(int id)
         {
-            var payment = _paymentRepository.GetOne(p => p.EnrollmentId == id);
+            var payment = _paymentRepository.GetOne(
+                p => p.EnrollmentId == id,
+                includes:[ p => p.Enrollment, p => p.Enrollment.ClassGroup]
+                );
+
             if (payment == null)
             {
                 TempData["notification"] = "عملية الدفع غير موجودة.";
-                return View(payment);
+                return RedirectToAction("Index", "Enrollment"); // إعادة التوجيه لصفحة الكورسات أو صفحة مناسبة
             }
-            return View(payment);
+            if (payment.Enrollment == null || payment.Enrollment.ClassGroup == null)
+            {
+                TempData["notification"] = "بيانات التسجيل غير مكتملة.";
+                return RedirectToAction("Index", "Enrollment");
+            }
+            var options = new SessionCreateOptions
+            {
+                PaymentMethodTypes = new List<string> { "card" },
+                LineItems = new List<SessionLineItemOptions>
+            {
+            new SessionLineItemOptions
+            {
+                PriceData = new SessionLineItemPriceDataOptions
+                {
+                    Currency = "EGP",
+                    ProductData = new SessionLineItemPriceDataProductDataOptions
+                    {
+                        Name = payment.Enrollment.ClassGroup.Title,
+                        Description = $"السنة الدراسية: {payment.Enrollment.ClassGroup.AcademicYear?.Name ?? "غير محدد"}  | بداية الكورس: {payment.Enrollment.ClassGroup.StartDate.ToString("yyyy-MM-dd")} | طريقة الدفع: {payment.PaymentMethod}"
+                    },
+                    UnitAmount = (long)(payment.Amount * 100), 
+                     },
+                     Quantity = 1,
+                 }
+                },
+                    Mode = "payment",
+                    SuccessUrl = $"{Request.Scheme}://{Request.Host}/Customer/Enrollment/ConfirmPayment?paymentId={payment.PaymentId}",
+                    CancelUrl = $"{Request.Scheme}://{Request.Host}/Customer/Enrollment/Cancel",
+                };
+
+            var service = new SessionService();
+            var session = service.Create(options);
+
+            return Redirect(session.Url);
         }
 
         [HttpPost]
@@ -123,13 +171,16 @@ namespace IdentityText.Areas.Customer.Controllers
             _paymentRepository.Commit();
 
             var enrollment = _enrollmentRepository.GetOne(e => e.EnrollmentId == payment.EnrollmentId);
-            enrollment.EnrollmentStatus = EnrollmentStatus.Active;
-            _enrollmentRepository.Edit(enrollment);
-            _enrollmentRepository.Commit();
-
+            if(enrollment != null) {
+                enrollment.EnrollmentStatus = EnrollmentStatus.Active;
+                _enrollmentRepository.Edit(enrollment);
+                _enrollmentRepository.Commit();
+            }
             TempData["notification"] = "تم تأكيد الدفع والتسجيل بنجاح.";
             return RedirectToAction(actionName:"Index", controllerName:"Home");
         }
+
+
         public IActionResult Delete(int id)
         {
             var enrollment = _enrollmentRepository.GetOne(e => e.EnrollmentId == id);

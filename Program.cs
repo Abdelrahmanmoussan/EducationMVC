@@ -1,10 +1,10 @@
-using IdentityText.Data;
+﻿using IdentityText.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using IdentityText.Models;
 using IdentityText.Repository.IRepository;
 using IdentityText.Repository;
-using IdentityText.Services;
+//using IdentityText.Services;
 using IdentityText.Utility; 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -42,12 +42,18 @@ namespace IdentityText
             builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
             builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
             builder.Services.AddScoped<IEnrollmentRepository, EnrollmentRepository>();
-            builder.Services.AddScoped<ICartRepository, CartRepository>();
-            builder.Services.AddScoped<IOrderRepository, OrderRepository>();
             builder.Services.AddScoped<IFavoriteRepository, FavoriteRepository>();
 
+
+            // قراءة إعدادات Stripe من appsettings.json
             builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
-            builder.Services.AddScoped<PaymentService>();
+
+            // تعيين مفتاح Stripe السري مباشرة
+            Stripe.StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
+
+            // تسجيل خدمة الدفع الخاصة بك في DI
+            builder.Services.AddScoped<StripePaymentService>();
+
 
             var app = builder.Build();
 

@@ -1,46 +1,36 @@
-﻿using IdentityText.Models;
-using Stripe.Checkout;
-using Stripe;
+﻿using Stripe.Checkout;
 
-namespace IdentityText.Services
+public class StripePaymentService
 {
-    public class PaymentService
+    public Session CreateCheckoutSession(string successUrl, string cancelUrl, decimal amount, string productName)
     {
-        private readonly IConfiguration _configuration;
-
-        public PaymentService(IConfiguration configuration)
+        var options = new SessionCreateOptions
         {
-            _configuration = configuration;
-            StripeConfiguration.ApiKey = _configuration["Stripe:SecretKey"];
-        }
-
-        public async Task<string> CreateCheckoutSessionAsync(List<CartItem> cartItems)
-        {
-            var options = new SessionCreateOptions
+            PaymentMethodTypes = new List<string> { "card" },
+            LineItems = new List<SessionLineItemOptions>
             {
-                PaymentMethodTypes = new List<string> { "card" },
-                LineItems = cartItems.Select(item => new SessionLineItemOptions
+                new SessionLineItemOptions
                 {
                     PriceData = new SessionLineItemPriceDataOptions
                     {
-                        Currency = "usd",
-                        UnitAmount = (long)(item.ClassGroup.Price * 100),
+                        Currency = "EGP",
+                        UnitAmount = (long)(amount * 100), // السعر بالسنت
                         ProductData = new SessionLineItemPriceDataProductDataOptions
                         {
-                            Name = item.ClassGroup.Title
+                            Name = productName
                         }
                     },
-                    Quantity = item.Quantity
-                }).ToList(),
-                Mode = "payment",
-                SuccessUrl = "https://yourdomain.com/Order/Success",
-                CancelUrl = "https://yourdomain.com/Order/Cancel"
-            };
+                    Quantity = 1
+                }
+            },
+            Mode = "payment",
+            SuccessUrl = successUrl,
+            CancelUrl = cancelUrl
+        };
 
-            var service = new SessionService();
-            var session = await service.CreateAsync(options);
-            return session.Url;
-        }
+        var service = new SessionService();
+        return service.Create(options);
     }
-
 }
+
+
