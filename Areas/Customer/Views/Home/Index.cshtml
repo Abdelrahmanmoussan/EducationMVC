@@ -74,26 +74,26 @@
 
         <!-- Courses Grid -->
         <div class="row g-4">
-            @* @foreach (var course in Model.PopularClassGroups) *@
-            @* { *@
-            @*     <div class="col-lg-4 col-md-6"> *@
-            @*         <div class="card border-0 shadow-lg h-100 course-card position-relative rounded-4 overflow-hidden"> *@
-            @*             <div class="card-body p-4 d-flex flex-column justify-content-between"> *@
-            @*                 <div> *@
-            @*                     <span class="badge bg-success rounded-pill px-3 py-2 mb-2 fs-6"> *@
-            @*                         @course.Price EGP *@
-            @*                     </span> *@
-            @*                     <h5 class="card-title fw-bold text-dark">@course.Title</h5> *@
-            @*                     <p class="mb-1 text-muted"><i class="fas fa-book me-2 text-info"></i>@course.Subject.Title</p> *@
-            @*                     <p class="text-muted"><i class="fas fa-calendar-alt me-2 text-warning"></i>@course.AcademicYear.Name</p> *@
-            @*                 </div> *@
-            @*                 <a href="Customer/ClassGroup/Details/@course.ClassGroupId" class="btn btn-primary mt-3 w-100 rounded-pill"> *@
-            @*                     View Course <i class="fas fa-arrow-right ms-2"></i> *@
-            @*                 </a> *@
-            @*             </div> *@
-            @*         </div> *@
-            @*     </div> *@
-            @* } *@
+             @foreach (var course in Model.PopularClassGroups) 
+             { 
+                 <div class="col-lg-4 col-md-6"> 
+                     <div class="card border-0 shadow-lg h-100 course-card position-relative rounded-4 overflow-hidden"> 
+                         <div class="card-body p-4 d-flex flex-column justify-content-between"> 
+                             <div> 
+                                 <span class="badge bg-success rounded-pill px-3 py-2 mb-2 fs-6"> 
+                                     @course.Price EGP 
+                                 </span> 
+                                 <h5 class="card-title fw-bold text-dark">@course.Title</h5> 
+                                 <p class="mb-1 text-muted"><i class="fas fa-book me-2 text-info"></i>@course.Subject.Title</p> 
+                                 <p class="text-muted"><i class="fas fa-calendar-alt me-2 text-warning"></i>@course.AcademicYear.Name</p> 
+                             </div> 
+                             <a href="Customer/ClassGroup/Details/@course.ClassGroupId" class="btn btn-primary mt-3 w-100 rounded-pill"> 
+                                 View Course <i class="fas fa-arrow-right ms-2"></i> 
+                             </a> 
+                         </div> 
+                     </div> 
+                 </div> 
+             } 
         </div>
     </div>
 </section>

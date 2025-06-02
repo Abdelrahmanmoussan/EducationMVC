@@ -25,21 +25,26 @@ namespace IdentityText.Areas.Customer.Controllers
 
         public async Task<IActionResult> Index()
         {
-            // بيانات ترحيبية
             ViewBag.WelcomeMessage = "أهلاً بيك في موقعنا!";
             ViewBag.AboutUs = "نحن نقدم أفضل الخدمات التعليمية مع مدرسين محترفين.";
             ViewBag.ContactUs = "يمكنك التواصل معنا على البريد الإلكتروني: info@example.com أو عبر الهاتف 0123456789";
 
-            // جلب المدرسين مع ApplicationUser
-            var allTeachers =  _teacherRepository.GetAllWithIncludesAsync(include: q => q.Include(a => a.ApplicationUser).Include(l => l.Subject)); // تأكد انه بيعمل Include(ApplicationUser) داخليًا
+            var allTeachers =  _teacherRepository.Get(includes: [ q => q.ApplicationUser, q => q.Subject]); 
             var popularTeachers = allTeachers
-                .OrderByDescending(t => t.Rating) // لازم يكون عندك خاصية Rating
+                .OrderByDescending(t => t.Rating) 
                 .Take(6)
                 .ToList();
 
 
-            var allCourses = _classGroupRepository.Get();
-            if(allCourses == null || !allCourses.Any())
+            //var allCourses = _classGroupRepository.GetWithFullIncludes();
+            var allCourses = _classGroupRepository.Get(
+                includes: [ e=>e.Teacher,
+                e=>e.Teacher.ApplicationUser,
+                e=>e.Subject,
+                e=>e.AcademicYear,
+                e => e.Enrollments
+                ]);
+            if (allCourses == null || !allCourses.Any())
             {
                 return View(new HomeViewModel
                 {
@@ -69,7 +74,11 @@ namespace IdentityText.Areas.Customer.Controllers
         public async Task<IActionResult> TeacherDetails(int TeacherId)
         {
             var teacher = await _teacherRepository.GetByIdWithIncludesAsync(TeacherId);
-            var related = _teacherRepository.GetAllWithIncludesAsync(filter:e=>e.SubjectId == teacher.SubjectId ,include: q => q.Include(a => a.ApplicationUser).Include(l => l.Subject));
+            if (teacher == null)
+            {
+                return NotFound();
+            }
+            var related = _teacherRepository.Get(filter:e=>e.SubjectId == teacher.SubjectId ,includes: [q => q.ApplicationUser, q => q.Subject]);
 
             if (teacher == null)
             {
@@ -79,8 +88,8 @@ namespace IdentityText.Areas.Customer.Controllers
             var model = new TeacherDetailsViewModel
             {
                 Teacher = teacher,
-                ClassGroups = (List<ClassGroup>)_classGroupRepository.GetWithFullIncludes(c => c.TeacherId == teacher.TeacherId)
-            };
+                ClassGroups = (List<ClassGroup>)_classGroupRepository.Get(includes: [c => c.TeacherId == teacher.TeacherId])
+            }; 
 
             ViewBag.relatedTeachers = related
                 .OrderByDescending(t => t.Rating)

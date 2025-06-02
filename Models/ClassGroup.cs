@@ -26,7 +26,7 @@ namespace IdentityText.Models
         public DateTime StartDate { get; set; }
         [Required]
         public DateTime EndDate { get; set; }
-        //public ClassGroupStatus CGStatus { get; set; } = ClassGroupStatus.NotPurchased;
+        public ClassGroupStatus CGStatus { get; set; } = ClassGroupStatus.NotPurchased;
 
         [Required]
         public int SubjectId { get; set; }

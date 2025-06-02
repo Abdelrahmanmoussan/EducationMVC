@@ -1,93 +1,93 @@
-﻿@* @using IdentityText.Enums *@
-@* @model IEnumerable<IdentityText.Models.ClassGroup> *@
+﻿ @using IdentityText.Enums 
+ @model IEnumerable<IdentityText.Models.ClassGroup> 
 
-@* @{ *@
-@*     ViewData["Title"] = "Class Groups"; *@
-@* } *@
+ @{ 
+     ViewData["Title"] = "Class Groups"; 
+ } 
 
-@* <div class="container mt-4"> *@
-@*     <h2 class="mb-4">إدارة مجموعات الصفوف</h2> *@
+ <div class="container mt-4"> 
+     <h2 class="mb-4">إدارة مجموعات الصفوف</h2> 
 
-@*     <!-- زر الإنشاء --> *@
-@*     <div class="mb-4"> *@
-@*         <a asp-action="Create" class="btn btn-primary"> *@
-@*             <i class="bi bi-plus-circle"></i> إنشاء مجموعة جديدة *@
-@*         </a> *@
-@*     </div> *@
+     <!-- زر الإنشاء --> 
+     <div class="mb-4"> 
+         <a asp-action="Create" class="btn btn-primary"> 
+             <i class="bi bi-plus-circle"></i> إنشاء مجموعة جديدة 
+         </a> 
+     </div> 
 
-@*     <!-- جدول البيانات --> *@
-@*     <div class="card shadow"> *@
-@*         <div class="card-body"> *@
-@*             <table class="table table-hover" id="classGroupsTable"> *@
-@*                 <thead class="table-dark"> *@
-@*                     <tr> *@
-@*                         <th>العنوان</th> *@
-@*                         <th>المكان</th> *@
-@*                         <th>السعر</th> *@
-@*                         <th>الفترة</th> *@
-@*                         <th>الحالة</th> *@
-@*                         <th>المادة</th> *@
-@*                         <th>المدرس</th> *@
-@*                         <th>العام الدراسي</th> *@
-@*                         <th>الإجراءات</th> *@
-@*                     </tr> *@
-@*                 </thead> *@
-@*                 <tbody> *@
-@*                     @foreach (var item in Model) *@
-@*                     { *@
-@*                         <tr> *@
-@*                             <td>@item.Title</td> *@
-@*                             <td>@item.Location</td> *@
-@*                             <td>@item.Price.ToString("C")</td> *@
-@*                             <td>@item.StartDate.ToString("dd/MM/yyyy") - @item.EndDate.ToString("dd/MM/yyyy")</td> *@
-@*                             <td> *@
-@*                                 @if (item.CGStatus == ClassGroupStatus.Purchased) *@
-@*                                 { *@
-@*                                     <span class="badge bg-success">تم الشراء</span> *@
-@*                                 } *@
-@*                                 else *@
-@*                                 { *@
-@*                                     <span class="badge bg-danger">لم يتم الشراء</span> *@
-@*                                 } *@
-@*                             </td> *@
-@*                             <td>@item.Subject.Title</td> *@
-@*                             <td>@item.Teacher.ApplicationUser.FirstName</td> *@
-@*                             <td>@item.AcademicYear</td> *@
-@*                             <td> *@
-@*                                 <div class="btn-group"> *@
-@*                                     <a asp-action="Edit" asp-route-id="@item.ClassGroupId" class="btn btn-sm btn-warning"> *@
-@*                                         <i class="bi bi-pencil"></i> *@
-@*                                     </a> *@
-@*                                     <a asp-action="Details" asp-route-id="@item.ClassGroupId" class="btn btn-sm btn-info"> *@
-@*                                         <i class="bi bi-eye"></i> *@
-@*                                     </a> *@
-@*                                     <form asp-action="Delete" method="post" class="d-inline"> *@
-@*                                         <input type="hidden" name="id" value="@item.ClassGroupId" /> *@
-@*                                         <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('هل أنت متأكد من الحذف؟')"> *@
-@*                                             <i class="bi bi-trash"></i> *@
-@*                                         </button> *@
-@*                                     </form> *@
-@*                                 </div> *@
-@*                             </td> *@
-@*                         </tr> *@
-@*                     } *@
-@*                 </tbody> *@
-@*             </table> *@
-@*         </div> *@
-@*     </div> *@
-@* </div> *@
+     <!-- جدول البيانات --> 
+     <div class="card shadow"> 
+         <div class="card-body"> 
+             <table class="table table-hover" id="classGroupsTable"> 
+                 <thead class="table-dark"> 
+                     <tr> 
+                         <th>العنوان</th> 
+                         <th>المكان</th> 
+                         <th>السعر</th> 
+                         <th>الفترة</th> 
+                         <th>الحالة</th> 
+                         <th>المادة</th> 
+                         <th>المدرس</th> 
+                         <th>العام الدراسي</th> 
+                         <th>الإجراءات</th> 
+                     </tr> 
+                 </thead> 
+                 <tbody> 
+                     @foreach (var item in Model) 
+                     { 
+                         <tr> 
+                             <td>@item.Title</td> 
+                             <td>@item.Location</td> 
+                             <td>@item.Price.ToString("C")</td> 
+                             <td>@item.StartDate.ToString("dd/MM/yyyy") - @item.EndDate.ToString("dd/MM/yyyy")</td> 
+                             <td> 
+                                 @if (item.CGStatus == ClassGroupStatus.Purchased) 
+                                 { 
+                                     <span class="badge bg-success">تم الشراء</span> 
+                                 } 
+                                 else 
+                                 { 
+                                     <span class="badge bg-danger">لم يتم الشراء</span> 
+                                 } 
+                             </td> 
+                             <td>@item.Subject.Title</td> 
+                             <td>@item.Teacher.ApplicationUser.FirstName</td> 
+                             <td>@item.AcademicYear</td> 
+                             <td> 
+                                 <div class="btn-group"> 
+                                     <a asp-action="Edit" asp-route-id="@item.ClassGroupId" class="btn btn-sm btn-warning"> 
+                                         <i class="bi bi-pencil"></i> 
+                                     </a> 
+                                     <a asp-action="Details" asp-route-id="@item.ClassGroupId" class="btn btn-sm btn-info"> 
+                                         <i class="bi bi-eye"></i> 
+                                     </a> 
+                                     <form asp-action="Delete" method="post" class="d-inline"> 
+                                         <input type="hidden" name="id" value="@item.ClassGroupId" /> 
+                                         <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('هل أنت متأكد من الحذف؟')"> 
+                                             <i class="bi bi-trash"></i> 
+                                         </button> 
+                                     </form> 
+                                 </div> 
+                             </td> 
+                         </tr> 
+                     } 
+                 </tbody> 
+             </table> 
+         </div> 
+     </div> 
+ </div> 
 
-@* @section Scripts { *@
-@*     <script> *@
-@*         $(document).ready(function () { *@
-@*             $('#classGroupsTable').DataTable({ *@
-@*                 language: { *@
-@*                     url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/ar.json' *@
-@*                 }, *@
-@*                 columnDefs: [ *@
-@*                     { orderable: false, targets: [8] } // تعطيل الفرز على عمود الإجراءات *@
-@*                 ] *@
-@*             }); *@
-@*         }); *@
-@*     </script> *@
-@* } *@
+ @section Scripts { 
+     <script> 
+         $(document).ready(function () { 
+             $('#classGroupsTable').DataTable({ 
+                 language: { 
+                     url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/ar.json' 
+                 }, 
+                 columnDefs: [ 
+                     { orderable: false, targets: [8] } // تعطيل الفرز على عمود الإجراءات 
+                 ] 
+             }); 
+         }); 
+     </script> 
+ } 

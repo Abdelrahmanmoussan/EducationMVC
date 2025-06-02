@@ -14,10 +14,7 @@ namespace IdentityText.Repository.IRepository
 
         Task<IEnumerable<SelectListItem>> SelectListClassGroupAsync();
         Task<int> CountAsync();
-        IEnumerable<ClassGroup> GetWithFullIncludes(
-            Expression<Func<ClassGroup, bool>>? filter = null,
-            Expression<Func<ClassGroup, object>>[]? includes = null,
-            bool tracked = true);
 
     }
+    
 }

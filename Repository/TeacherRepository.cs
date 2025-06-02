@@ -26,38 +26,6 @@ namespace IdentityText.Repository
             return await dbContext.Teachers.CountAsync();
         }
 
-        //public async Task<IEnumerable<Teacher>> GetAllWithIncludesAsync()
-        //{
-        //    return await dbContext.Teachers
-        //        .Include(t => t.ApplicationUser)
-        //        .Include(t => t.Subject)
-        //        .ToListAsync();
-        //}
-        public IEnumerable<Teacher> GetAllWithIncludesAsync(
-            Expression<Func<Teacher, bool>>? filter = null,
-            Func<IQueryable<Teacher>, IQueryable<Teacher>>? include = null,
-            bool tracked = true)
-        {
-            IQueryable<Teacher> query = dbSet;
-
-            if (filter != null)
-            {
-                query = query.Where(filter);
-            }
-
-            if (include != null)
-            {
-                query = include(query);
-            }
-
-            if (!tracked)
-            {
-                query = query.AsNoTracking();
-            }
-
-            return query.ToList();
-        }
-
         public async Task<Teacher?> GetByIdWithIncludesAsync(int id)
         {
             return await dbContext.Teachers

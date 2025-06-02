@@ -14,11 +14,6 @@ namespace IdentityText.Repository.IRepository
     {
         Task<int> CountAsync();
 
-        //Task<IEnumerable<Teacher>> GetAllWithIncludesAsync();
-        public IEnumerable<Teacher> GetAllWithIncludesAsync(
-            Expression<Func<Teacher, bool>>? filter = null,
-            Func<IQueryable<Teacher>, IQueryable<Teacher>>? include = null,
-            bool tracked = true);
         Task<Teacher?> GetByIdWithIncludesAsync(int id);
         Task<IEnumerable<SelectListItem>> SelectListTeacherAsync();
 

@@ -38,27 +38,27 @@ namespace IdentityText.Areas.Customer.Controllers
             _userManager = userManager;
             _studentRepository = studentRepository;
         }
-        //public async Task<IActionResult> CouresAsync()
-        //{
-        //    var currentUser = await _userManager.GetUserAsync(User);
-        //    var classGroup = _classGroupRepository.Get();
-        //    if (classGroup == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    foreach (var item in classGroup)
-        //    {
-        //        // Check if the user is enrolled in the class group
+        public async Task<IActionResult> CouresAsync()
+        {
+            var currentUser = await _userManager.GetUserAsync(User);
+            var classGroup = _classGroupRepository.Get();
+            if (classGroup == null)
+            {
+                return NotFound();
+            }
+            foreach (var item in classGroup)
+            {
+                // Check if the user is enrolled in the class group
 
-        //        //item.CGStatus = ClassGroupStatus.NotPurchased; // Default status
-        //        foreach (var enrollment in item.Enrollments)
-        //        {
-        //            if (enrollment.Student.ApplicationUser.Id == currentUser.Id)
-        //            {
-        //                item.CGStatus = ClassGroupStatus.Purchased;
-        //                break; 
-        //            }
-        //        }
+                //item.CGStatus = ClassGroupStatus.NotPurchased; // Default status
+                foreach (var enrollment in item.Enrollments)
+                {
+                    if (enrollment.Student.ApplicationUser.Id == currentUser.Id)
+                    {
+                        item.CGStatus = ClassGroupStatus.Purchased;
+                        break;
+                    }
+                }
 
                 // Assuming you want to check if the user is enrolled in the class group
                 //var student = _studentRepository.GetOne(s => s.ApplicationUser.Id == currentUser.Id);
@@ -74,13 +74,13 @@ namespace IdentityText.Areas.Customer.Controllers
                 //        }
                 //    }
                 //}
-        //    }
-        //    return View(classGroup);
-        //}
+            }
+            return View(classGroup);
+        }
 
         public IActionResult Details(int id)
         {
-            var classGroup = _classGroupRepository.GetWithFullIncludes(e=>e.ClassGroupId == id).FirstOrDefault();
+            var classGroup = _classGroupRepository.GetOne(e=>e.ClassGroupId == id);
             if(classGroup == null)
             {
                 return NotFound();

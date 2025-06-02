@@ -26,30 +26,7 @@ namespace IdentityText.Repository
             return await dbContext.ClassGroups.CountAsync();
         }
 
-        public IEnumerable<ClassGroup> GetWithFullIncludes(
-             Expression<Func<ClassGroup, bool>>? filter = null,
-             Expression<Func<ClassGroup, object>>[]? includes = null,
-             bool tracked = true)
-        {
-            IQueryable<ClassGroup> query = dbContext.ClassGroups
-                .Include(cg => cg.Teacher)
-                    .ThenInclude(t => t.ApplicationUser)
-                .Include(cg => cg.Subject)
-                .Include(s => s.AcademicYear)
-               .Include(cg => cg.Enrollments);
-
-            if (filter != null)
-            {
-                query = query.Where(filter);
-            }
-
-            if (!tracked)
-            {
-                query = query.AsNoTracking();
-            }
-
-            return query.ToList();
-        }
+       
 
         public async Task<IEnumerable<SelectListItem>> SelectListClassGroupAsync()
         {
