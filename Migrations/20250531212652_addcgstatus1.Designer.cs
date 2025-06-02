@@ -4,6 +4,7 @@ using IdentityText.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IdentityText.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250531212652_addcgstatus1")]
+    partial class addcgstatus1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -157,7 +160,7 @@ namespace IdentityText.Migrations
                             Id = "7aafd540-fdf8-482b-804d-780fb6726703",
                             AccessFailedCount = 0,
                             Address = "Quesna,Menofia",
-                            ConcurrencyStamp = "68a2d0c0-989e-4513-8659-98db2fac7eff",
+                            ConcurrencyStamp = "69b0376a-e724-410b-a481-3faabdbf8d3d",
                             Email = "amin@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Amin",
@@ -165,10 +168,10 @@ namespace IdentityText.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "AMIN@GMAIL.COM",
                             NormalizedUserName = "AMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEAJnJ13HhMhIzuCx8rAuwWsmTkY0zVhnBmIX5vwMa3Q1ZwVTqmx3Hye7VdzgQagJAQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEEkJLlGDVUdMRbzstQDriS8tyclQJfievGQ1Jo9oh8H1XIrcNJcZVssHH8W363Obwg==",
                             PhoneNumberConfirmed = false,
                             Photo = "admin.jpg",
-                            SecurityStamp = "5e60f5c3-c99f-455a-a451-5271ffc52661",
+                            SecurityStamp = "69fe06db-065c-4b43-8518-00630438a780",
                             TwoFactorEnabled = false,
                             UserName = "amin"
                         },
@@ -177,7 +180,7 @@ namespace IdentityText.Migrations
                             Id = "9b4cd611-6c35-4c98-a0dc-1d2e1349ab91",
                             AccessFailedCount = 0,
                             Address = "Port Said",
-                            ConcurrencyStamp = "325f2e23-9ca6-4431-ba19-e69f73cf2845",
+                            ConcurrencyStamp = "10263125-8feb-4d9e-9fd8-10c910b84b4f",
                             Email = "abdelrahmanmoussan@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Abdelrahman",
@@ -185,10 +188,10 @@ namespace IdentityText.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ABDELRAHMANMOUSSAN@GMAIL.COM",
                             NormalizedUserName = "ABDELRAHMAN",
-                            PasswordHash = "AQAAAAIAAYagAAAAECnf4+Cqwcav57lO7JixniVFVmDjRFWRXWeidanNDuOhfy0qF0tyzZDc/a/1ChSYSg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKNTSiV8/c8U5tRMIlw9gRX6HdE/ai/By1/HOehCmrvjjhSWhiu3ND0mXwiVntHRMA==",
                             PhoneNumberConfirmed = false,
                             Photo = "Moussan.jpg",
-                            SecurityStamp = "adac952c-dbae-4b18-95e7-7a3a5c4d70fa",
+                            SecurityStamp = "d60f2af8-b8b2-4de1-8952-fb3f2d521337",
                             TwoFactorEnabled = false,
                             UserName = "abdelrahman"
                         });
@@ -325,6 +328,9 @@ namespace IdentityText.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ClassGroupId"));
 
                     b.Property<int>("AcademicYearId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CGStatus")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("EndDate")

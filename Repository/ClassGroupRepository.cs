@@ -35,7 +35,8 @@ namespace IdentityText.Repository
                 .Include(cg => cg.Teacher)
                     .ThenInclude(t => t.ApplicationUser)
                 .Include(cg => cg.Subject)
-                .Include(s => s.AcademicYear);
+                .Include(s => s.AcademicYear)
+               .Include(cg => cg.Enrollments);
 
             if (filter != null)
             {

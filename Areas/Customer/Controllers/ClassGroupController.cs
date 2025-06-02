@@ -5,6 +5,9 @@ using IdentityText.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq.Expressions;
 using IdentityText.Models.ViewModel;
+using IdentityText.Repository;
+using IdentityText.Enums;
+using System;
 
 
 namespace IdentityText.Areas.Customer.Controllers
@@ -14,6 +17,7 @@ namespace IdentityText.Areas.Customer.Controllers
     {
         private readonly IClassGroupRepository _classGroupRepository;
         private readonly ITeacherRepository _teacherRepository;
+        private readonly IStudentRepository _studentRepository;
         private readonly IAcademicYearRepository _academicYearRepository;
         private readonly ISubjectRepository _subjectRepository;
         private readonly UserManager<ApplicationUser> _userManager;
@@ -22,6 +26,7 @@ namespace IdentityText.Areas.Customer.Controllers
         public ClassGroupController(
          IClassGroupRepository classGroupRepository,
          ITeacherRepository teacherRepository,
+         IStudentRepository studentRepository,
          IAcademicYearRepository academicYearRepository,
          ISubjectRepository subjectRepository,
          UserManager<ApplicationUser> userManager)  // inject here
@@ -31,7 +36,47 @@ namespace IdentityText.Areas.Customer.Controllers
             _academicYearRepository = academicYearRepository;
             _subjectRepository = subjectRepository;
             _userManager = userManager;
+            _studentRepository = studentRepository;
         }
+        //public async Task<IActionResult> CouresAsync()
+        //{
+        //    var currentUser = await _userManager.GetUserAsync(User);
+        //    var classGroup = _classGroupRepository.Get();
+        //    if (classGroup == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    foreach (var item in classGroup)
+        //    {
+        //        // Check if the user is enrolled in the class group
+
+        //        //item.CGStatus = ClassGroupStatus.NotPurchased; // Default status
+        //        foreach (var enrollment in item.Enrollments)
+        //        {
+        //            if (enrollment.Student.ApplicationUser.Id == currentUser.Id)
+        //            {
+        //                item.CGStatus = ClassGroupStatus.Purchased;
+        //                break; 
+        //            }
+        //        }
+
+                // Assuming you want to check if the user is enrolled in the class group
+                //var student = _studentRepository.GetOne(s => s.ApplicationUser.Id == currentUser.Id);
+                //if (student != null)
+                //{
+                //    foreach (var enrollment in item.Enrollments)
+                //    {
+                //        if (enrollment.StudentId == student.StudentId)
+                //        {
+                //            item.CGStatus = ClassGroupStatus.Purchased;
+                //            _classGroupRepository.Edit(item);
+                //            break; // No need to check further enrollments for this class group
+                //        }
+                //    }
+                //}
+        //    }
+        //    return View(classGroup);
+        //}
 
         public IActionResult Details(int id)
         {

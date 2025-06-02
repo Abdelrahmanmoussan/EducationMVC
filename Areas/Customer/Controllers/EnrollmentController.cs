@@ -156,7 +156,7 @@ namespace IdentityText.Areas.Customer.Controllers
             return Redirect(session.Url);
         }
 
-        [HttpPost]
+        [HttpGet]
         public IActionResult ConfirmPayment(int paymentId)
         {
             var payment = _paymentRepository.GetOne(p => p.PaymentId == paymentId);

@@ -37,9 +37,19 @@ namespace IdentityText.Areas.Customer.Controllers
                 .Take(6)
                 .ToList();
 
-            // جلب الكورسات (Include داخلي من GetWithFullIncludes)
-            var allCourses = _classGroupRepository.GetWithFullIncludes(); // تأكد انه بيعمل Include لـ Teacher و ApplicationUser
+
+            var allCourses = _classGroupRepository.Get();
+            if(allCourses == null || !allCourses.Any())
+            {
+                return View(new HomeViewModel
+                {
+                    PopularTeachers = popularTeachers,
+                    PopularClassGroups = new List<ClassGroup>(),
+                    Portfolio = new List<ClassGroup>()
+                });
+            }
             var popularCourses = allCourses
+                .Where(c => c.Enrollments != null)
                 .OrderByDescending(c => c.Enrollments.Count)
                 .Take(6)
                 .ToList();
@@ -78,28 +88,6 @@ namespace IdentityText.Areas.Customer.Controllers
                 .ToList();
             return View(model);
         }
-
-        //public IActionResult ClassGroupDetails(int classGroupId)
-        //{
-        //    var classGroup = _classGroupRepository.GetOne(includes: [c => c.Teacher, c => c.ApplicationUser], filter: c => c.ClassGroupId == classGroupId);
-        //    if (classGroup == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    var model = new ClassGroupVM
-        //    {
-        //        ClassGroup = classGroup,
-        //        Teacher = _teacherRepository.GetOne(filter: t => t.TeacherId == classGroup.TeacherId),
-        //        Enrollments = classGroup.Enrollments.ToList()
-        //    };
-        //    return View(model);
-        //}
-
-
-
-
-
-
         public IActionResult Privacy()
         {
             return View();

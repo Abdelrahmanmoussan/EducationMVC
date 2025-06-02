@@ -4,6 +4,7 @@ using IdentityText.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IdentityText.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250531212512_addcgstatus")]
+    partial class addcgstatus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -157,7 +160,7 @@ namespace IdentityText.Migrations
                             Id = "7aafd540-fdf8-482b-804d-780fb6726703",
                             AccessFailedCount = 0,
                             Address = "Quesna,Menofia",
-                            ConcurrencyStamp = "68a2d0c0-989e-4513-8659-98db2fac7eff",
+                            ConcurrencyStamp = "eacd1383-1f4f-4716-87c4-690aaab66358",
                             Email = "amin@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Amin",
@@ -165,10 +168,10 @@ namespace IdentityText.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "AMIN@GMAIL.COM",
                             NormalizedUserName = "AMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEAJnJ13HhMhIzuCx8rAuwWsmTkY0zVhnBmIX5vwMa3Q1ZwVTqmx3Hye7VdzgQagJAQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEEgJhfQh77yeznUVyq5Dh2SSf6ZndE/Sk5YYoan1KMgUOmbbiOkFg6iCjioZv3587g==",
                             PhoneNumberConfirmed = false,
                             Photo = "admin.jpg",
-                            SecurityStamp = "5e60f5c3-c99f-455a-a451-5271ffc52661",
+                            SecurityStamp = "ce03cbbb-a47a-45f4-8d3c-8552aa6e2c8d",
                             TwoFactorEnabled = false,
                             UserName = "amin"
                         },
@@ -177,7 +180,7 @@ namespace IdentityText.Migrations
                             Id = "9b4cd611-6c35-4c98-a0dc-1d2e1349ab91",
                             AccessFailedCount = 0,
                             Address = "Port Said",
-                            ConcurrencyStamp = "325f2e23-9ca6-4431-ba19-e69f73cf2845",
+                            ConcurrencyStamp = "54ea77fe-6c39-4e78-9cce-7e4e9b9527f9",
                             Email = "abdelrahmanmoussan@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Abdelrahman",
@@ -185,10 +188,10 @@ namespace IdentityText.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ABDELRAHMANMOUSSAN@GMAIL.COM",
                             NormalizedUserName = "ABDELRAHMAN",
-                            PasswordHash = "AQAAAAIAAYagAAAAECnf4+Cqwcav57lO7JixniVFVmDjRFWRXWeidanNDuOhfy0qF0tyzZDc/a/1ChSYSg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEGrCRFcUC3088mPWfBQghBW2PaRmvtUZYO6QtAZabMJg84W4WIORehQ3gQqClbVBWQ==",
                             PhoneNumberConfirmed = false,
                             Photo = "Moussan.jpg",
-                            SecurityStamp = "adac952c-dbae-4b18-95e7-7a3a5c4d70fa",
+                            SecurityStamp = "0b01061b-881a-46e3-a71b-4d6ae46a1dc7",
                             TwoFactorEnabled = false,
                             UserName = "abdelrahman"
                         });
@@ -340,6 +343,9 @@ namespace IdentityText.Migrations
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int?>("Status")
+                        .HasColumnType("int");
 
                     b.Property<int>("SubjectId")
                         .HasColumnType("int");

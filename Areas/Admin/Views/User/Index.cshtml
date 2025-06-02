@@ -1,0 +1,131 @@
+﻿
+@model IEnumerable<IdentityText.Models.ViewModel.UserWithRoleVM>
+
+
+@{
+    ViewData["Title"] = "Students List";
+}
+
+<!-- تنسيق العنوان -->
+<div class="chart-header mb-4 rounded-3 shadow-sm d-flex justify-content-center align-items-center text-warning">
+    <i class="bi bi-people-fill me-2"></i> Users List
+</div>
+
+<!-- زر الإنشاء -->
+<p class="text-center">
+    <a asp-action="Create" class="btn btn-outline-success rounded-pill px-4 shadow-sm">
+        <i class="bi bi-plus-circle me-2"></i> Create New Users
+    </a>
+</p>
+
+
+<!-- جدول بيانات -->
+<div class="table-wrapper rounded-3 overflow-hidden shadow-sm">
+
+    <table class="table table-bordered table-hover align-middle mb-0 text-center">
+    <thead>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Address</th>
+            <th>Email</th>
+            <th>Photo</th>
+            <th>Role</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.User.FirstName</td>
+                <td>@item.User.LastName</td>
+                <td>@item.User.Address</td>
+                <td>@item.User.Email</td>
+                <td>
+                        <img src="~/images/@item.User.Photo" alt="Photo" style="width:50px; height:50px; object-fit:cover; border-radius:50%;" />
+                </td>
+                <td>@item.Role</td>
+                <td>
+                     <a asp-action="Delete" asp-route-id="@item.User.Id" class="btn btn-sm btn-outline-danger rounded-pill"> 
+                        <i class="bi bi-trash"></i> Delete 
+                     </a> 
+                    @* <button type="button" class="btn btn-sm btn-outline-danger rounded-pill" onclick="confirmDelete(@item.User.Id)"> *@
+                    @*   <i class="bi bi-trash"></i> Delete *@
+                    @* </button> *@
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+</div>
+
+@section Scripts {
+    @if (TempData["notification"] != null)
+    {
+        <script>
+            toastr.success('@TempData["notification"]');
+        </script>
+    }
+    @* <script> *@
+    @*     function confirmDelete(id) { *@
+    @*         Swal.fire({ *@
+    @*             title: "Are you sure?", *@
+    @*             text: "you will delete all class group of this teacher", *@
+    @*             icon: "warning", *@
+    @*             showCancelButton: true, *@
+    @*             confirmButtonColor: "#3085d6", *@
+    @*             cancelButtonColor: "#d33", *@
+    @*             confirmButtonText: "Yes, delete it!" *@
+    @*         }).then((result) => { *@
+    @*             if (result.isConfirmed) { *@
+    @*                 window.location.href = "/Admin/User/Delete?id=" + id; *@
+
+    @*                 Swal.fire({ *@
+    @*                     title: "Deleted!", *@
+    @*                     text: "Your file has been deleted.", *@
+    @*                     icon: "success" *@
+    @*                 }); *@
+    @*             } *@
+    @*         }); *@
+    @*     } *@
+    @* </script> *@
+}
+<!-- CSS داخلي لتحقيق نفس ستايل المدرسين -->
+<style>
+    thead tr.gradient-header th {
+        background: linear-gradient(to right, #0e6efd, #6511f2) !important;
+        color: gold !important;
+        text-align: center;
+        vertical-align: middle;
+        height: 60px;
+        font-weight: bold;
+    }
+
+    .chart-header {
+        background: linear-gradient(to right, #0d6efd, #6610f2);
+        padding: 12px 20px;
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+
+    .table-wrapper {
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid #dee2e6;
+    }
+
+    .table th,
+    .table td {
+        vertical-align: middle;
+    }
+
+    .btn-sm i {
+        margin-right: 4px;
+    }
+
+    .table {
+        font-size: 0.95rem;
+    }
+</style>

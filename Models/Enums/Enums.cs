@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace IdentityText.Enums
 {
+    public enum ClassGroupStatus
+    {
+        NotPurchased , 
+        Purchased 
+    }
     public enum RoleStatus
     {
         Student,
