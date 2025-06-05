@@ -88,7 +88,13 @@ namespace IdentityText.Areas.Customer.Controllers
             var model = new TeacherDetailsViewModel
             {
                 Teacher = teacher,
-                ClassGroups = (List<ClassGroup>)_classGroupRepository.Get(includes: [c => c.TeacherId == teacher.TeacherId])
+                ClassGroups = (List<ClassGroup>)_classGroupRepository.Get(filter: c => c.TeacherId == teacher.TeacherId,
+                includes: [ e=>e.Teacher,
+                e=>e.Teacher.ApplicationUser,
+                e=>e.Subject,
+                e=>e.AcademicYear,
+                e => e.Enrollments
+                ])
             }; 
 
             ViewBag.relatedTeachers = related

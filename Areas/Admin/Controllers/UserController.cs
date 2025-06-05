@@ -73,7 +73,6 @@ namespace IdentityText.Areas.Admin.Controllers
         {
             var model = new UserVM
             {
-                SubscriptionsList = await _subscriptionRepository.SelectListSubscriptionAsync(),
                 AcademicYearsList = await _academicYearRepository.SelectListAcademicYearAsync(),
                 SubjectsList = await _subjectRepository.SelectListSubjectAsync() 
             };
@@ -105,7 +104,6 @@ namespace IdentityText.Areas.Admin.Controllers
                 ModelState.Remove("EmergencyContact");
                 ModelState.Remove("AttendancePercent");
                 ModelState.Remove("StudentNotes");
-                ModelState.Remove("SubscriptionId");
                 ModelState.Remove("AcademicYearId");
             }
             if (ModelState.IsValid)
@@ -158,7 +156,6 @@ namespace IdentityText.Areas.Admin.Controllers
                                 AttendancePercent = userVM.AttendancePercent,
                                 StudentNotes = userVM.StudentNotes,
                                 AcademicYearId = userVM.AcademicYearId,
-                                SubscriptionId = userVM.SubscriptionId
                             };
 
                             _studentRepository.Create(student);
@@ -174,7 +171,6 @@ namespace IdentityText.Areas.Admin.Controllers
                                 TeacherNetAmount = userVM.TeacherNetAmount,
                                 TeacherNotes = userVM.TeacherNotes,
                                 SubjectId = userVM.SubjectId
-
                             };
 
                             _teacherRepository.Create(teacher);
@@ -195,9 +191,9 @@ namespace IdentityText.Areas.Admin.Controllers
                             if (_userManager.Options.SignIn.RequireConfirmedAccount)
                             {
                             return RedirectToAction(
-                                actionName: "RegisterConfirmation",   // اسم الأكشن
-                                controllerName: "Account",            // اسم الكنترولر
-                                routeValues: new { area = "Identity",  email = userVM.Email, returnUrl = returnUrl } // اسم الـ Area وأي باراميتر إضافي
+                                actionName: "RegisterConfirmation",  
+                                controllerName: "Account",            
+                                routeValues: new { area = "Identity",  email = userVM.Email, returnUrl = returnUrl } 
                             );
 
                         }
@@ -217,7 +213,6 @@ namespace IdentityText.Areas.Admin.Controllers
 
                 return RedirectToAction("NotFoundPage", "Home");
             }
-            userVM.SubscriptionsList = await _subscriptionRepository.SelectListSubscriptionAsync();
             userVM.AcademicYearsList = await _academicYearRepository.SelectListAcademicYearAsync();
             userVM.SubjectsList = await _subjectRepository.SelectListSubjectAsync();
             return View(userVM);

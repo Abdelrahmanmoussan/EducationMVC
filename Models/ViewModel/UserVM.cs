@@ -7,8 +7,8 @@ namespace IdentityText.Models.ViewModel
 {
     public class UserVM
     {
-        [Key]
-        public string Id { get; set; }
+        //[Key]
+        public string Id { get; set; } = Guid.NewGuid().ToString();
         [Display(Name = "Email")]
         [Required(ErrorMessage = "البريد الإلكتروني مطلوب")]
         [EmailAddress(ErrorMessage = "صيغة البريد الإلكتروني غير صحيحة")]
@@ -65,9 +65,9 @@ namespace IdentityText.Models.ViewModel
         public decimal AttendancePercent { get; set; }
         [MaxLength(500)]
         public string StudentNotes { get; set; }
-        public int SubscriptionId { get; set; }
+        //public int SubscriptionId { get; set; }
         public int AcademicYearId { get; set; }
-        public IEnumerable<SelectListItem> SubscriptionsList { get; set; } = Enumerable.Empty<SelectListItem>();
+        //public IEnumerable<SelectListItem> SubscriptionsList { get; set; } = Enumerable.Empty<SelectListItem>();
         public IEnumerable<SelectListItem> AcademicYearsList { get; set; } = Enumerable.Empty<SelectListItem>();
 
 

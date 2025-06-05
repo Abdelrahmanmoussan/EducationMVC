@@ -2,9 +2,11 @@
 using IdentityText.Models;
 using IdentityText.Models.ViewModel;
 using IdentityText.Repository.IRepository;
+using IdentityText.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Stripe.Checkout;
 using Stripe.Climate;
 using System.Linq.Expressions;
@@ -19,6 +21,7 @@ namespace IdentityText.Areas.Customer.Controllers
         private readonly IEnrollmentRepository _enrollmentRepository;
         private readonly IPaymentRepository _paymentRepository;
         private readonly IStudentRepository _studentRepository;
+        private readonly ISubscriptionRepository _subscriptionRepository;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly StripePaymentService _stripePaymentService;
 
@@ -28,6 +31,7 @@ namespace IdentityText.Areas.Customer.Controllers
             IEnrollmentRepository enrollmentRepository,
             IPaymentRepository paymentRepository,
             IStudentRepository studentRepository,
+            ISubscriptionRepository subscriptionRepository,
             UserManager<ApplicationUser> userManager,
             StripePaymentService stripePaymentService
             )
@@ -38,6 +42,7 @@ namespace IdentityText.Areas.Customer.Controllers
             _paymentRepository = paymentRepository;
             _studentRepository = studentRepository;
             _stripePaymentService = stripePaymentService;
+            _subscriptionRepository = subscriptionRepository;
         }
 
         public IActionResult Index()
@@ -105,6 +110,10 @@ namespace IdentityText.Areas.Customer.Controllers
             return RedirectToAction("Index");
         }
 
+        private string GenerateSubscriptionCode(int enrollmentId)
+        {
+            return $"SUB-{enrollmentId}-{Guid.NewGuid().ToString().Substring(0, 6).ToUpper()}";
+        }
 
 
         [HttpGet]
@@ -170,14 +179,77 @@ namespace IdentityText.Areas.Customer.Controllers
             _paymentRepository.Edit(payment);
             _paymentRepository.Commit();
 
-            var enrollment = _enrollmentRepository.GetOne(e => e.EnrollmentId == payment.EnrollmentId);
+            var enrollment = _enrollmentRepository.GetOne(e => e.EnrollmentId == payment.EnrollmentId, includes: [e=>e.ClassGroup]);
             if(enrollment != null) {
                 enrollment.EnrollmentStatus = EnrollmentStatus.Active;
                 _enrollmentRepository.Edit(enrollment);
                 _enrollmentRepository.Commit();
+
+                // ✅ توليد كود اشتراك وإنشاء الاشتراك
+                var subscription = new Subscription
+                {
+                    EnrollmentId = enrollment.EnrollmentId,
+                    StartDate = DateTime.UtcNow,
+                    EndDate = enrollment.ClassGroup?.EndDate ?? DateTime.UtcNow.AddMonths(1), // تحسبها حسب ما يناسبك
+                    Code = GenerateSubscriptionCode(enrollment.EnrollmentId),
+                    SubscriptionStatus = SubscriptionStatus.Active
+                };
+
+                _subscriptionRepository.Create(subscription);
+                _subscriptionRepository.Commit();
             }
-            TempData["notification"] = "تم تأكيد الدفع والتسجيل بنجاح.";
-            return RedirectToAction(actionName:"Index", controllerName:"Home");
+            TempData["notification"] = "تم تأكيد الدفع والتسجيل وتوليد كود الاشتراك.";
+            return RedirectToAction(actionName: "Subscriptions", controllerName: "Enrollment");
+        }
+
+        public IActionResult Subscriptions()
+        {
+            var userId = _userManager.GetUserId(User);
+            var student = _studentRepository.GetOne(s => s.UserId == userId);
+
+            if (student == null)
+            {
+                TempData["notification"] = "الطالب غير موجود.";
+                return RedirectToAction("Index", "Home");
+            }
+
+            var subscriptions = _subscriptionRepository
+                .Get(s => s.Enrollment.StudentId == student.StudentId, includes: [e=>e.Enrollment.ClassGroup])
+                .Select(s => new SubscriptionVM
+                {
+                    Code = s.Code,
+                    StartDate = s.StartDate,
+                    EndDate = s.EndDate,
+                    SubscriptionStatus = s.SubscriptionStatus,
+                    ClassGroupTitle = s.Enrollment.ClassGroup.Title
+                })
+                .ToList();
+
+            return View(subscriptions);
+        }
+
+
+        [HttpGet]
+        public IActionResult DownloadPDF(string code)
+        {
+            var subscription = _subscriptionRepository.GetOne(
+                filter: s => s.Code == code,
+                includes: [
+                 s => s.Enrollment.Student.ApplicationUser,
+                 s => s.Enrollment.ClassGroup
+                ]);
+
+            if (subscription == null)
+            {
+                return NotFound();
+            }
+
+            // Create an instance of SubscriptionPdfService
+            var subscriptionPdfService = new SubscriptionPdfService();
+
+            // Use the instance to call the GenerateSubscriptionPdf method
+            var pdf = subscriptionPdfService.GenerateSubscriptionPdf(subscription);
+            return File(pdf, "application/pdf", $"Subscription_{subscription.Code}.pdf");
         }
 
 

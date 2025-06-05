@@ -119,14 +119,14 @@
                         <span asp-validation-for="StudentNotes" class="text-danger"></span>
                     </div>
 
-                    <div class="form-floating mb-3">
-                        <select asp-for="SubscriptionId" asp-items="Model.SubscriptionsList" class="form-control">
-                            <option value="">اختر الاشتراك</option>
-                            <!-- Add options dynamically -->
-                        </select>
-                        <label asp-for="SubscriptionId">الاشتراك</label>
-                        <span asp-validation-for="SubscriptionId" class="text-danger"></span>
-                    </div>
+                    @* <div class="form-floating mb-3"> *@
+                    @*     <select asp-for="SubscriptionId" asp-items="Model.SubscriptionsList" class="form-control"> *@
+                    @*         <option value="">اختر الاشتراك</option> *@
+                    @*         <!-- Add options dynamically --> *@
+                    @*     </select> *@
+                    @*     <label asp-for="SubscriptionId">الاشتراك</label> *@
+                    @*     <span asp-validation-for="SubscriptionId" class="text-danger"></span> *@
+                    @* </div> *@
 
                     <div class="form-floating mb-3">
                         <select asp-for="AcademicYearId" asp-items="Model.AcademicYearsList" class="form-control">

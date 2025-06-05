@@ -44,9 +44,9 @@
                         <td>@item.Price</td>
                         <td>@(item.StartDate != default(DateTime) ? item.StartDate.ToString("yyyy-MM-dd") : "غير محدد")</td>
                         <td>@(item.EndDate != default(DateTime) ? item.EndDate.ToString("yyyy-MM-dd") : "غير محدد")</td>
-                        <td>@item.Subject?.Title ?? "N/A"</td>
+                        <td>@(item.Subject != null ? item.Subject.Title : "N/A")</td>
                         <td>@(item.Teacher != null ? item.Teacher.ApplicationUser.FirstName + " " + item.Teacher.ApplicationUser.LastName : "N/A")</td>
-                        <td>@item.AcademicYear?.Name ?? "N/A"</td>
+                        <td>@(item.AcademicYear != null ? item.AcademicYear.Name : "N/A")</td>
                         <td>
                             <a asp-action="Edit" asp-route-id="@item.ClassGroupId" class="btn btn-sm btn-outline-warning rounded-pill me-1 shadow-sm">
                                 <i class="bi bi-pencil"></i> Edit

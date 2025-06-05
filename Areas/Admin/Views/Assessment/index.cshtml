@@ -77,8 +77,8 @@
                         }
                     </td>
                     <td>@item.MaxScore</td>
-                    <td>@item.Lecture?.ClassGroup?.Title ?? "N/A"</td>
-                    <td>@item.Lecture?.Title ?? "N/A"</td>
+                    <td>@(item.Lecture != null ? item.Lecture.ClassGroup.Title : "N/A")</td>
+                    <td>@(item.Lecture != null ? item.Lecture.Title : "N/A")</td>
                     <td>
                         <a href="/Admin/Assessment/Edit?id=@item.AssessmentId" class="btn btn-outline-warning btn-sm rounded-pill me-1 shadow-sm">
                             <i class="bi bi-pencil"></i> Edit

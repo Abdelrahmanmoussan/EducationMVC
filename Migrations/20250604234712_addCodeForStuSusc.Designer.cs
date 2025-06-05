@@ -4,6 +4,7 @@ using IdentityText.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IdentityText.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250604234712_addCodeForStuSusc")]
+    partial class addCodeForStuSusc
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -157,7 +160,7 @@ namespace IdentityText.Migrations
                             Id = "7aafd540-fdf8-482b-804d-780fb6726703",
                             AccessFailedCount = 0,
                             Address = "Quesna,Menofia",
-                            ConcurrencyStamp = "ca8ab646-b2ac-4bbe-83e9-9bf4dc6b6f0f",
+                            ConcurrencyStamp = "03b33cbd-090b-4837-9f34-83ce91537736",
                             Email = "amin@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Amin",
@@ -165,10 +168,10 @@ namespace IdentityText.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "AMIN@GMAIL.COM",
                             NormalizedUserName = "AMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEF1P/gJQhOYB5VQB80vSIvVnMyP8YQ65EBLwjrM3QsxkHo1agTqPuTpxsQww8KG6cQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEH7XTHlgU5SQZ7esL2kgl2O0gF90B2DfFpnfJwv5Qx1c7L/PYC+5liKEOnNJNrGscw==",
                             PhoneNumberConfirmed = false,
                             Photo = "admin.jpg",
-                            SecurityStamp = "3b8459b4-a248-4ee0-9c4e-6980173d8a98",
+                            SecurityStamp = "66bf6314-3759-4b05-a660-0ad710648a93",
                             TwoFactorEnabled = false,
                             UserName = "amin"
                         },
@@ -177,7 +180,7 @@ namespace IdentityText.Migrations
                             Id = "9b4cd611-6c35-4c98-a0dc-1d2e1349ab91",
                             AccessFailedCount = 0,
                             Address = "Port Said",
-                            ConcurrencyStamp = "c02f6cde-a5db-47f4-9889-a154984c2785",
+                            ConcurrencyStamp = "d270f5d3-f95c-4c34-948f-858fbf9bf75e",
                             Email = "abdelrahmanmoussan@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Abdelrahman",
@@ -185,10 +188,10 @@ namespace IdentityText.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ABDELRAHMANMOUSSAN@GMAIL.COM",
                             NormalizedUserName = "ABDELRAHMAN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEEASGBLqdRnTag83gPHed618jHkbZbXe8ygDDcmpHF7jNQ5jc40kjCZ8xOHW856ZQg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAED3QeOYRtRrjB6IQjDoyrUaKZXc2DHaw+ug0yLv5jWIKhLOmk7hFQ7PueugQBEqN5w==",
                             PhoneNumberConfirmed = false,
                             Photo = "Moussan.jpg",
-                            SecurityStamp = "99cb9949-9601-4e4b-b74e-d44eb7f171c1",
+                            SecurityStamp = "1fb3c3bd-d814-4300-8f53-8fa387133add",
                             TwoFactorEnabled = false,
                             UserName = "abdelrahman"
                         });
@@ -764,6 +767,26 @@ namespace IdentityText.Migrations
                     b.HasIndex("EnrollmentId");
 
                     b.ToTable("Subscriptions");
+
+                    b.HasData(
+                        new
+                        {
+                            SubscriptionId = 1,
+                            Code = "SUBS2024A",
+                            EndDate = new DateTime(2024, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EnrollmentId = 0,
+                            StartDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SubscriptionStatus = 0
+                        },
+                        new
+                        {
+                            SubscriptionId = 2,
+                            Code = "SUBS2023B",
+                            EndDate = new DateTime(2023, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EnrollmentId = 0,
+                            StartDate = new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SubscriptionStatus = 1
+                        });
                 });
 
             modelBuilder.Entity("IdentityText.Models.Teacher", b =>
@@ -1242,9 +1265,9 @@ namespace IdentityText.Migrations
             modelBuilder.Entity("IdentityText.Models.Subscription", b =>
                 {
                     b.HasOne("IdentityText.Models.Enrollment", "Enrollment")
-                        .WithMany("Subscriptions")
+                        .WithMany()
                         .HasForeignKey("EnrollmentId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Enrollment");
@@ -1370,8 +1393,6 @@ namespace IdentityText.Migrations
             modelBuilder.Entity("IdentityText.Models.Enrollment", b =>
                 {
                     b.Navigation("Attendances");
-
-                    b.Navigation("Subscriptions");
                 });
 
             modelBuilder.Entity("IdentityText.Models.Lecture", b =>

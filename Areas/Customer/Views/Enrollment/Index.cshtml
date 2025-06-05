@@ -68,16 +68,25 @@
                         </div>
 
                         <div class="d-flex justify-content-center gap-3 mt-4">
-                            <button type="button" class="btn btn-glow-danger btn-sm rounded-pill" onclick="confirmDelete(@enrollment.EnrollmentId)">
-                                <i class="bi bi-trash"></i> Delete
-                            </button>
+                           
 
                             @if (enrollment.EnrollmentStatus == IdentityText.Enums.EnrollmentStatus.PendingPayment)
                             {
+                                <button type="button" class="btn btn-glow-danger btn-sm rounded-pill" onclick="confirmDelete(@enrollment.EnrollmentId)">
+                                    <i class="bi bi-trash"></i> Delete
+                                </button>
                                 <a asp-action="ProcessPayment" asp-route-id="@enrollment.EnrollmentId" class="btn btn-glow-success btn-sm rounded-pill">
                                     <i class="bi bi-credit-card"></i> Pay
                                 </a>
                             }
+                            @if (enrollment.EnrollmentStatus == IdentityText.Enums.EnrollmentStatus.Active)
+                            {
+                                <a asp-action="Index" asp-controller="Lecture" asp-area="Customer" asp-route-classGroupId="@enrollment.ClassGroupId" class="btn btn-glow-success btn-sm rounded-pill">
+                                    Go To Lecture
+                                </a>
+                            }
+                           
+
                         </div>
                     </div>
                 </div>

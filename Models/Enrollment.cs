@@ -34,6 +34,8 @@ namespace IdentityText.Models
         public string? Notes { get; set; }
         [BindNever]
         public ICollection<Attendance> Attendances { get; set; }
+        [BindNever]
+        public ICollection<Subscription> Subscriptions { get; set; }
     }
 
 }

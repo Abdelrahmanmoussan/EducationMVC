@@ -75,7 +75,7 @@
                         }
                     </td>
                     <td>@item.CreatedAt.ToShortDateString()</td>
-                    <td>@item.ClassGroup?.Title ?? "N/A"</td>
+                    <td>@(item.ClassGroup != null ?item.ClassGroup.Title : "N/A")</td>
                     <td>
                         @if (item.Assessment != null && !string.IsNullOrEmpty(item.Assessment.AssessmentLink))
                         {

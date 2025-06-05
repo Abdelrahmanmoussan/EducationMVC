@@ -135,9 +135,9 @@ namespace IdentityText.Areas.Identity.Pages.Account
             public decimal AttendancePercent { get; set; }
             [MaxLength(500)]
             public string StudentNotes { get; set; }
-            public int SubscriptionId { get; set; }
+            //public int SubscriptionId { get; set; }
             public int AcademicYearId { get; set; }
-            public IEnumerable<SelectListItem> SubscriptionsList { get; set; } = Enumerable.Empty<SelectListItem>();
+            //public IEnumerable<SelectListItem> SubscriptionsList { get; set; } = Enumerable.Empty<SelectListItem>();
             public IEnumerable<SelectListItem> AcademicYearsList { get; set; } = Enumerable.Empty<SelectListItem>();
 
 
@@ -180,7 +180,7 @@ namespace IdentityText.Areas.Identity.Pages.Account
             };
 
             // Fill the Subject list for the teacher
-            Input.SubscriptionsList = await _subscriptionRepository.SelectListSubscriptionAsync();
+            //Input.SubscriptionsList = await _subscriptionRepository.SelectListSubscriptionAsync();
             Input.AcademicYearsList = await _academicYearRepository.SelectListAcademicYearAsync();
             Input.SubjectsList = await _subjectRepository.SelectListSubjectAsync();
         }
@@ -209,7 +209,7 @@ namespace IdentityText.Areas.Identity.Pages.Account
                 ModelState.Remove("Input.EmergencyContact");
                 ModelState.Remove("Input.AttendancePercent");
                 ModelState.Remove("Input.StudentNotes");
-                ModelState.Remove("Input.SubscriptionId");
+                //ModelState.Remove("Input.SubscriptionId");
                 ModelState.Remove("Input.AcademicYearId");
             }
 
@@ -260,7 +260,7 @@ namespace IdentityText.Areas.Identity.Pages.Account
                             AttendancePercent = Input.AttendancePercent,
                             StudentNotes = Input.StudentNotes,
                             AcademicYearId = Input.AcademicYearId,
-                            SubscriptionId = Input.SubscriptionId
+                            //SubscriptionId = Input.SubscriptionId
                         };
 
                         _studentRepository.Create(student);

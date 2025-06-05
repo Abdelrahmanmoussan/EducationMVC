@@ -1,0 +1,56 @@
+﻿@model IEnumerable<IdentityText.Models.ViewModel.SubscriptionVM>
+
+@{
+    ViewData["Title"] = "الاشتراكات الخاصة بك";
+}
+
+<h2 class="text-center mb-4">الاشتراكات الخاصة بك</h2>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info text-center">
+        لا توجد اشتراكات حتى الآن.
+    </div>
+}
+else
+{
+    <table class="table table-striped text-center">
+        <thead class="table-dark">
+            <tr>
+                <th>الكود</th>
+                <th>الكورس</th>
+                <th>بداية الاشتراك</th>
+                <th>نهاية الاشتراك</th>
+                <th>الحالة</th>
+                <th>تحميل الاشتراك</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Code</td>
+                    <td>@item.ClassGroupTitle</td>
+                    <td>@item.StartDate.ToString("yyyy-MM-dd")</td>
+                    <td>@item.EndDate.ToString("yyyy-MM-dd")</td>
+                    <td>
+                        @if (item.SubscriptionStatus == IdentityText.Enums.SubscriptionStatus.Active)
+                        {
+                            <span class="badge bg-success">نشط</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">منتهي</span>
+                        }
+                    </td>
+					<td>
+                        <a asp-action="DownloadPDF" asp-route-code="@item.Code" class="btn btn-sm btn-outline-primary">
+                            <i class="bi bi-file-earmark-pdf"></i> تحميل الاشتراك PDF
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+

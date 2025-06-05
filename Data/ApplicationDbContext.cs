@@ -70,12 +70,6 @@ namespace IdentityText.Data
                .HasForeignKey(a => a.StudentId)
                .OnDelete(DeleteBehavior.Restrict);
 
-            //builder.Entity<Payment>()
-            //    .HasOne(p => p.Teacher)
-            //    .WithMany(t => t.Payments)
-            //    .HasForeignKey(p => p.TeacherId)
-            //    .OnDelete(DeleteBehavior.Restrict);
-
             builder.Entity<ClassGroup>()
                 .HasOne(cg => cg.Teacher)
                 .WithMany(t => t.ClassGroups)
@@ -93,6 +87,13 @@ namespace IdentityText.Data
                 .WithMany(ay => ay.ClassGroups)
                 .HasForeignKey(cg => cg.AcademicYearId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Subscription>()
+                .HasOne(s => s.Enrollment)       
+                .WithMany(e => e.Subscriptions) 
+                .HasForeignKey(s => s.EnrollmentId) 
+                .OnDelete(DeleteBehavior.Restrict); 
+
 
 
 
@@ -228,24 +229,7 @@ namespace IdentityText.Data
                     Name = "three"
                 }
             );
-            builder.Entity<Subscription>().HasData(
-                new Subscription
-                {
-                    SubscriptionId = 1,
-                    StartDate = new DateTime(2024, 1, 1),
-                    EndDate = new DateTime(2024, 12, 31),
-                    Code = "SUBS2024A",
-                    SubscriptionStatus = SubscriptionStatus.Active
-                },
-                new Subscription
-                {
-                    SubscriptionId = 2,
-                    StartDate = new DateTime(2023, 1, 1),
-                    EndDate = new DateTime(2023, 12, 31),
-                    Code = "SUBS2023B",
-                    SubscriptionStatus = SubscriptionStatus.Expired
-                }
-            );
+           
 
         }
 

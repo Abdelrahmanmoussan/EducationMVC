@@ -7,6 +7,7 @@ using IdentityText.Repository;
 //using IdentityText.Services;
 using IdentityText.Utility; 
 using Microsoft.Extensions.DependencyInjection;
+using IdentityText.Services;
 
 namespace IdentityText
 {
@@ -53,6 +54,8 @@ namespace IdentityText
 
             // تسجيل خدمة الدفع الخاصة بك في DI
             builder.Services.AddScoped<StripePaymentService>();
+
+            builder.Services.AddScoped<SubscriptionPdfService>();
 
 
             var app = builder.Build();

@@ -28,7 +28,6 @@ namespace IdentityText.Repository
             return await appDbContext.Students
                 .Include(s => s.ApplicationUser)
                 .Include(s => s.AcademicYear)
-                .Include(s => s.Subscription)
                 .ToListAsync();
         }
 
@@ -37,7 +36,6 @@ namespace IdentityText.Repository
             return await appDbContext.Students
                 .Include(s => s.ApplicationUser)
                 .Include(s => s.AcademicYear)
-                .Include(s => s.Subscription)
                 .FirstOrDefaultAsync(s => s.StudentId == id);
         }
 

@@ -29,7 +29,7 @@ namespace IdentityText.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            var classGroups = _classGroupRepository.Get;
+            var classGroups = _classGroupRepository.Get(includes: [e=>e.AcademicYear,e=>e.Subject,e=>e.Teacher.ApplicationUser]);
             return View(classGroups);
         }
 
