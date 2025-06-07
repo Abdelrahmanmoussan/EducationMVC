@@ -93,6 +93,9 @@
                         <button class="btn btn-outline-danger btn-sm rounded-pill shadow-sm" onclick="confirmDelete(@item.LectureId)">
                             <i class="bi bi-trash"></i> Delete
                         </button>
+                        <a href="/Admin/Lecture/Attendance?id=@item.LectureId" class="btn btn-outline-primary btn-sm rounded-pill me-1 shadow-sm">
+                            <i class="bi bi-pencil"></i> Attendance
+                        </a>
                     </td>
                 </tr>
             }

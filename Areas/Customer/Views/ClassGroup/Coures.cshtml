@@ -1,93 +1,180 @@
-﻿ @using IdentityText.Enums 
- @model IEnumerable<IdentityText.Models.ClassGroup> 
+﻿@using IdentityText.Enums
+@model IEnumerable<IdentityText.Models.ClassGroup>
 
- @{ 
-     ViewData["Title"] = "Class Groups"; 
- } 
+@{
+    ViewData["Title"] = "Class Groups";
+}
 
- <div class="container mt-4"> 
-     <h2 class="mb-4">إدارة مجموعات الصفوف</h2> 
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
-     <!-- زر الإنشاء --> 
-     <div class="mb-4"> 
-         <a asp-action="Create" class="btn btn-primary"> 
-             <i class="bi bi-plus-circle"></i> إنشاء مجموعة جديدة 
-         </a> 
-     </div> 
 
-     <!-- جدول البيانات --> 
-     <div class="card shadow"> 
-         <div class="card-body"> 
-             <table class="table table-hover" id="classGroupsTable"> 
-                 <thead class="table-dark"> 
-                     <tr> 
-                         <th>العنوان</th> 
-                         <th>المكان</th> 
-                         <th>السعر</th> 
-                         <th>الفترة</th> 
-                         <th>الحالة</th> 
-                         <th>المادة</th> 
-                         <th>المدرس</th> 
-                         <th>العام الدراسي</th> 
-                         <th>الإجراءات</th> 
-                     </tr> 
-                 </thead> 
-                 <tbody> 
-                     @foreach (var item in Model) 
-                     { 
-                         <tr> 
-                             <td>@item.Title</td> 
-                             <td>@item.Location</td> 
-                             <td>@item.Price.ToString("C")</td> 
-                             <td>@item.StartDate.ToString("dd/MM/yyyy") - @item.EndDate.ToString("dd/MM/yyyy")</td> 
-                             <td> 
-                                 @if (item.CGStatus == ClassGroupStatus.Purchased) 
-                                 { 
-                                     <span class="badge bg-success">تم الشراء</span> 
-                                 } 
-                                 else 
-                                 { 
-                                     <span class="badge bg-danger">لم يتم الشراء</span> 
-                                 } 
-                             </td> 
-                             <td>@item.Subject.Title</td> 
-                             <td>@item.Teacher.ApplicationUser.FirstName</td> 
-                             <td>@item.AcademicYear</td> 
-                             <td> 
-                                 <div class="btn-group"> 
-                                     <a asp-action="Edit" asp-route-id="@item.ClassGroupId" class="btn btn-sm btn-warning"> 
-                                         <i class="bi bi-pencil"></i> 
-                                     </a> 
-                                     <a asp-action="Details" asp-route-id="@item.ClassGroupId" class="btn btn-sm btn-info"> 
-                                         <i class="bi bi-eye"></i> 
-                                     </a> 
-                                     <form asp-action="Delete" method="post" class="d-inline"> 
-                                         <input type="hidden" name="id" value="@item.ClassGroupId" /> 
-                                         <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('هل أنت متأكد من الحذف؟')"> 
-                                             <i class="bi bi-trash"></i> 
-                                         </button> 
-                                     </form> 
-                                 </div> 
-                             </td> 
-                         </tr> 
-                     } 
-                 </tbody> 
-             </table> 
-         </div> 
-     </div> 
- </div> 
+<section>
+    <div class="container px-4 px-lg-5">
 
- @section Scripts { 
-     <script> 
-         $(document).ready(function () { 
-             $('#classGroupsTable').DataTable({ 
-                 language: { 
-                     url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/ar.json' 
-                 }, 
-                 columnDefs: [ 
-                     { orderable: false, targets: [8] } // تعطيل الفرز على عمود الإجراءات 
-                 ] 
-             }); 
-         }); 
-     </script> 
- } 
+        <!-- Filter Form -->
+        <form method="get" asp-action="Coures" class="p-4 rounded-4 shadow-sm bg-white ">
+            <div class="row g-3 align-items-end ">
+
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Subject</label>
+                    <select name="subjectName" class="form-select rounded-pill shadow-sm">
+                        <option value="">All Subjects</option>
+                        @foreach (var subject in ViewBag.Subjects)
+                        {
+                            <option value="@subject.Title">@subject.Title</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Teacher</label>
+                    <select name="teacherName" class="form-select rounded-pill shadow-sm">
+                        <option value="">All Teachers</option>
+                        @foreach (var teacher in ViewBag.Teachers)
+                        {
+                            <option value="@teacher.ApplicationUser.FirstName">@teacher.ApplicationUser.FirstName</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="col-md-2">
+                    <label class="form-label fw-bold">Min Price</label>
+                    <input type="number" class="form-control rounded-pill shadow-sm" placeholder="Min Price" name="minPrice" />
+                </div>
+
+                <div class="col-md-2">
+                    <label class="form-label fw-bold">Max Price</label>
+                    <input type="number" class="form-control rounded-pill shadow-sm" placeholder="Max Price" name="maxPrice" />
+                </div>
+
+
+
+                <div class="col-md-2 text-center">
+                    <button type="submit" class="btn rounded-pill px-4 shadow-sm w-100 custom-blue-btn">
+                        <i class="bi bi-funnel-fill me-2"></i> Filter
+                    </button>
+                </div>
+
+
+
+
+            </div>
+        </form>
+
+
+        <h2 class="text-center text-white py-3 rounded mt-3 mb-2" style="background: linear-gradient(to right, #0d6efd, #6610f2);">
+            Available Courses
+        </h2>
+
+
+        <div class="row gy-4">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-6 col-lg-4 d-flex">
+                    <div class="course-card w-100">
+                        <div class="course-header">
+                            <h5 class="mb-0"><i class="bi bi-bookmark-star"></i> @item.Title</h5>
+                            <small><i class="bi bi-geo-alt"></i> @item.Location</small>
+                        </div>
+                        <div class="course-body course-info">
+                            <p><i class="bi bi-currency-dollar text-success"></i> <strong>Price:</strong> @item.Price.ToString("C")</p>
+                            <p><i class="bi bi-calendar-range text-primary"></i> <strong>Duration:</strong> @item.StartDate.ToString("dd/MM/yyyy") - @item.EndDate.ToString("dd/MM/yyyy")</p>
+                            <p><i class="bi bi-layers text-warning"></i> <strong>Subject:</strong> @item.Subject.Title</p>
+                            <p><i class="bi bi-person text-info"></i> <strong>Teacher:</strong> @item.Teacher.ApplicationUser.FirstName</p>
+                            <p><i class="bi bi-clock-history text-secondary"></i> <strong>Academic Year:</strong> @item.AcademicYear.Name</p>
+                        </div>
+                        <div class="course-footer">
+                            <a asp-action="Details" asp-route-id="@item.ClassGroupId" class="course-btn">
+                                <i class="bi bi-eye"></i> View Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+    </div>
+</section>
+
+<!-- Keep the same style as before -->
+<style>
+
+
+    .custom-blue-btn {
+        background: transparent;
+        border: 2px solid #0d6efd;
+        color: #0d6efd;
+        transition: all 0.3s ease;
+    }
+
+        .custom-blue-btn:hover {
+            background: linear-gradient(to right, #0d6efd, #6610f2);
+            color: white;
+            border-color: transparent;
+        }
+
+
+
+
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #f8f9fa;
+    }
+
+    .course-card {
+        transition: all 0.4s ease;
+        background: #fff;
+        border-radius: 20px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+        .course-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 25px rgba(102, 16, 242, 0.25);
+        }
+
+    .course-header {
+        background: linear-gradient(to right, #0d6efd, #6610f2);
+        color: white;
+        padding: 15px 20px;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+    }
+
+    .course-body {
+        padding: 20px;
+        flex-grow: 1;
+    }
+
+    .course-info p {
+        margin: 5px 0;
+        font-size: 0.95rem;
+    }
+
+    .course-footer {
+        padding: 0;
+    }
+
+    .course-btn {
+        border-radius: 0 0 20px 20px;
+        padding: 12px;
+        font-weight: 600;
+        text-align: center;
+        display: block;
+        width: 100%;
+        background: linear-gradient(to right, #0d6efd, #6610f2);
+        color: white;
+        text-decoration: none;
+        transition: background 0.3s ease;
+    }
+
+        .course-btn:hover {
+            background: linear-gradient(to right, #6610f2, #0d6efd);
+            color: white;
+        }
+</style>

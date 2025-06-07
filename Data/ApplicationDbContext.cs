@@ -216,17 +216,17 @@ namespace IdentityText.Data
                 new AcademicYear
                 {
                     AcademicYearId = 1,
-                    Name = "one"
+                    Name = "الصف  الاول الاعدادي "
                 },
                 new AcademicYear
                 {
                     AcademicYearId = 2,
-                    Name = "two"
+                    Name = "الصف  الثانى الاعدادي"
                 },
                 new AcademicYear
                 {
                     AcademicYearId = 3,
-                    Name = "three"
+                    Name = "الصف  الثالث الاعدادي"
                 }
             );
            

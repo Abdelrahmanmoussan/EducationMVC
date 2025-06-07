@@ -1,5 +1,6 @@
 ﻿using IdentityText.Enums;
 using IdentityText.Models;
+using IdentityText.Models.ViewModel;
 using IdentityText.Repository;
 using IdentityText.Repository.IRepository;
 using Microsoft.AspNetCore.Authorization;
@@ -13,6 +14,8 @@ namespace IdentityText.Areas.Customer.Controllers
     public class LectureController : Controller
     {
         private readonly ILectureRepository _lectureRepository;
+        private readonly IClassGroupRepository _classGroupRepository;
+        private readonly ISubscriptionRepository _subscriptionRepository;
         private readonly IEnrollmentRepository _enrollmentRepository;
         private readonly IStudentRepository _studentRepository;
         private readonly UserManager<ApplicationUser> _userManager;
@@ -20,20 +23,24 @@ namespace IdentityText.Areas.Customer.Controllers
         public LectureController(
             ILectureRepository lectureRepository,
             IEnrollmentRepository enrollmentRepository,
+            IClassGroupRepository classGroupRepository,
+            ISubscriptionRepository subscriptionRepository,
             IStudentRepository studentRepository,
             UserManager<ApplicationUser> userManager
             )
         {
             _lectureRepository = lectureRepository;
             _studentRepository = studentRepository;
+            _classGroupRepository = classGroupRepository;
             _enrollmentRepository = enrollmentRepository;
+            _subscriptionRepository = subscriptionRepository;
             _userManager = userManager;
         }
         public IActionResult Index(int classGroupId)
         {
             var userId = _userManager.GetUserId(User);
             var currentStudent = _studentRepository.GetOne(s => s.UserId == userId);
-            if(currentStudent == null)
+            if (currentStudent == null)
             {
                 return NotFound();
             }
@@ -42,7 +49,7 @@ namespace IdentityText.Areas.Customer.Controllers
                 e => e.ClassGroupId == classGroupId &&
                 e.StudentId == currentStudent.StudentId &&
                 e.EnrollmentStatus == EnrollmentStatus.Active,
-                includes: [e=>e.ClassGroup, e => e.Student.ApplicationUser]
+                includes: [e => e.ClassGroup, e => e.Student.ApplicationUser]
             ).Any();
 
             if (!isEnrolled)
@@ -51,9 +58,49 @@ namespace IdentityText.Areas.Customer.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            var lectures = _lectureRepository.Get(filter: l => l.ClassGroupId == classGroupId,includes:[e=>e.ClassGroup,e=>e.Assessment,e=>e.Attendances]);
+            var lectures = _lectureRepository.Get(filter: l => l.ClassGroupId == classGroupId, includes: [e => e.ClassGroup, e => e.Assessment, e => e.Attendances]);
             ViewBag.ClassGroupId = classGroupId;
+            //ViewBag.Attendances = _at
             return View(lectures);
         }
+        [HttpGet]
+        public IActionResult EnterCode(int classGroupId)
+        {
+            var model = new CourseCodeVM { ClassGroupId = classGroupId };
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EnterCode(CourseCodeVM model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var userId = _userManager.GetUserId(User);
+            var subscription = _subscriptionRepository.GetOne(
+                filter: e => e.Enrollment.ClassGroupId == model.ClassGroupId &&
+                             e.Enrollment.EnrollmentStatus == EnrollmentStatus.Active &&
+                             e.Enrollment.Student.UserId == userId,
+                includes: [e => e.Enrollment.ClassGroup , e => e.Enrollment.Student]
+                );
+            if (subscription == null)
+            {
+                model.ErrorMessage = "الكورس غير موجود.";
+                return View(model);
+            }
+
+            if (model.EnteredCode == subscription.Code) 
+            {
+                return RedirectToAction("Index", "Lecture", new { classGroupId = model.ClassGroupId });
+            }
+            else
+            {
+                model.ErrorMessage = "الكود غير صحيح. حاول مرة أخرى.";
+                return View(model);
+            }
+        }
+      
     }
 }

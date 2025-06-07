@@ -1,4 +1,5 @@
-﻿using IdentityText.Models;
+﻿using IdentityText.Enums;
+using IdentityText.Models;
 using IdentityText.Models.ViewModel;
 using IdentityText.Repository;
 using IdentityText.Repository.IRepository;
@@ -16,13 +17,15 @@ namespace IdentityText.Areas.Admin.Controllers
     {
         private readonly ILectureRepository _lectureRepository;
         private readonly IClassGroupRepository _classGroupRepository;
+        private readonly IEnrollmentRepository _enrollmentRepository;
         private readonly IAssessmentRepository _assessmentRepository;
 
-        public LectureController(ILectureRepository lectureRepository, IClassGroupRepository classGroupRepository, IAssessmentRepository assessmentRepository)
+        public LectureController(ILectureRepository lectureRepository, IEnrollmentRepository enrollmentRepository, IClassGroupRepository classGroupRepository, IAssessmentRepository assessmentRepository)
         {
             _lectureRepository = lectureRepository;
             _classGroupRepository = classGroupRepository;
             _assessmentRepository = assessmentRepository;
+            _enrollmentRepository = enrollmentRepository;
         }
 
 
@@ -138,6 +141,37 @@ namespace IdentityText.Areas.Admin.Controllers
             _lectureRepository.Commit();
             TempData["notification"] = "Successfully Deleted";
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public IActionResult Attendance(int id)
+        {
+            var lecture = _lectureRepository.GetOne(filter: e => e.LectureId == id);
+            if (lecture == null)
+            {
+                return NotFound();
+            }
+            //get all enrollments for the class group of the lecture
+            var enrollments = _enrollmentRepository.Get(
+                filter: e => e.ClassGroupId == lecture.ClassGroupId && e.EnrollmentStatus == EnrollmentStatus.Active,
+                includes: [e => e.Student, e => e.Student.ApplicationUser]);
+
+            var count = enrollments.Count();
+
+            var model = enrollments.Where(e => e.Student != null && e.Student.ApplicationUser != null)
+                .Select(e => new StudentAttendanceVM
+            {
+                EnrollmentId = e.EnrollmentId,
+                StudentId = e.StudentId,
+                StudentName = e.Student.ApplicationUser.FirstName,
+                IsPresent = false 
+            }).ToList();
+
+            ViewBag.LectureId = id;
+            ViewBag.ClassGroupId = lecture.ClassGroupId;
+            ViewBag.StudentNumber = count;
+
+            return View(model);
         }
 
     }

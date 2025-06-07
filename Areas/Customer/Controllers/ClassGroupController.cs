@@ -8,6 +8,7 @@ using IdentityText.Models.ViewModel;
 using IdentityText.Repository;
 using IdentityText.Enums;
 using System;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace IdentityText.Areas.Customer.Controllers
@@ -38,45 +39,7 @@ namespace IdentityText.Areas.Customer.Controllers
             _userManager = userManager;
             _studentRepository = studentRepository;
         }
-        //public async Task<IActionResult> CouresAsync()
-        //{
-        //    var currentUser = await _userManager.GetUserAsync(User);
-        //    var classGroup = _classGroupRepository.Get();
-        //    if (classGroup == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    foreach (var item in classGroup)
-        //    {
-        //        // Check if the user is enrolled in the class group
-
-        //        //item.CGStatus = ClassGroupStatus.NotPurchased; // Default status
-        //        foreach (var enrollment in item.Enrollments)
-        //        {
-        //            if (enrollment.Student.ApplicationUser.Id == currentUser.Id)
-        //            {
-        //                item.CGStatus = ClassGroupStatus.Purchased;
-        //                break;
-        //            }
-        //        }
-
-                // Assuming you want to check if the user is enrolled in the class group
-                //var student = _studentRepository.GetOne(s => s.ApplicationUser.Id == currentUser.Id);
-                //if (student != null)
-                //{
-                //    foreach (var enrollment in item.Enrollments)
-                //    {
-                //        if (enrollment.StudentId == student.StudentId)
-                //        {
-                //            item.CGStatus = ClassGroupStatus.Purchased;
-                //            _classGroupRepository.Edit(item);
-                //            break; // No need to check further enrollments for this class group
-                //        }
-                //    }
-                //}
-        //    }
-        //    return View(classGroup);
-        //}
+     
 
         public IActionResult Details(int id)
         {
@@ -143,6 +106,60 @@ namespace IdentityText.Areas.Customer.Controllers
             model.SubjectsList = await _subjectRepository.SelectListSubjectAsync();
             model.TeacherList = await _teacherRepository.SelectListTeacherAsync();
             return View(model);
+        }
+        public async Task<IActionResult> CouresAsync()
+        {
+            var currentUser = await _userManager.GetUserAsync(User);
+            if (currentUser == null)
+                return RedirectToAction("Login", "Account");
+
+
+            var classGroups =  _classGroupRepository.Get( includes: [ 
+                e => e.Teacher.ApplicationUser,
+                e => e.Subject, 
+                e => e.AcademicYear 
+                ]);
+
+
+            ViewBag.Subjects = _subjectRepository.Get();
+            ViewBag.Teachers = _teacherRepository.Get(includes: [t => t.ApplicationUser]);
+
+
+
+
+            string subjectName = Request.Query["subjectName"];
+            string teacherName = Request.Query["teacherName"];
+            decimal.TryParse(Request.Query["minPrice"], out decimal minPrice);
+            decimal.TryParse(Request.Query["maxPrice"], out decimal maxPrice);
+
+            if (!string.IsNullOrEmpty(subjectName))
+            {
+                classGroups = classGroups
+                    .Where(c => c.Subject.Title == subjectName)
+                    .ToList();
+            }
+
+            if (!string.IsNullOrEmpty(teacherName))
+            {
+                classGroups = classGroups
+                    .Where(c => c.Teacher.ApplicationUser.FirstName == teacherName)
+                    .ToList();
+            }
+
+            if (minPrice > 0)
+            {
+                classGroups = classGroups
+                    .Where(c => c.Price >= minPrice)
+                    .ToList();
+            }
+
+            if (maxPrice > 0)
+            {
+                classGroups = classGroups
+                    .Where(c => c.Price <= maxPrice)
+                    .ToList();
+            }
+            return View(classGroups);
         }
 
 

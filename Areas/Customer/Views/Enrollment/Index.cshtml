@@ -81,7 +81,7 @@
                             }
                             @if (enrollment.EnrollmentStatus == IdentityText.Enums.EnrollmentStatus.Active)
                             {
-                                <a asp-action="Index" asp-controller="Lecture" asp-area="Customer" asp-route-classGroupId="@enrollment.ClassGroupId" class="btn btn-glow-success btn-sm rounded-pill">
+                                <a asp-action="EnterCode" asp-controller="Lecture" asp-area="Customer" asp-route-classGroupId="@enrollment.ClassGroupId" class="btn btn-glow-success btn-sm rounded-pill">
                                     Go To Lecture
                                 </a>
                             }

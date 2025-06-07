@@ -1,0 +1,34 @@
+﻿@using IdentityText.Models.ViewModel
+@model List<StudentAttendanceVM>
+
+<h3>تسجيل الحضور للمحاضرة</h3>
+<h3>the number of student in this class group is @ViewBag.StudentNumber</h3>
+
+<form asp-action="SaveAttendance" method="post">
+    <input type="hidden" name="LectureId" value="@ViewBag.LectureId" />
+    <input type="hidden" name="ClassGroupId" value="@ViewBag.ClassGroupId" />
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>اسم الطالب</th>
+                <th>حضر</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                <tr>
+                    <td>@Model[i].StudentName</td>
+                    <td>
+                        <input type="hidden" asp-for="@Model[i].EnrollmentId" name="[@i].EnrollmentId" />
+                        <input type="checkbox" asp-for="@Model[i].IsPresent" name="[@i].IsPresent" />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <button type="submit" class="btn btn-primary">حفظ الحضور</button>
+</form>
+

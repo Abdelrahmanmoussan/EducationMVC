@@ -35,7 +35,7 @@ namespace IdentityText.Models
         public int EnrollmentId { get; set; }
 
         [ForeignKey("EnrollmentId")]
-        public Enrollment Enrollment { get; set; }
+        public Enrollment Enrollment { get; set; } 
 
     }
 
