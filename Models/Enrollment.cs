@@ -19,10 +19,12 @@ namespace IdentityText.Models
 
         [Required]
         public int StudentId { get; set; }
+        [ForeignKey("StudentId")]
         public Student Student { get; set; }
 
         [Required]
         public int ClassGroupId { get; set; }
+        [ForeignKey("ClassGroupId")]
         public ClassGroup ClassGroup { get; set; }
 
         [Required]

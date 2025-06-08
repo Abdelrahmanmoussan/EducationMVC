@@ -63,58 +63,71 @@ namespace IdentityText.Areas.Customer.Controllers
 
         public async Task<IActionResult> RegisterAsync(int id)
         {
-            var currentCG = _clasGroupRepository.GetOne(e => e.ClassGroupId == id);
+            var currentCG = _clasGroupRepository.GetOne(e => e.ClassGroupId == id, tracked: true);
+            if (currentCG == null)
+            {
+                TempData["Error"] = "المجموعة غير موجودة.";
+                return RedirectToAction(actionName: "Index", controllerName: "Home");
+            }
             var currentUser = await _userManager.GetUserAsync(User);
-            var student = _studentRepository.GetOne(s => s.UserId == currentUser.Id);
-            var userId = student.StudentId;
             if (currentUser == null)
             {
                 return RedirectToAction("Login", "Account");
             }
-            // التحقق من عدم وجود تسجيل سابق لنفس الطالب في نفس المجموعة
-            bool alreadyEnrolled = _enrollmentRepository
-                .Get(e => e.ClassGroupId == id && e.StudentId == userId)
-                .Any();
-            if (alreadyEnrolled)
+            var student = _studentRepository.GetOne(s => s.UserId == currentUser.Id, tracked: true);
+            if (student == null)
             {
-                TempData["Error"] = "أنت مسجل بالفعل في هذه المجموعة.";
+                TempData["Error"] = "المجموعة غير موجودة.";
                 return RedirectToAction(actionName: "Index", controllerName: "Home");
             }
-            // create enrollment
-            var enrollment = new Enrollment
+            var userId = student.StudentId;
+            
+            if (student.AcademicYear.Name == currentCG.AcademicYear.Name)
             {
-                ClassGroupId = currentCG.ClassGroupId,
-                StudentId = userId, // Convert string to int
-                EnrollmentDate = DateTime.Now,
-                EnrollmentStatus = EnrollmentStatus.PendingPayment, // حالة الانتظار حتى الدفع
-                Notes = "تم التسجيل في المجموعة " + currentCG.Title + " في " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
-               
-            };
-            _enrollmentRepository.Create(enrollment);
-            _enrollmentRepository.Commit();
-            // create Payment
-            var payment = new Models.Payment
+                // التحقق من عدم وجود تسجيل سابق لنفس الطالب في نفس المجموعة
+                bool alreadyEnrolled = _enrollmentRepository
+                    .Get(e => e.ClassGroupId == id && e.StudentId == userId)
+                    .Any();
+                if (alreadyEnrolled)
+                {
+                    TempData["Error"] = "أنت مسجل بالفعل في هذه المجموعة.";
+                    return RedirectToAction(actionName: "Index", controllerName: "Home");
+                }
+                // create enrollment
+                var enrollment = new Enrollment
+                {
+                    ClassGroupId = currentCG.ClassGroupId,
+                    StudentId = userId, // Convert string to int
+                    EnrollmentDate = DateTime.Now,
+                    EnrollmentStatus = EnrollmentStatus.PendingPayment, // حالة الانتظار حتى الدفع
+                    Notes = "تم التسجيل في المجموعة " + currentCG.Title + " في " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
+
+                };
+                _enrollmentRepository.Create(enrollment);
+                _enrollmentRepository.Commit();
+                // create Payment
+                var payment = new Models.Payment
+                {
+                    EnrollmentId = enrollment.EnrollmentId,
+                    Amount = currentCG.Price,
+                    PaymentDate = DateTime.Now,
+                    PaymentStatus = PaymentStatus.Pending,
+                    PaymentMethod = PaymentMethod.Cash,
+                    PlatformPercentage = 0.10m,
+                    NetAmountForTeacher = currentCG.Price * (1 - 0.10m),
+                    Notes = "Payment for enrollment in class group " + currentCG.Title
+                };
+                _paymentRepository.Create(payment);
+                _paymentRepository.Commit();
+                TempData["notification"] = "تم التسجيل في الكورس وتم انشاء دفع له";
+                return RedirectToAction("Index");
+            }
+            else
             {
-                EnrollmentId = enrollment.EnrollmentId,
-                Amount = currentCG.Price,
-                PaymentDate = DateTime.Now,
-                PaymentStatus = PaymentStatus.Pending,
-                PaymentMethod = PaymentMethod.Cash,
-                PlatformPercentage = 0.10m, 
-                NetAmountForTeacher = currentCG.Price * (1 - 0.10m) ,
-                Notes = "Payment for enrollment in class group " + currentCG.Title
-            };
-            _paymentRepository.Create(payment);
-            _paymentRepository.Commit();
-            TempData["notification"] = "تم التسجيل في الكورس وتم انشاء دفع له";
-            return RedirectToAction("Index");
+                TempData["notification"] = "هذا الكورس غير مناسب ليك";
+                return RedirectToAction(actionName:"Index"  , controllerName:"Home");
+            }  
         }
-
-        private string GenerateSubscriptionCode(int enrollmentId)
-        {
-            return $"SUB-{enrollmentId}-{Guid.NewGuid().ToString().Substring(0, 6).ToUpper()}";
-        }
-
 
         [HttpGet]
         public IActionResult ProcessPayment(int id)
@@ -163,6 +176,10 @@ namespace IdentityText.Areas.Customer.Controllers
             var session = service.Create(options);
 
             return Redirect(session.Url);
+        }
+        private string GenerateSubscriptionCode(int enrollmentId)
+        {
+            return $"SUB-{enrollmentId}-{Guid.NewGuid().ToString().Substring(0, 6).ToUpper()}";
         }
 
         [HttpGet]

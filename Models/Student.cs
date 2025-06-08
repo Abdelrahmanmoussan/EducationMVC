@@ -14,13 +14,12 @@ namespace IdentityText.Models
     {
         [Key]
         public int StudentId { get; set; }
-
         [Required]
         public required string UserId { get; set; }
-
+        [ForeignKey("UserId")]
         public ApplicationUser ApplicationUser { get; set; }
 
-        
+
         [MaxLength(100)]
         public string? ParentName { get; set; }
 
@@ -57,9 +56,7 @@ namespace IdentityText.Models
         public ICollection<PrivateLessonStudent> PrivateLessonStudents { get; set; }
         [BindNever]
         public ICollection<Enrollment> Enrollments { get; set; }
-        
-        //public int? SubscriptionId { get; set; }
-        //public Subscription Subscription { get; set; }
+
 
         [Required]
         public int AcademicYearId { get; set; }

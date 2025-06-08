@@ -1,34 +1,74 @@
-﻿@using IdentityText.Models.ViewModel
-@model List<StudentAttendanceVM>
+﻿@model List<IdentityText.Models.ViewModel.StudentAttendanceVM>
 
-<h3>تسجيل الحضور للمحاضرة</h3>
-<h3>the number of student in this class group is @ViewBag.StudentNumber</h3>
+@{
+    ViewData["Title"] = "Students Attendance";
+}
+
+<div class="chart-header mb-4 rounded-3 shadow-sm d-flex justify-content-center align-items-center text-warning">
+    <i class="bi bi-journal-text me-2"></i> All Students in Class Group
+</div>
 
 <form asp-action="SaveAttendance" method="post">
     <input type="hidden" name="LectureId" value="@ViewBag.LectureId" />
     <input type="hidden" name="ClassGroupId" value="@ViewBag.ClassGroupId" />
 
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>اسم الطالب</th>
-                <th>حضر</th>
-            </tr>
-        </thead>
-        <tbody>
-            @for (int i = 0; i < Model.Count; i++)
-            {
-                <tr>
-                    <td>@Model[i].StudentName</td>
-                    <td>
-                        <input type="hidden" asp-for="@Model[i].EnrollmentId" name="[@i].EnrollmentId" />
-                        <input type="checkbox" asp-for="@Model[i].IsPresent" name="[@i].IsPresent" />
-                    </td>
+    <div class="table-wrapper rounded-3 overflow-hidden shadow-sm">
+        <table class="table table-bordered table-hover align-middle mb-0 text-center">
+            <thead>
+                <tr class="gradient-header">
+                    <th>Student Name</th>
+                    <th>Attendance</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.Count; i++)
+                {
+                    <tr>
+                        <td>
+                            @Model[i].StudentName
+                        </td>
+                        <td>
+                            <input type="hidden" name="[@i].EnrollmentId" value="@Model[i].EnrollmentId" />
+                            <input type="checkbox" name="[@i].IsPresent" value="true" @(Model[i].IsPresent ? "checked" : "") />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 
-    <button type="submit" class="btn btn-primary">حفظ الحضور</button>
+    <button type="submit" class="btn btn-primary mt-3">حفظ الحضور</button>
 </form>
 
+<style>
+    .chart-header {
+        background: linear-gradient(to right, #0d6efd, #6610f2);
+        padding: 12px 20px;
+        font-size: 1.3rem;
+        font-weight: bold;
+    }
+
+    thead tr.gradient-header th {
+        background: linear-gradient(to right, #0e6efd, #6511f2);
+        color: gold;
+        text-align: center;
+        vertical-align: middle;
+        height: 60px;
+        font-weight: bold;
+    }
+
+    .table-wrapper {
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid #dee2e6;
+        margin-bottom: 2rem;
+    }
+
+    .table th, .table td {
+        vertical-align: middle;
+    }
+
+    .btn-sm i {
+        margin-right: 4px;
+    }
+</style>
