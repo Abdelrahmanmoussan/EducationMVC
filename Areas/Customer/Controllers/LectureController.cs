@@ -60,9 +60,10 @@ namespace IdentityText.Areas.Customer.Controllers
 
             var lectures = _lectureRepository.Get(filter: l => l.ClassGroupId == classGroupId, includes: [e => e.ClassGroup, e => e.Assessment, e => e.Attendances]);
             ViewBag.ClassGroupId = classGroupId;
-            //ViewBag.Attendances = _at
+            ViewBag.StudentId = currentStudent.StudentId;
             return View(lectures);
         }
+
         [HttpGet]
         public IActionResult EnterCode(int classGroupId)
         {

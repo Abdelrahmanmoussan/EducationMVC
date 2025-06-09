@@ -2,6 +2,7 @@
 using IdentityText.Data;
 using IdentityText.Models;
 using IdentityText.Repository.IRepository;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,16 @@ namespace IdentityText.Repository
         public StudentRepository(ApplicationDbContext appDbContext) : base(appDbContext)
         {
             this.appDbContext = appDbContext;
+        }
+
+        public async Task<IEnumerable<SelectListItem>> SelectListStudentAsync()
+        {
+            return await dbSet.OrderBy(a => a.ApplicationUser.FirstName)
+                             .Select(a => new SelectListItem
+                             {
+                                 Value = a.StudentId.ToString(),
+                                 Text = a.ApplicationUser.FirstName +" "+ a.ApplicationUser.LastName
+                             }).ToListAsync();
         }
         public async Task<int> CountAsync()
         {

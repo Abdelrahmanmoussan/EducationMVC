@@ -1,5 +1,6 @@
 ﻿
 using IdentityText.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,7 @@ namespace IdentityText.Repository.IRepository
     {
         Task<int> CountAsync();
 
-
+        Task<IEnumerable<SelectListItem>> SelectListStudentAsync();
         Task<IEnumerable<Student>> GetAllWithIncludesAsync();
         Task<Student?> GetByIdWithIncludesAsync(int id);
 

@@ -54,11 +54,31 @@
                             {
                                 <div class="alert alert-warning text-center mb-0">
                                     🎥 لا يوجد فيديو متاح لهذه المحاضرة.
-                                    
                                 </div>
                             }
                         </div>
-                    </div>
+						<p class="card-footer text-muted text-center">
+							<small>تمت الإضافة في: @lecture.CreatedAt.ToString("yyyy-MM-dd HH:mm")</small>
+                        </p>
+                        @{
+                            var studentId = (int)ViewBag.StudentId;
+                            var attendance = lecture.Attendances.FirstOrDefault(a => a.StudentId == studentId);
+                        }
+                        <p class="card-footer text-muted text-center">
+                            <small>
+                                الغياب:
+                                @if (attendance != null)
+                                {
+                                    @attendance.AttendanceStatus
+                                }
+                                else
+                                {
+                                    <span class="text-danger">غير مسجل</span>
+                                }
+                            </small>
+                        </p>
+
+					</div>
                 </div>
             }
         </div>

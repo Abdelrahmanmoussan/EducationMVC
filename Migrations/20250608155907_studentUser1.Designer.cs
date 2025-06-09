@@ -4,6 +4,7 @@ using IdentityText.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IdentityText.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250608155907_studentUser1")]
+    partial class studentUser1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -157,7 +160,7 @@ namespace IdentityText.Migrations
                             Id = "7aafd540-fdf8-482b-804d-780fb6726703",
                             AccessFailedCount = 0,
                             Address = "Quesna,Menofia",
-                            ConcurrencyStamp = "3ea6f030-9f69-4587-bb98-7c24b96bf5bd",
+                            ConcurrencyStamp = "dc8ba03f-6f27-43ae-983a-e3ab4cb400f6",
                             Email = "amin@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Amin",
@@ -165,10 +168,10 @@ namespace IdentityText.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "AMIN@GMAIL.COM",
                             NormalizedUserName = "AMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEDa4rz6IE2eGGWBh4X1WqfLnEpzeAGCuHA2XkFSesIaRMOE/3QdqOuCkuYd4f2FvRg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEK8VQiEOwzAg305HOsvYSYI/uX+kF2x+BnCphzmbrPhQb1zS8zTOTSKR+D6BUEUv8w==",
                             PhoneNumberConfirmed = false,
                             Photo = "admin.jpg",
-                            SecurityStamp = "f371f869-ae5e-4d45-b42e-6573aab97006",
+                            SecurityStamp = "de442f31-fad4-40ba-82da-1884bbaa786d",
                             TwoFactorEnabled = false,
                             UserName = "amin"
                         },
@@ -177,7 +180,7 @@ namespace IdentityText.Migrations
                             Id = "9b4cd611-6c35-4c98-a0dc-1d2e1349ab91",
                             AccessFailedCount = 0,
                             Address = "Port Said",
-                            ConcurrencyStamp = "11bfb8c6-18ba-4562-99d9-18d15203541f",
+                            ConcurrencyStamp = "0198a91a-b5b3-45cf-9d22-3b8ef7e38861",
                             Email = "abdelrahmanmoussan@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Abdelrahman",
@@ -185,10 +188,10 @@ namespace IdentityText.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ABDELRAHMANMOUSSAN@GMAIL.COM",
                             NormalizedUserName = "ABDELRAHMAN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEHqhz+nWMXk6eRQ4Tg8wAsJVWMIyNIgnH4h5E7jy89r4chlCpwrDgN7caMSPftGedg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEM+sluB29rFBV15TKcFtGMlfSoCH3LvKuwD1RBTgCMuJewqoCVXJPKZ+BSAJVGAsUA==",
                             PhoneNumberConfirmed = false,
                             Photo = "Moussan.jpg",
-                            SecurityStamp = "8fb1a7e2-b1d8-4e8c-a866-a19b0155d55b",
+                            SecurityStamp = "fb1cbdb4-604f-4e52-ac3a-b44a498d91e2",
                             TwoFactorEnabled = false,
                             UserName = "abdelrahman"
                         });
@@ -296,7 +299,7 @@ namespace IdentityText.Migrations
                     b.Property<int>("LectureId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Remark")
+                    b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("StudentId")

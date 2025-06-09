@@ -1,0 +1,100 @@
+﻿@using IdentityText.Enums
+@model IEnumerable<IdentityText.Models.Attendance>
+@{
+    ViewData["Title"] = "سجل الحضور";
+    var selectedClassGroupId = TempData["SelectedClassGroupId"]?.ToString();
+    var selectedLectureId = TempData["SelectedLectureId"]?.ToString();
+}
+
+<div class="container py-5">
+    <h2 class="text-center text-primary mb-4 fw-bold">📋 Attendance History</h2>
+
+    <form method="get" asp-action="ShowAttendance" class="row mb-4">
+        <div class="col-md-4">
+            <label>Class Group:</label>
+            <select name="classGroupId" class="form-control">
+                <option value="">-- choose class group --</option>
+                @foreach (var group in Model.Select(a => a.Enrollment.ClassGroup).DistinctBy(g => g.ClassGroupId))
+                {
+                    <option value="@group.ClassGroupId" >@group.Title</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label>Lecture:</label>
+            <select name="lectureId" class="form-control">
+                <option value="">-- choose lecture --</option>
+                @foreach (var lecture in Model.Select(a => a.Lecture).DistinctBy(l => l.LectureId))
+                {
+                    <option value="@lecture.LectureId">@lecture.Title</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-4 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary w-100">🔍 filter</button>
+        </div>
+    </form>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-warning text-center">لا توجد سجلات مطابقة.</div>
+    }
+    else
+    {
+        <table class="table table-bordered table-striped" id="attendanceTable">
+            <thead class="table-light">
+                <tr>
+                    <th>Class Name</th>
+                    <th>Student</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th>Remarks</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var a in Model)
+                {
+                    <tr>
+                        <td>@a.Enrollment.ClassGroup.Title</td>
+                        <td>@a.Student.ApplicationUser.FirstName @a.Student.ApplicationUser.LastName</td>
+                        <td>@a.Student.ApplicationUser.Email</td>
+                        <td>
+                            <span class="badge 
+                                @(a.AttendanceStatus == AttendanceStatus.Present ? "bg-success" :
+                                  a.AttendanceStatus == AttendanceStatus.Absent ? "bg-danger" :
+                                  "bg-warning text-dark")">
+                                @a.AttendanceStatus
+                            </span>
+                        </td>
+                        <td>@a.Remark</td>
+                        <td>@a.Lecture.LectureDate.ToString("yyyy-MM-dd")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+@section Scripts {
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" />
+    <script>
+        $(document).ready(function () {
+            $('#attendanceTable').DataTable({
+                "language": {
+                    "search": "بحث:",
+                    "lengthMenu": "عرض _MENU_ صف",
+                    "zeroRecords": "لا توجد نتائج",
+                    "info": "عرض _START_ إلى _END_ من _TOTAL_ صف",
+                    "infoEmpty": "لا توجد بيانات",
+                    "paginate": {
+                        "next": "التالي",
+                        "previous": "السابق"
+                    }
+                }
+            });
+        });
+    </script>
+}

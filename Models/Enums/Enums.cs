@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,8 +35,14 @@ namespace IdentityText.Enums
 
     public enum AttendanceStatus
     {
+        [Display(Name = "حاضر")]
         Present,
-        Abset
+
+        [Display(Name = "غائب")]
+        Absent,
+
+        [Display(Name = "متأخر")]
+        Late
     }
 
     public enum SubscriptionStatus

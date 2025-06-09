@@ -1,0 +1,113 @@
+﻿@model IdentityText.Models.ViewModel.StudentAttendanceVM
+
+<div class="container mt-4">
+    <div class="card shadow-sm border-0 text-center">
+        <div class="card-header bg-primary text-white fw-bold">
+            <i class="bi bi-check2-square me-2"></i>تسجيل الغياب
+        </div>
+        <div class="card-body">
+            <form asp-action="SaveAttendance" method="post">
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label asp-for="ClassGroupId" class="form-label fw-semibold">اختر الجروب</label>
+                        <select asp-for="ClassGroupId" asp-items="Model.ClassGroups" class="form-select" id="ClassGroupId">
+                            <option value="">-- اختر الجروب --</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="LectureId" class="form-label fw-semibold">اختر المحاضرة</label>
+                        <select asp-for="LectureId" asp-items="Model.Lectures" class="form-select" id="LectureId">
+                            <option value="">-- اختر المحاضرة --</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="studentsSection" style="display: none;">
+                    <div class="table-responsive mt-4">
+                        <table class="table table-striped table-bordered align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>#</th>
+                                    <th>الاسم</th>
+                                    <th>الإيميل</th>
+                                    <th>الحالة</th>
+                                    <th>ملاحظات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- سيتم ملء الطلاب ديناميكياً -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="mt-4 text-end">
+                    <button type="submit" class="btn btn-success px-4">
+                        <i class="bi bi-save me-1"></i> حفظ الغياب
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#ClassGroupId').change(function () {
+                const classGroupId = $(this).val();
+                $('#LectureId').empty().append('<option value="">-- اختر المحاضرة --</option>');
+                $('#studentsSection').hide();
+
+                if (classGroupId) {
+                    $.get('/Admin/Attendance/GetLecturesByClassGroup?classGroupId=' + classGroupId, function (data) {
+                        $.each(data, function (i, lecture) {
+                            $('#LectureId').append('<option value="' + lecture.id + '">' + lecture.title + '</option>');
+                        });
+                    });
+                }
+            });
+
+            $('#LectureId').change(function () {
+                const classGroupId = $('#ClassGroupId').val();
+                const lectureId = $(this).val();
+
+                if (classGroupId && lectureId) {
+                    $.get('/Admin/Attendance/GetStudentsByClassGroup?classGroupId=' + classGroupId, function (data) {
+                        const tableBody = $('table tbody');
+                        tableBody.empty();
+
+                        if (data.length === 0) {
+                            tableBody.append('<tr><td colspan="5" class="text-center text-danger">لا يوجد طلاب في هذا الجروب.</td></tr>');
+                        } else {
+                            $.each(data, function (i, student) {
+                                tableBody.append(`
+                                    <tr>
+                                        <td>${i + 1}</td>
+                                        <td>${student.fullName}</td>
+                                        <td>${student.email}</td>
+                                        <td>
+                                            <select name="Attendances[${i}].AttendanceStatus" class="form-select">
+                                                <option value="Present">حاضر</option>
+                                                <option value="Absent">غائب</option>
+                                                <option value="Late">متأخر</option>
+                                            </select>
+                                            <input type="hidden" name="Attendances[${i}].StudentId" value="${student.id}" />
+                                        </td>
+                                        <td><input type="text" name="Attendances[${i}].Remark" class="form-control" /></td>
+                                    </tr>
+                                `);
+                            });
+                        }
+
+                        $('#studentsSection').show();
+                    });
+                } else {
+                    $('#studentsSection').hide();
+                }
+            });
+        });
+    </script>
+}

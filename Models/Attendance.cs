@@ -24,17 +24,19 @@ namespace IdentityText.Models
         [Required]
         public AttendanceStatus AttendanceStatus { get; set; } // مثلا: Present, Absent, Late
 
-        public string Notes { get; set; }
+        public string? Remark { get; set; }
         [Required]
         public int StudentId { get; set; }
+        [ForeignKey("StudentId")]
         public Student Student { get; set; }
         [Required]
         public int EnrollmentId { get; set; }
-
+        [ForeignKey("EnrollmentId")]
         public Enrollment Enrollment { get; set; }
 
         [Required]
         public int LectureId { get; set; }
+        [ForeignKey("LectureId")]
         public Lecture Lecture { get; set; }
     }
 
