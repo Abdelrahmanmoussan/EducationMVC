@@ -35,13 +35,13 @@ namespace IdentityText.Enums
 
     public enum AttendanceStatus
     {
-        [Display(Name = "حاضر")]
+        [Display(Name = "Present")]
         Present,
 
-        [Display(Name = "غائب")]
+        [Display(Name = "Absent")]
         Absent,
 
-        [Display(Name = "متأخر")]
+        [Display(Name = "Late")]
         Late
     }
 

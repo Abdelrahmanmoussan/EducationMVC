@@ -92,7 +92,25 @@ namespace IdentityText.Data
                 .HasOne(s => s.Enrollment)       
                 .WithMany(e => e.Subscriptions) 
                 .HasForeignKey(s => s.EnrollmentId) 
+                .OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<Notification>()
+                .HasOne(n => n.User)
+                .WithMany()
+                .HasForeignKey(n => n.UserId)
                 .OnDelete(DeleteBehavior.Restrict); 
+
+            builder.Entity<NotificationRecipient>()
+                .HasOne(nr => nr.User)
+                .WithMany()
+                .HasForeignKey(nr => nr.UserId)
+                .OnDelete(DeleteBehavior.Restrict); 
+
+            builder.Entity<NotificationRecipient>()
+                .HasOne(nr => nr.Notification)
+                .WithMany(n => n.NotificationRecipients)
+                .HasForeignKey(nr => nr.NotificationId)
+                .OnDelete(DeleteBehavior.Cascade); 
+
 
 
 

@@ -15,10 +15,12 @@ namespace IdentityText.Models
 
         [Required]
         public int AssessmentId { get; set; }
+        [ForeignKey("AssessmentId")]
         public Assessment Assessment { get; set; }
 
         [Required]
         public int StudentId { get; set; }
+        [ForeignKey("StudentId")]
         public Student Student { get; set; }
 
         [Required]
@@ -26,6 +28,7 @@ namespace IdentityText.Models
         public string Grade { get; set; }
 
         public string? Feedback { get; set; }
+        public string? StudentSolutionPath { get; set; }
     }
 
 }

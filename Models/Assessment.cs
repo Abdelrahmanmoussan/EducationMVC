@@ -19,7 +19,7 @@ namespace IdentityText.Models
 
         public string? Description { get; set; }
 
-        public DateTime Date { get; set; }
+        public DateTime DeliveryDate { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         [Url]
         public string? AssessmentLink { get; set; }

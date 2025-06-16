@@ -36,7 +36,11 @@
                 Subscriptions
             </a>
         </li>
+        <li class="nav-item">
+            @await Html.PartialAsync("_NotificationBadge")
+        </li>
     }
+
      <li>
         <a class="nav-link" asp-area="Customer" asp-controller="ClassGroup" asp-action="Coures">
             All Courses

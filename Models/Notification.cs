@@ -23,11 +23,9 @@ namespace IdentityText.Models
 
         [Required]
         public string UserId { get; set; }
-
+        [ForeignKey("UserId")]
         public virtual ApplicationUser User { get; set; }
 
-        [Required]
-        public int NotificationRecipientId { get; set; }
         [BindNever]
         public virtual ICollection<NotificationRecipient> NotificationRecipients { get; set; }
     }

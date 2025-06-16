@@ -30,5 +30,14 @@ namespace IdentityText.Repository
                                  .GetCustomAttribute<DisplayAttribute>()?.Name ?? status.ToString()
                 }).ToList();
         }
+        public async Task<IEnumerable<SelectListItem>> SelectListAttendanceAsync()
+        {
+            return await dbSet.OrderBy(a => a.AttendanceStatus)
+                             .Select(a => new SelectListItem
+                             {
+                                 Value = a.AttendanceId.ToString(),
+                                 Text = a.AttendanceStatus.ToString()
+                             }).ToListAsync();
+        }
     }
 }

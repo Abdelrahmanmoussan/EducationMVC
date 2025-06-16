@@ -157,7 +157,7 @@ namespace IdentityText.Migrations
                             Id = "7aafd540-fdf8-482b-804d-780fb6726703",
                             AccessFailedCount = 0,
                             Address = "Quesna,Menofia",
-                            ConcurrencyStamp = "3ea6f030-9f69-4587-bb98-7c24b96bf5bd",
+                            ConcurrencyStamp = "cb725b4d-018e-4c58-9fdb-79e2a532e84a",
                             Email = "amin@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Amin",
@@ -165,10 +165,10 @@ namespace IdentityText.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "AMIN@GMAIL.COM",
                             NormalizedUserName = "AMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEDa4rz6IE2eGGWBh4X1WqfLnEpzeAGCuHA2XkFSesIaRMOE/3QdqOuCkuYd4f2FvRg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEAuIHhwY/+i01zOJWya6kPkvuU+B6XcH/+Tq8xWqOTByZ5kWDBE4+657LoTqd1QLGQ==",
                             PhoneNumberConfirmed = false,
                             Photo = "admin.jpg",
-                            SecurityStamp = "f371f869-ae5e-4d45-b42e-6573aab97006",
+                            SecurityStamp = "6fb248c4-186a-4a70-b5db-9283341fcb46",
                             TwoFactorEnabled = false,
                             UserName = "amin"
                         },
@@ -177,7 +177,7 @@ namespace IdentityText.Migrations
                             Id = "9b4cd611-6c35-4c98-a0dc-1d2e1349ab91",
                             AccessFailedCount = 0,
                             Address = "Port Said",
-                            ConcurrencyStamp = "11bfb8c6-18ba-4562-99d9-18d15203541f",
+                            ConcurrencyStamp = "3a88cb10-a42d-4d06-b2bf-dae00cb3a516",
                             Email = "abdelrahmanmoussan@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Abdelrahman",
@@ -185,10 +185,10 @@ namespace IdentityText.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ABDELRAHMANMOUSSAN@GMAIL.COM",
                             NormalizedUserName = "ABDELRAHMAN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEHqhz+nWMXk6eRQ4Tg8wAsJVWMIyNIgnH4h5E7jy89r4chlCpwrDgN7caMSPftGedg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAECtHuSrbUnXP33+V3tbVejjsjnA+dIjUkr6ix1M4GAG1u96y4MsMxS6WO/IopjHNDQ==",
                             PhoneNumberConfirmed = false,
                             Photo = "Moussan.jpg",
-                            SecurityStamp = "8fb1a7e2-b1d8-4e8c-a866-a19b0155d55b",
+                            SecurityStamp = "0bcfe135-bd84-4a7d-a04a-7ee1cced524a",
                             TwoFactorEnabled = false,
                             UserName = "abdelrahman"
                         });
@@ -211,7 +211,7 @@ namespace IdentityText.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("Date")
+                    b.Property<DateTime>("DeliveryDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
@@ -260,6 +260,9 @@ namespace IdentityText.Migrations
 
                     b.Property<int>("StudentId")
                         .HasColumnType("int");
+
+                    b.Property<string>("StudentSolutionPath")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("AssessmentResultId");
 
@@ -463,6 +466,9 @@ namespace IdentityText.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("NotificationId"));
 
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
@@ -473,14 +479,13 @@ namespace IdentityText.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("NotificationRecipientId")
-                        .HasColumnType("int");
-
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("NotificationId");
+
+                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("UserId");
 
@@ -489,24 +494,25 @@ namespace IdentityText.Migrations
 
             modelBuilder.Entity("IdentityText.Models.NotificationRecipient", b =>
                 {
-                    b.Property<string>("NotificationId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("NotificationId")
+                        .HasColumnType("int");
 
                     b.Property<int>("NotificationRecipientId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("DeliveryByGmail")
+                    b.Property<bool?>("DeliveryByGmail")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsDelivered")
+                    b.Property<bool?>("IsDelivered")
                         .HasColumnType("bit");
 
-                    b.Property<int>("NotificationId1")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("NotificationId", "NotificationRecipientId");
 
-                    b.HasIndex("NotificationId1");
+                    b.HasIndex("UserId");
 
                     b.ToTable("NotificationRecipients");
                 });
@@ -1141,10 +1147,14 @@ namespace IdentityText.Migrations
 
             modelBuilder.Entity("IdentityText.Models.Notification", b =>
                 {
-                    b.HasOne("IdentityText.Models.ApplicationUser", "User")
+                    b.HasOne("IdentityText.Models.ApplicationUser", null)
                         .WithMany("Notifications")
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("IdentityText.Models.ApplicationUser", "User")
+                        .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -1154,11 +1164,19 @@ namespace IdentityText.Migrations
                 {
                     b.HasOne("IdentityText.Models.Notification", "Notification")
                         .WithMany("NotificationRecipients")
-                        .HasForeignKey("NotificationId1")
+                        .HasForeignKey("NotificationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("IdentityText.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("Notification");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("IdentityText.Models.Payment", b =>

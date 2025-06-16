@@ -35,17 +35,17 @@
                                     <!-- تضمين فيديو YouTube باستخدام iframe -->
                                     <div style="position: relative; height: 0; overflow: hidden; max-width: 100%; height: auto;">
                                         <iframe src="@lecture.VideoURL"
-                                                frameborder="0"
-                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                                allowfullscreen
-                                                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+                                        frameborder="0"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                        allowfullscreen
+                                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
                                         </iframe>
                                     </div>
 
                                 </div>
                                 <a href="@lecture.VideoURL"
-                                   target="_blank"
-                                   class="btn btn-outline-primary mt-auto">
+                                target="_blank"
+                                class="btn btn-outline-primary mt-auto">
                                     <i class="bi bi-youtube me-1"></i>
                                     مشاهدة الفيديو
                                 </a>
@@ -57,8 +57,8 @@
                                 </div>
                             }
                         </div>
-						<p class="card-footer text-muted text-center">
-							<small>تمت الإضافة في: @lecture.CreatedAt.ToString("yyyy-MM-dd HH:mm")</small>
+                        <p class="card-footer text-muted text-center">
+                            <small>تمت الإضافة في: @lecture.CreatedAt.ToString("yyyy-MM-dd HH:mm")</small>
                         </p>
                         @{
                             var studentId = (int)ViewBag.StudentId;
@@ -77,7 +77,34 @@
                                 }
                             </small>
                         </p>
+                        @{
+                            var assessmentObj = lecture.Assessment;
+                            var assessmentResult = assessmentObj?.AssessmentResults
+                                                     .FirstOrDefault(ar => ar.StudentId == studentId);
 
+                            if (assessmentObj != null)
+                            {
+                                <p class="card-footer text-muted text-center">
+                                    <small>
+                                        التقييم:
+                                        @if (assessmentResult != null)
+                                        {
+                                            <a href="@Url.Action("Details", "Assessment", new { area = "Customer", lectureId = lecture.LectureId })" class="text-decoration-none">
+                                                <i class="bi bi-check-circle-fill text-success"></i> تم التقييم
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a href="@Url.Action("Details", "Assessment", new { area = "Customer", lectureId = lecture.LectureId })" class="text-decoration-none">
+                                                <i class="bi bi-info-circle text-warning"></i> لم يتم التقييم بعد - اضغط للدخول
+                                            </a>
+                                        }
+                                    </small>
+                                </p>
+                            }
+                        }
+
+                     
 					</div>
                 </div>
             }
