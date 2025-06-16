@@ -1,86 +1,318 @@
-﻿@model IEnumerable<IdentityText.Models.Lecture>
-@{
-    ViewData["Title"] = "محاضرات الكورس";
+﻿@{
+    ViewData["Title"] = "Timeline Layout";
 }
 
-<div class="container py-5">
-    <h2 class="mb-4 text-center text-primary fw-bold">📘 محاضرات الكورس</h2>
-
-    @if (!Model.Any())
-    {
-        <div class="alert alert-info text-center">
-            لا توجد محاضرات حتى الآن.
-        </div>
+<style>
+    .timeline-container {
+        position: relative;
+        padding: 2rem 0;
+        background: linear-gradient(to right, #f8fdff, #e6f9fb);
+        max-width: 1200px;
+        margin: 0 auto;
     }
-    else
-    {
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-            @foreach (var lecture in Model)
-            {
-                <div class="col">
-                    <div class="card h-100 shadow-sm border-0 rounded-4">
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title text-truncate" title="@lecture.Title">@lecture.Title</h5>
-                            <p class="card-text text-muted flex-grow-1" style="min-height: 60px;">
-                                @(!string.IsNullOrWhiteSpace(lecture.Description) ? lecture.Description : "لا يوجد وصف للمحاضرة.")
-                            </p>
-                            <p class="text-secondary mb-2">
-                                <i class="bi bi-calendar-event me-1"></i>
-                                @lecture.LectureDate.ToString("yyyy-MM-dd")
-                            </p>
 
-                            @if (!string.IsNullOrEmpty(lecture.VideoURL))
-                            {
-                                <div class="ratio ratio-16x9 mb-3">
-                                    <!-- تضمين فيديو YouTube باستخدام iframe -->
-                                    <div style="position: relative; height: 0; overflow: hidden; max-width: 100%; height: auto;">
-                                        <iframe src="@lecture.VideoURL"
-                                                frameborder="0"
-                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                                allowfullscreen
-                                                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
-                                        </iframe>
-                                    </div>
+    .timeline-line {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 4px;
+        height: 100%;
+        background-color: rgba(6, 187, 204, 1);
+        z-index: 1;
+    }
 
-                                </div>
-                                <a href="@lecture.VideoURL"
-                                   target="_blank"
-                                   class="btn btn-outline-primary mt-auto">
-                                    <i class="bi bi-youtube me-1"></i>
-                                    مشاهدة الفيديو
-                                </a>
-                            }
-                            else
-                            {
-                                <div class="alert alert-warning text-center mb-0">
-                                    🎥 لا يوجد فيديو متاح لهذه المحاضرة.
-                                </div>
-                            }
+    .timeline-item {
+        position: relative;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        min-height: 120px;
+    }
+
+    .timeline-card {
+        width: 45%;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        padding: 1.5rem;
+        position: relative;
+        z-index: 2;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .timeline-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+
+    .left .timeline-card {
+        margin-right: auto;
+        margin-left: 0;
+    }
+
+    .right .timeline-card {
+        margin-left: auto;
+        margin-right: 0;
+    }
+
+    .timeline-card::before {
+        content: "";
+        position: absolute;
+        top: 1.5rem;
+        width: 0;
+        height: 0;
+        border-style: solid;
+    }
+
+    .left .timeline-card::before {
+        right: -15px;
+        border-width: 12px 0 12px 15px;
+        border-color: transparent transparent transparent white;
+    }
+
+    .right .timeline-card::before {
+        left: -15px;
+        border-width: 12px 15px 12px 0;
+        border-color: transparent white transparent transparent;
+    }
+
+    .timeline-circle {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background-color: white;
+        border: 4px solid rgba(6, 187, 204, 1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        color: rgba(6, 187, 204, 1);
+        font-size: 1.1rem;
+        z-index: 3;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .timeline-content {
+        padding: 0.5rem;
+    }
+
+        .timeline-content h5 {
+            color: #06bbcc;
+            margin-bottom: 0.8rem;
+            font-size: 1.25rem;
+        }
+
+        .timeline-content p {
+            color: #555;
+            margin-bottom: 0.5rem;
+        }
+
+    .timeline-date {
+        display: flex;
+        align-items: center;
+        color: #777;
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+    }
+
+        .timeline-date i {
+            margin-right: 0.5rem;
+        }
+
+    .ratio.ratio-16x9 {
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* تحديد مواقع الدوائر يدوياً */
+    .circle-1 {
+        top: 2rem;
+    }
+
+    .circle-2 {
+        top: calc(2rem + 120px);
+    }
+
+    .circle-3 {
+        top: calc(2rem + 240px);
+    }
+
+    .circle-4 {
+        top: calc(2rem + 360px);
+    }
+
+    @@media (max-width: 768px) {
+        .timeline-line {
+            left: 30px;
+        }
+
+        .timeline-card {
+            width: calc(100% - 80px);
+            margin-left: 80px !important;
+        }
+
+        .left .timeline-card::before,
+        .right .timeline-card::before {
+            left: -15px;
+            right: auto;
+            border-width: 12px 15px 12px 0;
+            border-color: transparent white transparent transparent;
+        }
+
+        .timeline-circle {
+            left: 30px;
+        }
+        /* تعديل مواقع الدوائر للجوال */
+        .circle-1 {
+            top: 2rem;
+        }
+
+        .circle-2 {
+            top: calc(2rem + 180px);
+        }
+
+        .circle-3 {
+            top: calc(2rem + 360px);
+        }
+
+        .circle-4 {
+            top: calc(2rem + 540px);
+        }
+    }
+</style>
+
+<div class="timeline-container">
+    <div class="timeline-line"></div>
+
+    @{
+        var lectures = new[]
+        {
+    new { Title = "Lecture 1", Desc = "Introduction to the course and overview of topics", Date = "2025-06-10", Index = 0 },
+    new { Title = "Lecture 2", Desc = "Deep dive into the second topic with practical examples", Date = "2025-06-12", Index = 1 },
+    new { Title = "Lecture 3", Desc = "Advanced concepts and case studies", Date = "2025-06-15", Index = 2 },
+    new { Title = "Lecture 4", Desc = "Final lecture with summary and Q&A session", Date = "2025-06-20", Index = 3 },
+    };
+
+        foreach (var lecture in lectures)
+        {
+            var isLeft = lecture.Index % 2 == 0;
+            var sideClass = isLeft ? "left" : "right";
+            var circleClass = $"circle-{lecture.Index + 1}";
+
+            <div class="timeline-item @sideClass">
+                <div class="timeline-card">
+                    <div class="timeline-content">
+                        <h5>@lecture.Title</h5>
+                        <p>@lecture.Desc</p>
+                        <div class="timeline-date">
+                            <i class="bi bi-calendar-event"></i> @lecture.Date
                         </div>
-						<p class="card-footer text-muted text-center">
-							<small>تمت الإضافة في: @lecture.CreatedAt.ToString("yyyy-MM-dd HH:mm")</small>
-                        </p>
-                        @{
-                            var studentId = (int)ViewBag.StudentId;
-                            var attendance = lecture.Attendances.FirstOrDefault(a => a.StudentId == studentId);
-                        }
-                        <p class="card-footer text-muted text-center">
-                            <small>
-                                الغياب:
-                                @if (attendance != null)
-                                {
-                                    @attendance.AttendanceStatus
-                                }
-                                else
-                                {
-                                    <span class="text-danger">غير مسجل</span>
-                                }
-                            </small>
-                        </p>
-
-					</div>
+                        <div class="ratio ratio-16x9 mb-2">
+                            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                    </div>
                 </div>
-            }
-        </div>
+                <div class="timeline-circle @circleClass">@(lecture.Index + 1)</div>
+            </div>
+        }
     }
 </div>
+
+
+
+@* <!--   *@
+
+@* @model IEnumerable<IdentityText.Models.Lecture> *@
+@* @{ *@
+@*     ViewData["Title"] = "محاضرات الكورس"; *@
+@* } *@
+
+@* <div class="container py-5"> *@
+@*     <h2 class="mb-4 text-center text-primary fw-bold">📘 محاضرات الكورس</h2> *@
+
+@* @if (!Model.Any()) *@
+@* { *@
+@*             <div class="alert alert-info text-center"> *@
+@*                 لا توجد محاضرات حتى الآن. *@
+@*             </div> *@
+@* } *@
+@* else *@
+@* { *@
+@*             <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4"> *@
+@*         @foreach (var lecture in Model) *@
+@*         { *@
+@*                         <div class="col"> *@
+@*                             <div class="card h-100 shadow-sm border-0 rounded-4"> *@
+@*                                 <div class="card-body d-flex flex-column"> *@
+@*                                     <h5 class="card-title text-truncate" title="@lecture.Title">@lecture.Title</h5> *@
+@*                                     <p class="card-text text-muted flex-grow-1" style="min-height: 60px;"> *@
+@*                             @(!string.IsNullOrWhiteSpace(lecture.Description) ? lecture.Description : "لا يوجد وصف للمحاضرة.") *@
+@*                                     </p> *@
+@*                                     <p class="text-secondary mb-2"> *@
+@*                                         <i class="bi bi-calendar-event me-1"></i> *@
+@*                             @lecture.LectureDate.ToString("yyyy-MM-dd") *@
+@*                                     </p> *@
+
+@*                         @if (!string.IsNullOrEmpty(lecture.VideoURL)) *@
+@*                         { *@
+@*                                             <div class="ratio ratio-16x9 mb-3"> *@
+@*                                                 <!-- تضمين فيديو YouTube باستخدام iframe --> *@
+@*             <div style="position: relative; height: 0; overflow: hidden; max-width: 100%; height: auto;"> *@
+@*                 <iframe src="@lecture.VideoURL" *@
+@*                         frameborder="0" *@
+@*                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" *@
+@*                         allowfullscreen *@
+@*                         style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"> *@
+@*                 </iframe> *@
+@*             </div> *@
+
+@*                                             </div> *@
+@*             <a href="@lecture.VideoURL" *@
+@*                target="_blank" *@
+@*                class="btn btn-outline-primary mt-auto"> *@
+@*                 <i class="bi bi-youtube me-1"></i> *@
+@*                 مشاهدة الفيديو *@
+@*             </a> *@
+@*                         } *@
+@*                         else *@
+@*                         { *@
+@*             <div class="alert alert-warning text-center mb-0"> *@
+@*                 🎥 لا يوجد فيديو متاح لهذه المحاضرة. *@
+@*             </div> *@
+@*                         } *@
+@*                                 </div> *@
+@*         <p class="card-footer text-muted text-center"> *@
+@*             <small>تمت الإضافة في: @lecture.CreatedAt.ToString("yyyy-MM-dd HH:mm")</small> *@
+@*         </p> *@
+@*                     @{ *@
+@*                         var studentId = (int)ViewBag.StudentId; *@
+@*                         var attendance = lecture.Attendances.FirstOrDefault(a => a.StudentId == studentId); *@
+@*                     } *@
+@*         <p class="card-footer text-muted text-center"> *@
+@*             <small> *@
+@*                 الغياب: *@
+@*                             @if (attendance != null) *@
+@*                             { *@
+@*                                 @attendance.AttendanceStatus *@
+@*                             } *@
+@*                             else *@
+@*                             { *@
+@*                     <span class="text-danger">غير مسجل</span> *@
+@*                             } *@
+@*             </small> *@
+@*         </p> *@
+
+@*                             </div> *@
+@*                         </div> *@
+@*         } *@
+@*             </div> *@
+@* } *@
+@* </div> *@
+
+
+-->

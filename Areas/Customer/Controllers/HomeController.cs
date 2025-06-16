@@ -29,47 +29,41 @@ namespace IdentityText.Areas.Customer.Controllers
             ViewBag.AboutUs = "نحن نقدم أفضل الخدمات التعليمية مع مدرسين محترفين.";
             ViewBag.ContactUs = "يمكنك التواصل معنا على البريد الإلكتروني: info@example.com أو عبر الهاتف 0123456789";
 
-            var allTeachers =  _teacherRepository.Get(includes: [ q => q.ApplicationUser, q => q.Subject]); 
-            var popularTeachers = allTeachers
-                .OrderByDescending(t => t.Rating) 
-                .Take(6)
+            var allTeachers = _teacherRepository.Get(includes: [q => q.ApplicationUser, q => q.Subject]);
+
+            // اختيار 4 مدرسين عشوائيًا
+            var random = new Random();
+            var randomTeachers = allTeachers
+                .OrderBy(t => random.Next())
+                .Take(4)
                 .ToList();
 
-
-            //var allCourses = _classGroupRepository.GetWithFullIncludes();
             var allCourses = _classGroupRepository.Get(
-                includes: [ e=>e.Teacher,
-                e=>e.Teacher.ApplicationUser,
-                e=>e.Subject,
-                e=>e.AcademicYear,
-                e => e.Enrollments
+                includes: [
+                    e => e.Teacher,
+            e => e.Teacher.ApplicationUser,
+            e => e.Subject,
+            e => e.AcademicYear,
+            e => e.Enrollments
                 ]);
-            if (allCourses == null || !allCourses.Any())
-            {
-                return View(new HomeViewModel
-                {
-                    PopularTeachers = popularTeachers,
-                    PopularClassGroups = new List<ClassGroup>(),
-                    Portfolio = new List<ClassGroup>()
-                });
-            }
-            var popularCourses = allCourses
+
+            var popularCourses = allCourses?
                 .Where(c => c.Enrollments != null)
                 .OrderByDescending(c => c.Enrollments.Count)
                 .Take(6)
-                .ToList();
-
-            var portfolio = popularCourses;
+                .ToList() ?? new List<ClassGroup>();
 
             var model = new HomeViewModel
             {
-                PopularTeachers = popularTeachers,
+                PopularTeachers = randomTeachers,
                 PopularClassGroups = popularCourses,
-                Portfolio = portfolio
+                Portfolio = popularCourses
             };
 
             return View(model);
         }
+
+
 
         public async Task<IActionResult> TeacherDetails(int TeacherId)
         {
