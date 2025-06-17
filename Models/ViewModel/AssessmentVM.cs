@@ -9,7 +9,7 @@ namespace IdentityText.Models.ViewModel
         public int AssessmentId { get; set; }
         public string Title { get; set; }
         public string? Description { get; set; }
-        public DateTime Date { get; set; }
+        public DateTime DeliveryDate { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public string? AssessmentLink { get; set; }
         public int MaxScore { get; set; }

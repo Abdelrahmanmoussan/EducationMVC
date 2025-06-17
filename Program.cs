@@ -4,10 +4,10 @@ using Microsoft.AspNetCore.Identity;
 using IdentityText.Models;
 using IdentityText.Repository.IRepository;
 using IdentityText.Repository;
-//using IdentityText.Services;
 using IdentityText.Utility; 
 using Microsoft.Extensions.DependencyInjection;
 using IdentityText.Services;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace IdentityText
 {
@@ -38,6 +38,7 @@ namespace IdentityText
             builder.Services.AddScoped<IAcademicYearRepository, AcademicYearRepository>();
             builder.Services.AddScoped<ILectureRepository, LectureRepository>();
             builder.Services.AddScoped<IAssessmentRepository, AssessmentRepository>();
+            builder.Services.AddScoped<IAssessmentResultRepository, AssessmentResultRepository>();
             builder.Services.AddScoped<IPrivateLessonRepository, PrivateLessonRepository>();
             builder.Services.AddScoped<IClassGroupRepository, ClassGroupRepository>();
             builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
@@ -45,6 +46,7 @@ namespace IdentityText
             builder.Services.AddScoped<IEnrollmentRepository, EnrollmentRepository>();
             builder.Services.AddScoped<IAttendanceRepository, AttendanceRepository>();
             builder.Services.AddScoped<IFavoriteRepository, FavoriteRepository>();
+            builder.Services.AddScoped <INotificationRepository, NotificationRepository>();
 
 
             // قراءة إعدادات Stripe من appsettings.json
@@ -57,6 +59,8 @@ namespace IdentityText
             builder.Services.AddScoped<StripePaymentService>();
 
             builder.Services.AddScoped<SubscriptionPdfService>();
+
+            builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 
             var app = builder.Build();

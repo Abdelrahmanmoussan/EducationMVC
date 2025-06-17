@@ -1,0 +1,29 @@
+﻿@model IdentityText.Models.ViewModel.AssessmentDetailsVM
+
+@{
+    ViewData["Title"] = "تفاصيل التقييم";
+    // var studentResult = Model.AssessmentResults.FirstOrDefault(r => r.Student.UserId == User.FindFirst("sub")?.Value);
+}
+<h3>@Model.Title</h3>
+<p>@Model.Description</p>
+<p><strong>تاريخ التسليم:</strong> @Model.DeliveryDate.ToShortDateString()</p>
+<p><strong>رابط التاسك:</strong> <a href="@Model.AssessmentLink" target="_blank">تحميل</a></p>
+
+@if (!string.IsNullOrEmpty(Model.StudentSolutionPath))
+{
+    <p><strong>الحل المرفوع:</strong> <a href="@Model.StudentSolutionPath" target="_blank">عرض الحل</a></p>
+    <p><strong>الدرجة:</strong> @Model.Score / @Model.MaxScore</p>
+    <p><strong>التقدير:</strong> @Model.Grade</p>
+    <p><strong>التعليق:</strong> @Model.Feedback</p>
+}
+else
+{
+    <form asp-action="UploadSolution" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="assessmentId" value="@Model.AssessmentId" />
+        <input type="hidden" name="lectureId" value="@ViewBag.lectureId" />
+        <label for="UploadedSolution">رفع الحل:</label>
+        <input type="file" name="UploadedSolution" required class="form-control mb-2" />
+        <button type="submit" class="btn btn-primary">رفع</button>
+    </form>
+}
+

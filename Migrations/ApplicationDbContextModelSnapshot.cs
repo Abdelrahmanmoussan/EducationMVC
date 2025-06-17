@@ -188,6 +188,8 @@ namespace IdentityText.Migrations
                             PasswordHash = "AQAAAAIAAYagAAAAED5rmarPH+AGBfORxq4Jy2vk3CL6EfXQXmpx0AoN8dkj/hTGfr1AnjIjHOBvelkwtw==",
                             PhoneNumberConfirmed = false,
                             Photo = "Moussan.jpg",
+                            SecurityStamp = "5286b88b-d2ba-46fc-884f-000d52200052",
+>>>>>>> 8b685ce8b20fed54eb52129d85677e20912527df
                             SecurityStamp = "eeb56b05-fae0-4827-b196-0314920586eb",
                             TwoFactorEnabled = false,
                             UserName = "abdelrahman"
@@ -211,7 +213,7 @@ namespace IdentityText.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("Date")
+                    b.Property<DateTime>("DeliveryDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
@@ -260,6 +262,9 @@ namespace IdentityText.Migrations
 
                     b.Property<int>("StudentId")
                         .HasColumnType("int");
+
+                    b.Property<string>("StudentSolutionPath")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("AssessmentResultId");
 
@@ -466,6 +471,9 @@ namespace IdentityText.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("NotificationId"));
 
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
@@ -476,14 +484,13 @@ namespace IdentityText.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("NotificationRecipientId")
-                        .HasColumnType("int");
-
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("NotificationId");
+
+                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("UserId");
 
@@ -492,24 +499,25 @@ namespace IdentityText.Migrations
 
             modelBuilder.Entity("IdentityText.Models.NotificationRecipient", b =>
                 {
-                    b.Property<string>("NotificationId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("NotificationId")
+                        .HasColumnType("int");
 
                     b.Property<int>("NotificationRecipientId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("DeliveryByGmail")
+                    b.Property<bool?>("DeliveryByGmail")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsDelivered")
+                    b.Property<bool?>("IsDelivered")
                         .HasColumnType("bit");
 
-                    b.Property<int>("NotificationId1")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("NotificationId", "NotificationRecipientId");
 
-                    b.HasIndex("NotificationId1");
+                    b.HasIndex("UserId");
 
                     b.ToTable("NotificationRecipients");
                 });
@@ -1147,10 +1155,14 @@ namespace IdentityText.Migrations
 
             modelBuilder.Entity("IdentityText.Models.Notification", b =>
                 {
-                    b.HasOne("IdentityText.Models.ApplicationUser", "User")
+                    b.HasOne("IdentityText.Models.ApplicationUser", null)
                         .WithMany("Notifications")
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("IdentityText.Models.ApplicationUser", "User")
+                        .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -1160,11 +1172,19 @@ namespace IdentityText.Migrations
                 {
                     b.HasOne("IdentityText.Models.Notification", "Notification")
                         .WithMany("NotificationRecipients")
-                        .HasForeignKey("NotificationId1")
+                        .HasForeignKey("NotificationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("IdentityText.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("Notification");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("IdentityText.Models.Payment", b =>

@@ -2,10 +2,14 @@
 using IdentityText.Models.ViewModel;
 using IdentityText.Repository;
 using IdentityText.Repository.IRepository;
+using IdentityText.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using System.Security.Claims;
+
+
 
 namespace IdentityText.Areas.Admin.Controllers
 {
@@ -15,12 +19,21 @@ namespace IdentityText.Areas.Admin.Controllers
     public class AssessmentController : Controller
     {
         private readonly IAssessmentRepository _assessmentRepository;
+        private readonly IAssessmentResultRepository _assessmentResultRepository;
         private readonly ILectureRepository _lectureRepository;
         private readonly IClassGroupRepository _classGroupRepository;
-        public AssessmentController(IAssessmentRepository assessmentRepository,ILectureRepository lectureRepository,IClassGroupRepository classGroupRepository)
+        private readonly INotificationRepository _notificationRepository;
+        public AssessmentController(
+            IAssessmentRepository assessmentRepository,
+            IAssessmentResultRepository assessmentResultRepository,
+            ILectureRepository lectureRepository,
+            INotificationRepository notificationRepository,
+            IClassGroupRepository classGroupRepository)
         {
             _assessmentRepository = assessmentRepository;
+            _assessmentResultRepository = assessmentResultRepository;
             _lectureRepository = lectureRepository;
+            _notificationRepository = notificationRepository;
             _classGroupRepository = classGroupRepository;
         }
         public IActionResult Index()
@@ -57,7 +70,7 @@ namespace IdentityText.Areas.Admin.Controllers
                 {
                     Title = model.Title,
                     Description = model.Description,
-                    Date = model.Date,
+                    DeliveryDate = model.DeliveryDate,
                     CreatedAt = model.CreatedAt,
                     AssessmentLink = model.AssessmentLink,
                     MaxScore = model.MaxScore,
@@ -90,7 +103,7 @@ namespace IdentityText.Areas.Admin.Controllers
                 AssessmentId = assessment.AssessmentId,
                 Title = assessment.Title,
                 Description = assessment.Description,
-                Date = assessment.Date,
+                DeliveryDate = assessment.DeliveryDate,
                 CreatedAt = assessment.CreatedAt,
                 AssessmentLink = assessment.AssessmentLink,
                 MaxScore = assessment.MaxScore,
@@ -128,7 +141,7 @@ namespace IdentityText.Areas.Admin.Controllers
                 assessment.AssessmentId = model.AssessmentId;
                 assessment.Title = model.Title;
                 assessment.Description = model.Description;
-                assessment.Date = model.Date;
+                assessment.DeliveryDate = model.DeliveryDate;
                 assessment.CreatedAt = model.CreatedAt;
                 assessment.AssessmentLink = model.AssessmentLink;
                 assessment.MaxScore = model.MaxScore;
@@ -160,7 +173,113 @@ namespace IdentityText.Areas.Admin.Controllers
             TempData["notification"] = "Successfully Deleted";
             return RedirectToAction(nameof(Index));
         }
+   
 
+        public IActionResult ReviewSolutions(int assessmentId)
+        {
+            var assessment = _assessmentRepository.GetOne(e => e.AssessmentId == assessmentId);
+            if (assessment == null)
+                return NotFound();
+
+            var results = _assessmentResultRepository.Get(e => e.AssessmentId == assessmentId,
+                includes: [e => e.Student.ApplicationUser]);
+
+           
+            var vm = new AssessmentSolutionsVM
+            {
+                AssessmentId = assessmentId,
+                AssessmentTitle = assessment.Title,
+                StudentSolutions = results.Select(r => new StudentSolutionVM
+                {
+                    AssessmentResultId = r.AssessmentResultId,
+                    StudentName = r.Student.ApplicationUser.FirstName+" "+ r.Student.ApplicationUser.LastName,
+                    SolutionLink = r.StudentSolutionPath,
+                    Score = r.Score,
+                    Grade = r.Grade,
+                    Feedback = r.Feedback
+                }).ToList()
+            };
+
+            return View(vm);
+        }
+
+        [HttpGet]
+        public IActionResult Evaluate(int id)
+        {
+            var result =_assessmentResultRepository.GetOne(
+                filter: e=>e.AssessmentResultId == id,
+                includes: [e=>e.Student.ApplicationUser]);
+
+            if (result == null)
+                return NotFound();
+
+            var assessment = _assessmentRepository.GetOne(e=>e.AssessmentId == result.AssessmentId);
+            if (assessment == null)
+                return NotFound();
+
+            ViewBag.MaxScore = assessment.MaxScore;
+            var vm = new StudentSolutionVM
+            {
+                AssessmentResultId = result.AssessmentResultId,
+                StudentName = result.Student.ApplicationUser.FirstName +" "+ result.Student.ApplicationUser.LastName,
+                SolutionLink = result.StudentSolutionPath,
+                Score = result.Score,
+                Grade = result.Grade,
+                Feedback = result.Feedback
+            };
+
+            return View(vm);
+        }
+
+        [HttpPost]
+        public IActionResult Evaluate(StudentSolutionVM vm)
+        {
+            var result = _assessmentResultRepository.GetOne(e=>e.AssessmentResultId == vm.AssessmentResultId,
+                includes: [e => e.Student.ApplicationUser]);
+
+            if (result == null)
+                return NotFound();
+
+            var ass = _assessmentRepository.GetOne(e => e.AssessmentId == result.AssessmentId);
+            if (ass == null)
+                return NotFound();
+
+            result.Score = vm.Score ?? 0;
+            result.Grade = GradeHelper.GetGrade(result.Score, ass.MaxScore); 
+            result.Feedback = vm.Feedback;
+
+            _assessmentResultRepository.Edit(result);
+            _assessmentRepository.Commit();
+
+            var notification = new Notification
+            {
+                Message = $"تم تقييمك في '{ass.Title}' وحصلت على درجة {result.Grade}",
+                IsRead = false,
+                Date = DateTime.Now,
+                UserId = User.GetUserId(),
+                NotificationRecipients = new List<NotificationRecipient>
+                {
+                    new NotificationRecipient
+                    {
+                        DeliveryByGmail = false,
+                        IsDelivered = false,
+                        UserId = result.Student.ApplicationUser.Id,
+                    }
+                }
+            };
+
+            var studentUserId = result.Student.ApplicationUser.Id;
+            //notification.NotificationRecipients.First().UserId = studentUserId;
+
+            _notificationRepository.Create(notification);
+            _notificationRepository.Commit();
+
+            TempData["EvaluationMessage"] = $"تم تقييم الطالب {result.Student.ApplicationUser.FirstName} {result.Student.ApplicationUser.LastName} بنجاح بدرجة {result.Grade}";
+            return RedirectToAction("ReviewSolutions", new { assessmentId = result.AssessmentId });
+        }
+
+        
 
     }
+   
 }

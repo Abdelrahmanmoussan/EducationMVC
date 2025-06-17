@@ -25,28 +25,32 @@
         </li>
     }
     @if (User.IsInRole("Student"))
-    {
+        { <li>
+            <a class="nav-link" asp-area="Customer" asp-controller="ClassGroup" asp-action="Coures">
+                All Courses
+            </a>
+        </li>
         <li>
             <a class="nav-link" asp-area="Customer" asp-controller="Enrollment" asp-action="Index">
                 My Courses
             </a>
         </li>
         <li>
-            <a asp-area="Customer" asp-controller="Enrollment" asp-action="Subscriptions">
+            <a class="nav-link" asp-area="Customer" asp-controller="Enrollment" asp-action="Subscriptions">
                 Subscriptions
             </a>
         </li>
+        <li class="nav-item">
+            @await Html.PartialAsync("_NotificationBadge")
+        </li>
     }
-     <li>
-        <a class="nav-link" asp-area="Customer" asp-controller="ClassGroup" asp-action="Coures">
-            All Courses
-        </a>
-    </li>
+    
     <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="@userImage" alt="User Image" class="rounded-circle me-2" style="width: 40px; height: 40px; object-fit: cover; border: 2px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.15);">
-            <span class="d-none d-lg-inline-flex fw-semibold">@currentUser.FirstName</span>
+        <a href="#" class="btn btn-primary py-2 px-4 d-flex align-items-center dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style="gap: 10px;">
+            <img src="@userImage" alt="User Image" class="rounded-circle" style="width: 36px; height: 36px; object-fit: cover; border: 2px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.15);">
+            <span class="fw-semibold text-white">@currentUser.FirstName</span>
         </a>
+
         <ul class="dropdown-menu dropdown-menu-end shadow-sm rounded-3 mt-2" style="min-width: 180px;">
             <li>
                 <a class="dropdown-item d-flex align-items-center" asp-area="Identity" asp-page="/Account/Manage/Index">
@@ -71,7 +75,10 @@ else
         <a class="nav-link" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
     </li>
     <li>
-        <a class="nav-link" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
+        <a asp-area="Identity" asp-controller="Account" asp-action="Login" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">
+            <i class="bi bi-box-arrow-in-right me-2"></i> Login
+        </a>
+
     </li>
 }
 

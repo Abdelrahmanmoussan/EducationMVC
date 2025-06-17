@@ -58,7 +58,10 @@ namespace IdentityText.Areas.Customer.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            var lectures = _lectureRepository.Get(filter: l => l.ClassGroupId == classGroupId, includes: [e => e.ClassGroup, e => e.Assessment, e => e.Attendances]);
+            var lectures = _lectureRepository.Get(
+                filter: l => l.ClassGroupId == classGroupId,
+                includes: [e => e.ClassGroup, e => e.Assessment, e => e.Attendances]
+                );
             ViewBag.ClassGroupId = classGroupId;
             ViewBag.StudentId = currentStudent.StudentId;
             return View(lectures);

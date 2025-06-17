@@ -8,13 +8,22 @@
 <!-- Google Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
-
 <section>
     <div class="container px-4 px-lg-5">
 
+
+        <div class="d-flex justify-content-center my-2">
+            <h1 class="section-title bg-white text-center text-primary px-3">
+
+                ALL COURSES
+            </h1>
+        </div>
+
+
+
         <!-- Filter Form -->
-        <form method="get" asp-action="Coures" class="p-4 rounded-4 shadow-sm bg-white ">
-            <div class="row g-3 align-items-end ">
+        <form method="get" asp-action="Coures" class="filter-box mb-4">
+            <div class="row g-3 align-items-end">
 
                 <div class="col-md-3">
                     <label class="form-label fw-bold">Subject</label>
@@ -48,26 +57,18 @@
                     <input type="number" class="form-control rounded-pill shadow-sm" placeholder="Max Price" name="maxPrice" />
                 </div>
 
-
-
                 <div class="col-md-2 text-center">
                     <button type="submit" class="btn rounded-pill px-4 shadow-sm w-100 custom-blue-btn">
                         <i class="bi bi-funnel-fill me-2"></i> Filter
                     </button>
                 </div>
 
-
-
-
             </div>
         </form>
 
 
-        <h2 class="text-center text-white py-3 rounded mt-3 mb-2" style="background: linear-gradient(to right, #0d6efd, #6610f2);">
-            Available Courses
-        </h2>
-
-
+       
+           
         <div class="row gy-4">
             @foreach (var item in Model)
             {
@@ -83,11 +84,14 @@
                             <p><i class="bi bi-layers text-warning"></i> <strong>Subject:</strong> @item.Subject.Title</p>
                             <p><i class="bi bi-person text-info"></i> <strong>Teacher:</strong> @item.Teacher.ApplicationUser.FirstName</p>
                             <p><i class="bi bi-clock-history text-secondary"></i> <strong>Academic Year:</strong> @item.AcademicYear.Name</p>
-                        </div>
-                        <div class="course-footer">
-                            <a asp-action="Details" asp-route-id="@item.ClassGroupId" class="course-btn">
+                            <a asp-action="Details" asp-route-id="@item.ClassGroupId" class="btn rounded-pill px-4 shadow-sm w-100 custom-blue-btn">
                                 <i class="bi bi-eye"></i> View Details
                             </a>
+
+
+                        </div>
+                        <div class="course-footer">
+                           
                         </div>
                     </div>
                 </div>
@@ -97,53 +101,45 @@
     </div>
 </section>
 
-<!-- Keep the same style as before -->
 <style>
-
+    body {
+        font-family: 'Poppins', sans-serif;
+        
+    }
 
     .custom-blue-btn {
         background: transparent;
-        border: 2px solid #0d6efd;
-        color: #0d6efd;
+        border: 2px solid rgba(6, 187, 204, 1);
+        color: rgba(6, 187, 204, 1);
         transition: all 0.3s ease;
     }
 
         .custom-blue-btn:hover {
-            background: linear-gradient(to right, #0d6efd, #6610f2);
+            background-color: rgba(6, 187, 204, 1);
             color: white;
             border-color: transparent;
         }
 
-
-
-
-
-    body {
-        font-family: 'Poppins', sans-serif;
-        background-color: #f8f9fa;
-    }
-
     .course-card {
         transition: all 0.4s ease;
-        background: #fff;
+        background: #f5fefe;
         border-radius: 20px;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         display: flex;
         flex-direction: column;
         height: 100%;
+        overflow: hidden;
     }
 
         .course-card:hover {
             transform: scale(1.02);
-            box-shadow: 0 8px 25px rgba(102, 16, 242, 0.25);
+            box-shadow: 0 8px 25px rgba(6, 187, 204, 0.4);
         }
 
     .course-header {
-        background: linear-gradient(to right, #0d6efd, #6610f2);
+        background: linear-gradient(to right, #06bbcc, #007c91);
         color: white;
         padding: 15px 20px;
-        border-top-left-radius: 20px;
-        border-top-right-radius: 20px;
     }
 
     .course-body {
@@ -160,21 +156,36 @@
         padding: 0;
     }
 
-    .course-btn {
-        border-radius: 0 0 20px 20px;
-        padding: 12px;
-        font-weight: 600;
-        text-align: center;
-        display: block;
-        width: 100%;
-        background: linear-gradient(to right, #0d6efd, #6610f2);
-        color: white;
-        text-decoration: none;
-        transition: background 0.3s ease;
+
+    .filter-box {
+        background: linear-gradient(to right, #e2f6fa, #cdeef3); /* درجة متوازنة */
+        border-radius: 25px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06);
+        padding: 30px;
     }
 
-        .course-btn:hover {
-            background: linear-gradient(to right, #6610f2, #0d6efd);
+    .details-btn {
+        background: transparent;
+        border: 2px solid rgba(6, 187, 204, 1);
+        color: rgba(6, 187, 204, 1);
+        transition: all 0.3s ease;
+        border-radius: 30px;
+        padding: 12px;
+        font-weight: 600;
+        display: block;
+        text-align: center;
+        width: 100%;
+        box-shadow: 0 0 8px rgba(6, 187, 204, 0.2);
+    }
+
+        .details-btn:hover {
+            background-color: rgba(6, 187, 204, 1);
             color: white;
+            border-color: transparent;
+            transform: translateY(-1px);
         }
+
+
+
+
 </style>

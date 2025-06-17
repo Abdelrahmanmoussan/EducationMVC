@@ -5,9 +5,72 @@
     ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication;
 }
 
-<partial name="_StatusMessage" for="StatusMessage" />
-<h3>@ViewData["Title"]</h3>
-<div>
+<style>
+    .profile-card {
+        background-color: white;
+        width: 100%;
+        padding: 30px 40px;
+        box-sizing: border-box;
+        border-radius: 0;
+        box-shadow: none;
+        min-height: auto;
+        margin: 0 auto;
+    }
+
+    .page-title {
+        font-size: 28px;
+        font-weight: bold;
+        color: rgba(6,187,204,1);
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .form-label {
+        font-weight: bold;
+    }
+
+    .form-control {
+        border-radius: 50px;
+        padding: 12px 20px;
+    }
+
+    .btn-primary {
+        border-radius: 50px;
+        padding: 14px 20px;
+        font-weight: bold;
+        width: 100%;
+        background-color: rgba(6,187,204,1);
+        border-color: rgba(6,187,204,1);
+        transition: background-color 0.3s ease;
+        font-size: 1.1rem;
+    }
+
+        .btn-primary:hover {
+            background-color: #049aa8;
+            border-color: #049aa8;
+        }
+
+    .alert {
+        border-radius: 15px;
+    }
+
+    ol.list {
+        padding-left: 20px;
+    }
+
+    kbd {
+        font-size: 1.05rem;
+        background-color: #f0f0f0;
+        padding: 3px 6px;
+        border-radius: 5px;
+    }
+</style>
+
+<div class="profile-card">
+    <h3 class="page-title">@ViewData["Title"]</h3>
+
+    <partial name="_StatusMessage" for="StatusMessage" />
+
     <p>To use an authenticator app go through the following steps:</p>
     <ol class="list">
         <li>
@@ -22,7 +85,9 @@
         </li>
         <li>
             <p>Scan the QR Code or enter this key <kbd>@Model.SharedKey</kbd> into your two factor authenticator app. Spaces and casing do not matter.</p>
-            <div class="alert alert-info">Learn how to <a href="https://go.microsoft.com/fwlink/?Linkid=852423">enable QR code generation</a>.</div>
+            <div class="alert alert-info">
+                Learn how to <a href="https://go.microsoft.com/fwlink/?Linkid=852423">enable QR code generation</a>.
+            </div>
             <div id="qrCode"></div>
             <div id="qrCodeData" data-url="@Model.AuthenticatorUri"></div>
         </li>
@@ -31,19 +96,17 @@
                 Once you have scanned the QR code or input the key above, your two factor authentication app will provide you
                 with a unique code. Enter the code in the confirmation box below.
             </p>
-            <div class="row">
-                <div class="col-md-6">
-                    <form id="send-code" method="post">
-                        <div class="form-floating mb-3">
-                            <input asp-for="Input.Code" class="form-control" autocomplete="off" placeholder="Please enter the code."/>
-                            <label asp-for="Input.Code" class="control-label form-label">Verification Code</label>
-                            <span asp-validation-for="Input.Code" class="text-danger"></span>
-                        </div>
-                        <button type="submit" class="w-100 btn btn-lg btn-primary">Verify</button>
-                        <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-                    </form>
+            <form id="send-code" method="post">
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.Code" class="form-control" autocomplete="off" placeholder="Please enter the code." />
+                    <label asp-for="Input.Code" class="form-label">Verification Code</label>
+                    <span asp-validation-for="Input.Code" class="text-danger"></span>
                 </div>
-            </div>
+
+                <button type="submit" class="btn btn-primary">Verify</button>
+
+                <div asp-validation-summary="ModelOnly" class="text-danger mt-3" role="alert"></div>
+            </form>
         </li>
     </ol>
 </div>
