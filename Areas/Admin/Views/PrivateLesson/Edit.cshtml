@@ -1,56 +1,59 @@
-﻿@model IdentityText.Models.PrivateLesson
+﻿@model IdentityText.Models.ViewModel.PrivateLessonVM
 
 @{
     ViewData["Title"] = "Edit";
 }
-<div class="container mt-5 d-flex justify-content-center">
-    <div class="col-sm-12 col-xl-6 col-xl-12">
-        <div class="bg-secondary rounded h-100 p-4">
-            <h6 class="mb-4 text-white bg-gradient p-2 rounded">Edit Private Lesson Item</h6>
-            <form asp-action="Edit" method="post">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" asp-for="PrivateLessonId" />
 
-                <div class="mb-3">
-                    <label asp-for="Price" class="form-label text-white"></label>
-                    <input asp-for="Price" class="form-control" />
-                    <span asp-validation-for="Price" class="text-danger"></span>
-                </div>
-                <div class="mb-3">
-                    <label asp-for="Title" class="form-label text-white"></label>
-                    <input asp-for="Title" class="form-control" />
-                    <span asp-validation-for="Title" class="text-danger"></span>
-                </div>
-                <div class="mb-3">
-                    <label asp-for="StartDate" class="form-label text-white"></label>
-                    <input asp-for="StartDate" class="form-control" type="datetime-local" />
-                    <span asp-validation-for="StartDate" class="text-danger"></span>
-                </div>
-                <div class="mb-3">
-                    <label asp-for="EndDate" class="form-label text-white"></label>
-                    <input asp-for="EndDate" class="form-control" type="datetime-local" />
-                    <span asp-validation-for="EndDate" class="text-danger"></span>
-                </div>
-                <div class="mb-3">
-                    <label asp-for="SubjectId" class="form-label text-white"></label>
-                    <select asp-for="SubjectId" class="form-control" asp-items="ViewBag.SubjectId"></select>
-                    <span asp-validation-for="SubjectId" class="text-danger"></span>
-                </div>
-                <div class="mb-3">
-                    <label asp-for="TeacherId" class="form-label text-white"></label>
-                    <select asp-for="TeacherId" class="form-control" asp-items="ViewBag.TeacherId"></select>
-                    <span asp-validation-for="TeacherId" class="text-danger"></span>
-                </div>
-                <div class="mb-3">
-                    <input type="submit" value="Save" class="btn btn-outline-success px-4 rounded-pill shadow-sm" />
-                </div>
-            </form>
-        </div>
+<h1>EditAsync</h1>
+
+<h4>PrivateLesson</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="PrivateLessonId" />
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartDate" class="control-label"></label>
+                <input asp-for="StartDate" class="form-control" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EndDate" class="control-label"></label>
+                <input asp-for="EndDate" class="form-control" />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SubjectId" class="control-label"></label>
+                <select asp-for="SubjectId" class="form-control" asp-items="Model.SubjectList"></select>
+                <span asp-validation-for="SubjectId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TeacherId" class="control-label"></label>
+                <select asp-for="TeacherId" class="form-control" asp-items="Model.TeacherList"></select>
+                <span asp-validation-for="TeacherId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
     </div>
 </div>
 
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

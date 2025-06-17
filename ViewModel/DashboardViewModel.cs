@@ -1,18 +1,42 @@
 ﻿
+
+using IdentityText.Models;
+
 namespace IdentityText.ViewModel
 {
     public class DashboardViewModel
     {
         public int StudentsCount { get; set; }
+        public double StudentGrowthPercentage { get; set; }
         public int TeachersCount { get; set; }
-        public int TotalCourses { get; set; }
-        public decimal TotalRevenue { get; set; }
-        public decimal TodaySales { get; set; }
+        public double TeacherGrowthPercentage { get; set; }
 
+        public int TotalCourses { get; set; }
+        public double CourseGrowthPercentage { get; set; }
+
+        public decimal TotalRevenue { get; set; }
+        public double RevenueGrowthPercentage { get; set; }
+
+        public decimal TodaySales { get; set; }
+        public int PrivateLessonsCount { get; set; }
+        public double PrivateLessonGrowthPercentage { get; set; }
+
+        public List<string> RevenueLabels { get; set; } = new();
+        public List<decimal> RevenueData { get; set; } = new();
         public List<RecentTransaction> RecentTransactions { get; set; } = new();
         public List<DashboardMessage> RecentMessages { get; set; } = new();
         public List<CalendarEvent> CalendarEvents { get; set; } = new();
         public List<TodoItem> TodoList { get; set; } = new();
+        public List<StudentDto> LatestStudents { get; set; } // New
+        public List<ClassGroup> LatestCourses { get; set; } = new();
+
+    }
+
+    public class StudentDto
+    {
+        public string FullName { get; set; }
+        public DateTime EnrollmentDate { get; set; }
+        public string? AvatarUrl { get; set; } // Optional if you have image
     }
 
     public class RecentTransaction

@@ -1,339 +1,217 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+@inject SignInManager<ApplicationUser> SignInManager
+
+<!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>@ViewData["Title"] - Education Center Admin Panel</title>
+    <title>@ViewData["Title"] - E Center Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Bootstrap 5 -->
+    <!-- Bootstrap + Icons + Font Awesome -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet" />
 
     <style>
-        /* Base styles */
         body {
-            overflow-x: hidden;
-            background: #f4f7fa;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            direction: ltr;
-            color: #334155;
-        }
-        /* Header */
-        header {
-            height: 60px;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(90deg, #2c3e50, #3498db);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 1.5rem;
-            z-index: 1050;
-            box-shadow: 0 2px 8px rgb(0 0 0 / 0.15);
-            user-select: none;
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f4f6f9;
         }
 
-        header .brand-title {
-            font-weight: 700;
-            font-size: 1.5rem;
-            letter-spacing: 1.2px;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        header .brand-title i {
-            color: #f39c12;
-            font-size: 1.8rem;
-        }
-
-        header .user-welcome {
-            font-size: 1rem;
-            font-weight: 600;
-        }
-
-        /* Sidebar */
         .sidebar {
-            width: 260px;
-            height: 100vh;
-            position: fixed;
-            top: 60px;
-            left: 0;
-            background: #1e293b;
-            color: #cbd5e1;
-            padding-top: 1.5rem;
-            transition: width 0.3s ease, left 0.3s ease;
-            overflow-y: auto;
-            box-shadow: 2px 0 8px rgb(0 0 0 / 0.1);
-            z-index: 1040;
-        }
-
-            .sidebar.collapsed {
-                width: 70px;
-            }
-
-            .sidebar .navbar-brand {
-                color: #fbbf24;
-                font-weight: 700;
-                font-size: 1.25rem;
-                padding: 0 1.5rem 1rem;
-                border-bottom: 1px solid #334155;
-                display: flex;
-                align-items: center;
-                gap: 0.75rem;
-                white-space: nowrap;
-                text-align: left;
-            }
-
-                .sidebar .navbar-brand i {
-                    font-size: 1.8rem;
-                }
-
-            .sidebar .profile {
-                display: flex;
-                align-items: center;
-                gap: 1rem;
-                padding: 1rem 1.5rem;
-                border-bottom: 1px solid #334155;
-                transition: opacity 0.3s ease;
-            }
-
-            .sidebar.collapsed .profile {
-                opacity: 0;
-                pointer-events: none;
-                height: 0;
-                padding: 0;
-                margin: 0;
-                overflow: hidden;
-            }
-
-            .sidebar .profile img {
-                width: 45px;
-                height: 45px;
-                border-radius: 50%;
-                border: 2px solid #22c55e;
-                object-fit: cover;
-                transition: all 0.3s ease;
-            }
-
-            .sidebar.collapsed .profile img {
-                width: 35px;
-                height: 35px;
-                border-width: 1.5px;
-            }
-
-            .sidebar .profile-info h6 {
-                margin-bottom: 0;
-                font-weight: 600;
-                color: #f3f4f6;
-                text-align: left;
-            }
-
-            .sidebar .profile-info small {
-                color: #94a3b8;
-                text-align: left;
-                display: block;
-            }
-
-            /* Navigation */
-            .sidebar nav.nav {
-                margin-top: 1rem;
-            }
-
-            .sidebar .nav-link {
-                color: #cbd5e1;
-                padding: 0.75rem 1.5rem;
-                font-weight: 500;
-                display: flex;
-                align-items: center;
-                gap: 1rem;
-                transition: background-color 0.2s ease, color 0.2s ease;
-                white-space: nowrap;
-                cursor: pointer;
-                text-align: left;
-            }
-
-                .sidebar .nav-link:hover,
-                .sidebar .nav-link.active {
-                    background: #2563eb;
-                    color: white;
-                    border-radius: 0.375rem;
-                }
-
-                .sidebar .nav-link i {
-                    min-width: 20px;
-                    text-align: center;
-                    font-size: 1.2rem;
-                }
-
-            /* Dropdown menu */
-            .sidebar .dropdown-menu {
-                background: #334155;
-                border: none;
-                margin-left: 2rem;
-                border-radius: 0.375rem;
-                box-shadow: none;
-                padding: 0.25rem 0;
-                text-align: left;
-            }
-
-            .sidebar .dropdown-item {
-                color: #cbd5e1;
-                font-weight: 400;
-                padding: 0.5rem 1rem 0.5rem 2rem;
-                transition: background-color 0.2s ease;
-                white-space: nowrap;
-                text-align: left;
-            }
-
-                .sidebar .dropdown-item:hover {
-                    background: #3b82f6;
-                    color: white;
-                }
-
-        /* Sidebar toggle button */
-        #sidebarToggle {
-            position: fixed;
-            top: 12px;
-            left: 12px;
-            background: transparent;
-            border: none;
-            color: #fbbf24;
-            font-size: 1.6rem;
-            cursor: pointer;
-            z-index: 1100;
-            transition: transform 0.3s ease;
-        }
-
-        /* Content */
-        .content {
-            margin-left: 260px;
-            margin-top: 60px;
-            padding: 2rem;
-            transition: margin-left 0.3s ease;
+            width: 250px;
             min-height: 100vh;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgb(0 0 0 / 0.05);
-            color: #334155;
-            text-align: left;
+            background: linear-gradient(180deg, #1d3557, #457b9d);
+            color: white;
+            padding: 20px;
         }
 
-        .sidebar.collapsed ~ .content {
-            margin-left: 70px;
+            .sidebar a {
+                text-decoration: none;
+                padding: 10px 0;
+                display: block;
+                font-size: 15px;
+                transition: 0.3s;
+            }
+
+            .sidebar .nav-link:hover {
+                background-color: rgba(255, 255, 255, 0.05);
+                padding-left: 12px;
+                border-radius: 4px;
+            }
+
+            .sidebar .collapse .nav-link {
+                font-size: 14px;
+                padding-left: 20px;
+            }
+
+        .profile {
+            text-align: center;
+            margin-bottom: 20px;
         }
 
-        /* Scrollbar for sidebar */
-        .sidebar::-webkit-scrollbar {
-            width: 6px;
+            .profile img {
+                width: 70px;
+                height: 70px;
+                border-radius: 50%;
+                object-fit: cover;
+            }
+
+        .profile-info h6 {
+            margin: 10px 0 0;
+            font-weight: bold;
         }
 
-        .sidebar::-webkit-scrollbar-thumb {
-            background-color: #2563eb;
-            border-radius: 3px;
+        .main-content {
+            flex-grow: 1;
+            padding: 30px;
+            animation: fadeInUp 0.5s ease-in-out;
+        }
+
+        .header {
+            background-color: #fff;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+            .header .user-info img {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                object-fit: cover;
+            }
+
+        @@keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
+
     @RenderSection("Styles", required: false)
 </head>
 <body>
+    @{
+        var currentUser = await UserManager.GetUserAsync(User);
+        var profileImagePath = string.IsNullOrEmpty(currentUser?.Photo) ? "/images/default-avatar.jpg" : $"/images/{currentUser.Photo}";
+    }
 
-    <header>
-        <button id="sidebarToggle" aria-label="Toggle Sidebar"><i class="fas fa-bars"></i></button>
-        <a href="/Admin/Home" class="brand-title">
-            <i class="fa-solid fa-graduation-cap"></i> Education Center
-        </a>
-        <div class="user-welcome">
-            Welcome, <strong>Admin</strong>
-        </div>
-    </header>
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <a href="/Admin/Home" class="navbar-brand d-block mb-4 text-white fs-4 fw-bold text-center">
+                🎓 E Center
+            </a>
 
-    <!-- Sidebar Start -->
-    <div class="sidebar" id="sidebar">
-        <a href="/Admin/Home" class="navbar-brand">
-            <i class="fa-solid fa-graduation-cap"></i> EduCenter
-        </a>
-
-        <div class="profile">
-            <img src="/img/user.jpg" alt="User profile picture" />
-            <div class="profile-info">
-                <h6>Admin</h6>
-                <small>System Manager</small>
+            <div class="profile text-center mb-4">
+                <img src="@profileImagePath" alt="User profile picture" class="rounded-circle mb-2" width="70" height="70" />
+                <div class="profile-info text-white">
+                    <h6 class="mb-0">@User.Identity?.Name </h6>
+                    <small>@(SignInManager.IsSignedIn(User) ? "System Manager" : "Visitor")</small>
+                </div>
             </div>
-        </div>
 
-        <nav class="nav flex-column">
-            <a href="/Admin/Home" class="nav-link active">
-                <i class="fas fa-tachometer-alt"></i> Dashboard
-            </a>
+            <nav class="nav flex-column">
+                <a href="/Admin/Home" class="nav-link text-white">🏠 Dashboard</a>
 
-            <!-- Models Collapsible Menu -->
-            <a class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse" data-bs-target="#modelsMenu" role="button" aria-expanded="false" aria-controls="modelsMenu">
-                <span><i class="fas fa-layer-group me-2"></i> Models</span>
-                <i class="fas fa-chevron-down small"></i>
-            </a>
-            <div class="collapse ps-4" id="modelsMenu">
-                <a class="nav-link" href="/Admin/User">Users</a>
-                <a class="nav-link" href="/Admin/Subject">Subjects</a>
-                <a class="nav-link" href="/Admin/AcademicYear">Academic Year</a>
-                <a class="nav-link" href="/Admin/ClassGroup">Class Groups</a>
-                <a class="nav-link" href="/Admin/Lecture">Lectures</a>
-                <a class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse" data-bs-target="#modelsMenu" role="button" aria-expanded="false" aria-controls="modelsMenu">
-                    <span><i class="fas fa-layer-group me-2"></i> Attendance</span>
+                <!-- Models Menu -->
+                <a class="nav-link text-white d-flex justify-content-between align-items-center" data-bs-toggle="collapse" data-bs-target="#modelsMenu" role="button">
+                    📦 Models
                     <i class="fas fa-chevron-down small"></i>
                 </a>
-                <div class="collapse ps-4" id="modelsMenu">
-                    <a class="nav-link" href="/Admin/Attendance/TakeAttendance">Attendance</a>
-                    <a class="nav-link" href="/Admin/Attendance/ShowAttendance">Attendance History</a>
-                    <a class="nav-link" href="/Admin/Attendance/AbsenceSummary">Absence Summary</a>
-                 </</div>
-                <a class="nav-link" href="/Admin/Assessment">Assessments</a>
-                <a class="nav-link" href="/Admin/PrivateLesson">Private Lesson</a>
+                <div class="collapse ps-3" id="modelsMenu">
+                    <a class="nav-link text-white-50" href="/Admin/User">👤 Users</a>
+                    <a class="nav-link text-white-50" href="/Admin/Subject">📘 Subjects</a>
+                    <a class="nav-link text-white-50" href="/Admin/AcademicYear">📅 Academic Year</a>
+                    <a class="nav-link text-white-50" href="/Admin/ClassGroup">🏫 Class Groups</a>
+                    <a class="nav-link text-white-50" href="/Admin/Lecture">🎤 Lectures</a>
+
+                    <a class="nav-link text-white d-flex justify-content-between align-items-center" data-bs-toggle="collapse" data-bs-target="#attendanceMenu" role="button">
+                        📝 Attendance
+                        <i class="fas fa-chevron-down small"></i>
+                    </a>
+                    <div class="collapse ps-3" id="attendanceMenu">
+                        <a class="nav-link text-white-50" href="/Admin/Attendance/TakeAttendance">📍 Take Attendance</a>
+                        <a class="nav-link text-white-50" href="/Admin/Attendance/ShowAttendance">📊 Attendance History</a>
+                    </div>
+
+                    <a class="nav-link text-white-50" href="/Admin/Assessment">🧪 Assessments</a>
+                    <a class="nav-link text-white-50" href="/Admin/PrivateLesson">📚 Private Lesson</a>
+                </div>
+
+                <!-- Reports Menu -->
+                <a class="nav-link text-white d-flex justify-content-between align-items-center mt-2" data-bs-toggle="collapse" data-bs-target="#reportsMenu" role="button">
+                    📈 Reports
+                    <i class="fas fa-chevron-down small"></i>
+                </a>
+                <div class="collapse ps-3" id="reportsMenu">
+                    <a class="nav-link text-white-50" href="/Admin/Report/PaymentsReport">💰 Payments Report</a>
+                </div>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-grow-1">
+            <!-- Header -->
+            <div class="header d-flex justify-content-between align-items-center px-4 py-2 shadow-sm bg-white border-bottom" style="height: 70px;">
+                <!-- Left: Title -->
+                <div class="d-flex align-items-center gap-2">
+                    <i class="bi bi-speedometer2 text-primary fs-4"></i>
+                    <div class="fs-5 fw-semibold text-dark">@ViewData["Title"]</div>
+                </div>
+
+                <!-- Right: User Info -->
+                <div class="user-info d-flex align-items-center gap-3">
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <img src="@profileImagePath" alt="User" class="rounded-circle shadow-sm" width="42" height="42" style="object-fit: cover;" />
+
+                        <div class="dropdown">
+                            <a class="dropdown-toggle text-dark fw-medium text-decoration-none" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                @User.Identity?.Name
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end shadow-sm animate__animated animate__fadeIn">
+                                <li>
+                                    <a class="dropdown-item" href="/Identity/Account/Manage"><i class="bi bi-person-circle me-2"></i> Profile</a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <form id="logoutForm" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home")" method="post">
+                                        <button type="submit" class="dropdown-item"><i class="bi bi-box-arrow-right me-2"></i> Logout</button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    }
+                    else
+                    {
+                        <a class="btn btn-outline-primary me-2" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                        <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Register">Register</a>
+                    }
+                </div>
             </div>
 
-
-            <!-- Configuration Collapsible Menu -->
-            <a class="nav-link" data-bs-toggle="collapse" href="#configMenu" role="button" aria-expanded="false" aria-controls="configMenu">
-                <i class="fas fa-cogs"></i> Configuration
-            </a>
-            <div class="collapse ps-4" id="configMenu">
-                <a class="nav-link" href="/Admin/Settings">Settings</a>
-                <a class="nav-link" href="/Admin/Users">User Management</a>
+            <!-- Page Content -->
+            <div class="main-content">
+                @RenderBody()
             </div>
-        </nav>
+        </div>
     </div>
-    <!-- Sidebar End -->
-    <!-- Main Content -->
-    <main class="content">
-        @RenderBody()
-    </main>
 
-    <!-- Bootstrap JS Bundle -->
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-    <script>
-        // Sidebar toggle button logic
-        const sidebarToggle = document.getElementById('sidebarToggle');
-        const sidebar = document.getElementById('sidebar');
-        const content = document.querySelector('.content');
-
-        sidebarToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('collapsed');
-        });
-    </script>
-                <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-
     @RenderSection("Scripts", required: false)
 </body>
 </html>

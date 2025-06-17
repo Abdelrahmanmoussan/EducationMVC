@@ -1,11 +1,5 @@
 ﻿using IdentityText.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IdentityText.Repository.IRepository
 {
@@ -15,6 +9,12 @@ namespace IdentityText.Repository.IRepository
         Task<IEnumerable<SelectListItem>> SelectListClassGroupAsync();
         Task<int> CountAsync();
 
+        Task<List<ClassGroup>> GetLatestCoursesAsync(int count = 5);
+
+        Task<int> CountByMonthAsync(int month, int year);
+
     }
-    
+
+
+
 }

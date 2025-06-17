@@ -3,9 +3,6 @@ using IdentityText.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.EntityFrameworkCore.Migrations;
-using System.Reflection.Emit;
 
 namespace IdentityText.Data
 {
@@ -89,28 +86,28 @@ namespace IdentityText.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<Subscription>()
-                .HasOne(s => s.Enrollment)       
-                .WithMany(e => e.Subscriptions) 
-                .HasForeignKey(s => s.EnrollmentId) 
+                .HasOne(s => s.Enrollment)
+                .WithMany(e => e.Subscriptions)
+                .HasForeignKey(s => s.EnrollmentId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<Notification>()
                 .HasOne(n => n.User)
                 .WithMany()
                 .HasForeignKey(n => n.UserId)
-                .OnDelete(DeleteBehavior.Restrict); 
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<NotificationRecipient>()
                 .HasOne(nr => nr.User)
                 .WithMany()
                 .HasForeignKey(nr => nr.UserId)
-                .OnDelete(DeleteBehavior.Restrict); 
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<NotificationRecipient>()
                 .HasOne(nr => nr.Notification)
                 .WithMany(n => n.NotificationRecipients)
                 .HasForeignKey(nr => nr.NotificationId)
-                .OnDelete(DeleteBehavior.Cascade); 
+                .OnDelete(DeleteBehavior.Restrict);
 
 
 
@@ -248,7 +245,7 @@ namespace IdentityText.Data
                     Name = "الصف  الثالث الاعدادي"
                 }
             );
-           
+
 
         }
 

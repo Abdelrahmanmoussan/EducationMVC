@@ -1,12 +1,7 @@
 ﻿using IdentityText.Models;
 using IdentityText.Models.ViewModel;
-using IdentityText.Repository;
 using IdentityText.Repository.IRepository;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 
 namespace IdentityText.Areas.Admin.Controllers
 {
@@ -18,7 +13,7 @@ namespace IdentityText.Areas.Admin.Controllers
         private readonly ISubjectRepository _subjectRepository;
         private readonly ITeacherRepository _teacherRepository;
 
-        public PrivateLessonController(IPrivateLessonRepository privateLessonRepository, ISubjectRepository subjectRepository,ITeacherRepository teacherRepository)
+        public PrivateLessonController(IPrivateLessonRepository privateLessonRepository, ISubjectRepository subjectRepository, ITeacherRepository teacherRepository)
         {
             _privateLessonRepository = privateLessonRepository;
             _subjectRepository = subjectRepository;
@@ -29,7 +24,7 @@ namespace IdentityText.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            var privateLessons = _privateLessonRepository.Get(includes: [e => e.Teacher.ApplicationUser,e=>e.Subject]  );
+            var privateLessons = _privateLessonRepository.Get(includes: [e => e.Teacher.ApplicationUser, e => e.Subject]);
             //var privateLessons = _privateLessonRepository.GetWithFullIncludes(
             //   include: c => c.Include(a => a.Teacher).ThenInclude(l => l.ApplicationUser)
             //      .Include(a => a.Subject));
@@ -40,7 +35,7 @@ namespace IdentityText.Areas.Admin.Controllers
             }
             return View(privateLessons);
         }
-  
+
 
         [HttpGet]
         public async Task<IActionResult> Create()
@@ -80,7 +75,7 @@ namespace IdentityText.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> EditAsync(int id)
+        public async Task<IActionResult> Edit(int id)
         {
             var privateLesson = _privateLessonRepository.GetOne(p => p.PrivateLessonId == id);
             if (privateLesson == null)
@@ -140,11 +135,11 @@ namespace IdentityText.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-       [HttpGet]
+        [HttpGet]
         public JsonResult GetTeachersBySubject(int subjectId)
         {
             // جلب المدرسين المرتبطين بالمادة
-            var teachers = _teacherRepository.Get(s => s.SubjectId == subjectId, includes: [e=>e.ApplicationUser])
+            var teachers = _teacherRepository.Get(s => s.SubjectId == subjectId, includes: [e => e.ApplicationUser])
                 .Select(t => new
                 {
                     TeacherId = t.TeacherId,

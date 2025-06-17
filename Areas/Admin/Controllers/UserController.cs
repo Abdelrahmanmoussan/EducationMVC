@@ -1,16 +1,12 @@
-﻿//using IdentityText.Migrations;
-using IdentityText.Models;
+﻿using IdentityText.Models;
 using IdentityText.Models.ViewModel;
-using IdentityText.Repository;
 using IdentityText.Repository.IRepository;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
-using System.Text.Encodings.Web;
 using System.Text;
+using System.Text.Encodings.Web;
 
 namespace IdentityText.Areas.Admin.Controllers
 {
@@ -27,7 +23,7 @@ namespace IdentityText.Areas.Admin.Controllers
         private readonly IEmailSender _emailSender;
         private readonly SignInManager<ApplicationUser> _signInManager;
         public UserController(
-            UserManager<ApplicationUser> userManager, 
+            UserManager<ApplicationUser> userManager,
             IStudentRepository studentRepository,
             ITeacherRepository teacherRepository,
             ISubscriptionRepository subscriptionRepository,
@@ -74,17 +70,17 @@ namespace IdentityText.Areas.Admin.Controllers
             var model = new UserVM
             {
                 AcademicYearsList = await _academicYearRepository.SelectListAcademicYearAsync(),
-                SubjectsList = await _subjectRepository.SelectListSubjectAsync() 
+                SubjectsList = await _subjectRepository.SelectListSubjectAsync()
             };
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(UserVM userVM , IFormFile file, string returnUrl = null)
+        public async Task<IActionResult> Create(UserVM userVM, IFormFile file, string returnUrl = null)
         {
-            
-            // إزالة الحقول غير المستخدمة حسب الدور
+
+
             if (userVM.Role == "Student")
             {
                 ModelState.Remove("TeacherNetAmount");
@@ -132,7 +128,7 @@ namespace IdentityText.Areas.Admin.Controllers
                         Photo = userVM.Photo,
 
                     };
-                   
+
                     var result = await _userManager.CreateAsync(user, userVM.Password);
                     if (result.Succeeded)
                     {
@@ -185,30 +181,30 @@ namespace IdentityText.Areas.Admin.Controllers
                             values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                             protocol: Request.Scheme);
 
-                            await _emailSender.SendEmailAsync(userVM.Email, "Confirm your email",
-                            $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                        await _emailSender.SendEmailAsync(userVM.Email, "Confirm your email",
+                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                            if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                            {
+                        if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                        {
                             return RedirectToAction(
-                                actionName: "RegisterConfirmation",  
-                                controllerName: "Account",            
-                                routeValues: new { area = "Identity",  email = userVM.Email, returnUrl = returnUrl } 
+                                actionName: "RegisterConfirmation",
+                                controllerName: "Account",
+                                routeValues: new { area = "Identity", email = userVM.Email, returnUrl = returnUrl }
                             );
 
                         }
                         else
-                            {
-                                await _signInManager.SignInAsync(user, isPersistent: false);
-                                return LocalRedirect(returnUrl);
-                            }
+                        {
+                            await _signInManager.SignInAsync(user, isPersistent: false);
+                            return LocalRedirect(returnUrl);
+                        }
                     }
-                            foreach (var error in result.Errors)
-                            {
-                                ModelState.AddModelError(string.Empty, error.Description);
-                            }
-                            TempData["notification"] = "User created successfully.";
-                                return RedirectToAction(nameof(Index));
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                    TempData["notification"] = "User created successfully.";
+                    return RedirectToAction(nameof(Index));
                 }
 
                 return RedirectToAction("NotFoundPage", "Home");
@@ -225,7 +221,7 @@ namespace IdentityText.Areas.Admin.Controllers
             var user = await _userManager.FindByIdAsync(id);
             var teacher = _teacherRepository.GetOne(e => e.UserId == id, tracked: false);
             var student = _studentRepository.GetOne(e => e.UserId == id, tracked: false);
-            
+
             if (user != null)
             {
                 if (teacher != null)
@@ -236,7 +232,7 @@ namespace IdentityText.Areas.Admin.Controllers
                         _classGroupRepository.DeleteAll(teacherClassGroups.ToList());
                         _classGroupRepository.Commit();
                     }
-                  
+
                     _teacherRepository.Delete(teacher);
                     _teacherRepository.Commit();
                 }
@@ -253,7 +249,7 @@ namespace IdentityText.Areas.Admin.Controllers
             return NotFound();
         }
 
-       
+
 
     }
 }
