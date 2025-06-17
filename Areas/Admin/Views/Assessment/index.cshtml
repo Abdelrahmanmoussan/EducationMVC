@@ -23,13 +23,14 @@
                 <th>#</th>
                 <th>Title</th>
                 <th>Description</th>
-                <th>Date</th>
+                <th>DeliveryDate</th>
                 <th>Created At</th>
                 <th>Assessment Link</th>
                 <th>Max Score</th>
                 <th>Class Group</th>
                 <th>Lecture</th>
                 <th>Actions</th>
+                <th>evaluation</th>
             </tr>
         </thead>
         <tbody>
@@ -64,7 +65,7 @@
                             </div>
                         }
                     </td>
-                    <td>@(item.Date != default(DateTime) ? item.Date.ToString("yyyy-MM-dd") : "غير محدد")</td>
+                    <td>@(item.DeliveryDate != default(DateTime) ? item.DeliveryDate.ToString("yyyy-MM-dd") : "غير محدد")</td>
                     <td>@item.CreatedAt.ToShortDateString()</td>
                     <td>
                         @if (!string.IsNullOrEmpty(item.AssessmentLink))
@@ -86,6 +87,12 @@
                         <button class="btn btn-outline-danger btn-sm rounded-pill shadow-sm" onclick="confirmDelete(@item.AssessmentId)">
                             <i class="bi bi-trash"></i> Delete
                         </button>
+                        
+                    </td>
+                    <td>
+                        <a asp-action="ReviewSolutions" asp-route-assessmentId="@item.AssessmentId" class="btn btn-warning btn-sm rounded-pill me-1 shadow-sm">
+                            Student evaluation
+                        </a>
                     </td>
                 </tr>
             }

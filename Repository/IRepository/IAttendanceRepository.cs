@@ -6,6 +6,7 @@ namespace IdentityText.Repository.IRepository
     public interface IAttendanceRepository : IRepository<Attendance>
     {
         List<SelectListItem> GetAttendanceStatusSelectList();
+        Task<IEnumerable<SelectListItem>> SelectListAttendanceAsync();
 
     }
 }

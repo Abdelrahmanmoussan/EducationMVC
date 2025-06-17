@@ -1,0 +1,29 @@
+﻿@using IdentityText.Utility
+@model IdentityText.Models.ViewModel.StudentSolutionVM
+
+<h2>Evaluate Solution</h2>
+
+<div>
+    <p><strong>Student:</strong> @Model.StudentName</p>
+    <p><strong>Solution:</strong> <a href="~/AssessmentFile/@Model.SolutionLink" target="_blank">Open</a></p>
+</div>
+@if (Model.Score.HasValue)
+{
+    <p><strong>Suggested Grade:</strong> @GradeHelper.GetGrade(Model.Score.Value, ViewBag.MaxScore)</p>
+}
+
+<form asp-action="Evaluate" method="post">
+    <input type="hidden" asp-for="AssessmentResultId" />
+
+    <div class="form-group">
+        <label asp-for="Score"></label>
+        <input asp-for="Score" class="form-control" min="0" max="@ViewBag.MaxScore" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Feedback"></label>
+        <textarea asp-for="Feedback" class="form-control"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-success">Save</button>
+</form>
+

@@ -1,0 +1,19 @@
+﻿@inject ApplicationDbContext _db
+@using System.Security.Claims
+@using IdentityText.Data
+
+@{
+    var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    var unreadCount = _db.Notifications.Count(n => n.UserId == userId && !n.IsRead);
+}
+
+<a class="nav-link position-relative" asp-controller="Notification" asp-action="Index">
+    Notifications
+    @if (unreadCount > 0)
+    {
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+            @unreadCount
+        </span>
+    }
+</a>
+

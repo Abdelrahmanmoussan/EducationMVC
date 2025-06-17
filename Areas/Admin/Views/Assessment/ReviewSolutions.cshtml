@@ -1,0 +1,56 @@
+﻿@using Azure.Core
+@using Microsoft.AspNetCore.Http
+@model IdentityText.Models.ViewModel.AssessmentSolutionsVM
+@if (TempData["EvaluationMessage"] != null)
+{
+    <div class="alert alert-success text-center">
+        @TempData["EvaluationMessage"]
+    </div>
+}
+
+
+<h2>Solutions for: @Model.AssessmentTitle</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Student</th>
+            <th>Solution</th>
+            <th>Score</th>
+            <th>Grade</th>
+            <th>Feedback</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var s in Model.StudentSolutions)
+        {
+            <tr>
+                <td>@s.StudentName</td>
+                <td><a href="~/AssessmentFile/@s.SolutionLink" target="_blank">View</a></td>
+                <td>@s.Score</td>
+                <td>
+                    @if (!string.IsNullOrEmpty(s.Grade))
+                    {
+                        var grade = s.Grade;
+                        var badgeClass = grade switch
+                        {
+                            "A" => "badge badge-success",
+                            "B" => "badge badge-primary",
+                            "C" => "badge badge-warning",
+                            _ => "badge badge-danger"
+                        };
+                        <span style="color:red" class="@badgeClass">@grade</span>
+                    }
+                </td>
+
+                <td>@s.Feedback</td>
+                <td>
+                    <a asp-area="Admin" asp-controller="Assessment" asp-action="Evaluate" asp-route-id="@s.AssessmentResultId" class="btn btn-sm btn-primary">Evaluate</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+

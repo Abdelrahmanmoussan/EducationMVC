@@ -1,0 +1,70 @@
+﻿@model List<IdentityText.Models.ViewModel.StudentAttendanceReportVM>
+@{
+    ViewData["Title"] = "ملخص الغياب";
+    var classGroups = ViewBag.ClassGroups as List<IdentityText.Models.ClassGroup>;
+}
+
+<div class="container py-4">
+    <h2 class="text-center text-primary mb-4 fw-bold">
+		<i class="fas fa-calendar-times"></i>
+        Summary of the number of absences
+    </h2>
+
+    <form method="get" asp-action="AbsenceSummary" class="row mb-4">
+        <div class="col-md-6">
+            <label>اختر الكورس:</label>
+            <select name="classGroupId" class="form-control">
+                <option value="">-- select class group --</option>
+                @{
+					if (classGroups == null || !classGroups.Any())
+					{
+						<option value="" disabled>لا توجد مجموعات دراسية متاحة</option>
+					
+						return; 
+                    }
+                    @foreach (var group in classGroups)
+                    {
+                        <option value="@group.ClassGroupId">@group.Title</option>
+                    }
+                 }
+            </select>
+        </div>
+        <div class="col-md-6 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary w-100">عرض</button>
+        </div>
+    </form>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-warning text-center">لا توجد بيانات غياب لعرضها.</div>
+    }
+    else
+    {
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>الطالب</th>
+                    <th>عدد مرات الغياب</th>
+                    <th>تنبيه ولي الأمر</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var s in Model)
+                {
+                    <tr>
+                        <td>@s.Student.ApplicationUser.FirstName @s.Student.ApplicationUser.LastName</td>
+                        <td>@s.AbsenceCount</td>
+                        <td>
+                            <form asp-action="NotifyParent" method="post" style="display:inline;">
+                                <input type="hidden" name="studentId" value="@s.Student.StudentId" />
+                                <input type="hidden" name="classGroupId" value="@ViewBag.SelectedClassGroupId" />
+                                <button type="submit" class="btn btn-warning btn-sm">إرسال تنبيه</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+

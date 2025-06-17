@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Areas\Admin\Views\Assessment\Evaluate.cshtml~RF4ba7ad0.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.11" />
    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.11" />
    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.12" />
@@ -22,7 +26,7 @@
  </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Migrations\" />
+    <Folder Include="wwwroot\AssessmentFile\" />
   </ItemGroup>
 </Project>
 

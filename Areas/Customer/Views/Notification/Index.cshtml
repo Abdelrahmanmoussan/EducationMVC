@@ -1,0 +1,21 @@
+﻿@using IdentityText.Models.ViewModel
+@model List<NotificationVM>
+
+<h2>الإشعارات</h2>
+
+@if (Model.Any())
+{
+    <ul class="list-group">
+        @foreach (var notification in Model)
+        {
+            <li class="list-group-item @(notification.IsRead ? "" : "list-group-item-info")">
+                <strong>@notification.Message</strong><br />
+                <small>@notification.Date.ToString("g")</small>
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <div class="alert alert-info">لا توجد إشعارات حالياً.</div>
+}
