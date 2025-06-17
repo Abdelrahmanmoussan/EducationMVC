@@ -157,7 +157,7 @@ namespace IdentityText.Migrations
                             Id = "7aafd540-fdf8-482b-804d-780fb6726703",
                             AccessFailedCount = 0,
                             Address = "Quesna,Menofia",
-                            ConcurrencyStamp = "5f3e0e0f-c465-4b1d-a9e5-98729f0b8ebc",
+                            ConcurrencyStamp = "b9c66960-1cb8-40e7-877e-9a14d3fa6fbb",
                             Email = "amin@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Amin",
@@ -165,10 +165,10 @@ namespace IdentityText.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "AMIN@GMAIL.COM",
                             NormalizedUserName = "AMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEEEKB1wK5CFLLHZHoiVcnAe2Ja+J4BGrPLvtJJTKK/WopfalnpZ4EqLPnGjTMD4spw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPWxRMTAusaKGG/SJgrKLbvmD3ZDIEJc4WQvcCr1eoeH/3mIxvihAjGeFFUvQnpCHg==",
                             PhoneNumberConfirmed = false,
                             Photo = "admin.jpg",
-                            SecurityStamp = "1d43bbf0-5b46-46f1-8158-9a5ef00264b5",
+                            SecurityStamp = "21510679-cd4b-4cf3-8ff5-0ad4117636bf",
                             TwoFactorEnabled = false,
                             UserName = "amin"
                         },
@@ -177,7 +177,7 @@ namespace IdentityText.Migrations
                             Id = "9b4cd611-6c35-4c98-a0dc-1d2e1349ab91",
                             AccessFailedCount = 0,
                             Address = "Port Said",
-                            ConcurrencyStamp = "b0cafb94-13da-40cd-b097-7a6232074e53",
+                            ConcurrencyStamp = "f9e7c76f-b6d9-433d-997a-63cd90222ada",
                             Email = "abdelrahmanmoussan@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Abdelrahman",
@@ -185,12 +185,10 @@ namespace IdentityText.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ABDELRAHMANMOUSSAN@GMAIL.COM",
                             NormalizedUserName = "ABDELRAHMAN",
-                            PasswordHash = "AQAAAAIAAYagAAAAED5rmarPH+AGBfORxq4Jy2vk3CL6EfXQXmpx0AoN8dkj/hTGfr1AnjIjHOBvelkwtw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAELttejM7IPDlqT+nFMytTbCO89MMMNUy8Y5gpAN1xdS6FvW0rWDR4Se40lHurYvjwQ==",
                             PhoneNumberConfirmed = false,
                             Photo = "Moussan.jpg",
-                            SecurityStamp = "5286b88b-d2ba-46fc-884f-000d52200052",
->>>>>>> 8b685ce8b20fed54eb52129d85677e20912527df
-                            SecurityStamp = "eeb56b05-fae0-4827-b196-0314920586eb",
+                            SecurityStamp = "016ec09c-cf5f-4418-bf69-2cc2884a32c9",
                             TwoFactorEnabled = false,
                             UserName = "abdelrahman"
                         });
@@ -1010,13 +1008,13 @@ namespace IdentityText.Migrations
                     b.HasOne("IdentityText.Models.AcademicYear", null)
                         .WithMany()
                         .HasForeignKey("AcademicYearsAcademicYearId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("IdentityText.Models.Teacher", null)
                         .WithMany()
                         .HasForeignKey("TeachersTeacherId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -1029,7 +1027,7 @@ namespace IdentityText.Migrations
                     b.HasOne("IdentityText.Models.Lecture", "Lecture")
                         .WithOne("Assessment")
                         .HasForeignKey("IdentityText.Models.Assessment", "LectureId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Lecture");
@@ -1040,13 +1038,13 @@ namespace IdentityText.Migrations
                     b.HasOne("IdentityText.Models.Assessment", "Assessment")
                         .WithMany("AssessmentResults")
                         .HasForeignKey("AssessmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("IdentityText.Models.Student", "Student")
                         .WithMany("AssessmentResults")
                         .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Assessment");
@@ -1059,7 +1057,7 @@ namespace IdentityText.Migrations
                     b.HasOne("IdentityText.Models.Enrollment", "Enrollment")
                         .WithMany()
                         .HasForeignKey("EnrollmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("IdentityText.Models.Enrollment", null)
@@ -1069,13 +1067,13 @@ namespace IdentityText.Migrations
                     b.HasOne("IdentityText.Models.Lecture", "Lecture")
                         .WithMany("Attendances")
                         .HasForeignKey("LectureId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("IdentityText.Models.Student", "Student")
                         .WithMany()
                         .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Enrollment");
@@ -1090,19 +1088,19 @@ namespace IdentityText.Migrations
                     b.HasOne("IdentityText.Models.AcademicYear", "AcademicYear")
                         .WithMany("ClassGroups")
                         .HasForeignKey("AcademicYearId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("IdentityText.Models.Subject", "Subject")
                         .WithMany("ClassGroups")
                         .HasForeignKey("SubjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("IdentityText.Models.Teacher", "Teacher")
                         .WithMany("ClassGroups")
                         .HasForeignKey("TeacherId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("AcademicYear");
@@ -1117,13 +1115,13 @@ namespace IdentityText.Migrations
                     b.HasOne("IdentityText.Models.ClassGroup", "ClassGroup")
                         .WithMany("Enrollments")
                         .HasForeignKey("ClassGroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("IdentityText.Models.Student", "Student")
                         .WithMany("Enrollments")
                         .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("ClassGroup");
@@ -1136,7 +1134,7 @@ namespace IdentityText.Migrations
                     b.HasOne("IdentityText.Models.ClassGroup", "ClassGroup")
                         .WithMany()
                         .HasForeignKey("ClassGroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("ClassGroup");
@@ -1147,7 +1145,7 @@ namespace IdentityText.Migrations
                     b.HasOne("IdentityText.Models.ClassGroup", "ClassGroup")
                         .WithMany("Lectures")
                         .HasForeignKey("ClassGroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("ClassGroup");
@@ -1173,7 +1171,7 @@ namespace IdentityText.Migrations
                     b.HasOne("IdentityText.Models.Notification", "Notification")
                         .WithMany("NotificationRecipients")
                         .HasForeignKey("NotificationId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("IdentityText.Models.ApplicationUser", "User")
@@ -1192,7 +1190,7 @@ namespace IdentityText.Migrations
                     b.HasOne("IdentityText.Models.Enrollment", "Enrollment")
                         .WithMany()
                         .HasForeignKey("EnrollmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("IdentityText.Models.Student", null)
@@ -1211,13 +1209,13 @@ namespace IdentityText.Migrations
                     b.HasOne("IdentityText.Models.Subject", "Subject")
                         .WithMany("PrivateLessons")
                         .HasForeignKey("SubjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("IdentityText.Models.Teacher", "Teacher")
                         .WithMany("PrivateLessons")
                         .HasForeignKey("TeacherId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Subject");
@@ -1230,13 +1228,13 @@ namespace IdentityText.Migrations
                     b.HasOne("IdentityText.Models.PrivateLesson", "PrivateLesson")
                         .WithMany("PrivateLessonStudents")
                         .HasForeignKey("PrivateLessonId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("IdentityText.Models.Student", "Student")
                         .WithMany("PrivateLessonStudents")
                         .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("PrivateLesson");
@@ -1249,13 +1247,13 @@ namespace IdentityText.Migrations
                     b.HasOne("IdentityText.Models.AcademicYear", "AcademicYear")
                         .WithMany("Students")
                         .HasForeignKey("AcademicYearId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("IdentityText.Models.ApplicationUser", "ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("AcademicYear");
@@ -1268,7 +1266,7 @@ namespace IdentityText.Migrations
                     b.HasOne("IdentityText.Models.Enrollment", "Enrollment")
                         .WithMany("Subscriptions")
                         .HasForeignKey("EnrollmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Enrollment");
@@ -1279,13 +1277,13 @@ namespace IdentityText.Migrations
                     b.HasOne("IdentityText.Models.Subject", "Subject")
                         .WithMany("Teachers")
                         .HasForeignKey("SubjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("IdentityText.Models.ApplicationUser", "ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("ApplicationUser");
@@ -1298,13 +1296,13 @@ namespace IdentityText.Migrations
                     b.HasOne("IdentityText.Models.AcademicYear", "AcademicYear")
                         .WithMany("TeacherAcademicYears")
                         .HasForeignKey("AcademicYearId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("IdentityText.Models.Teacher", "Teacher")
                         .WithMany("TeacherAcademicYears")
                         .HasForeignKey("TeacherId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("AcademicYear");
@@ -1317,7 +1315,7 @@ namespace IdentityText.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -1326,7 +1324,7 @@ namespace IdentityText.Migrations
                     b.HasOne("IdentityText.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -1335,7 +1333,7 @@ namespace IdentityText.Migrations
                     b.HasOne("IdentityText.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -1344,13 +1342,13 @@ namespace IdentityText.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("IdentityText.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -1359,7 +1357,7 @@ namespace IdentityText.Migrations
                     b.HasOne("IdentityText.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 

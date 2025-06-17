@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace IdentityText.Migrations
 {
     /// <inheritdoc />
-    public partial class initMig : Migration
+    public partial class add : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -102,7 +102,7 @@ namespace IdentityText.Migrations
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -123,7 +123,7 @@ namespace IdentityText.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -143,7 +143,7 @@ namespace IdentityText.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -161,13 +161,13 @@ namespace IdentityText.Migrations
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_AspNetUserRoles_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -187,7 +187,7 @@ namespace IdentityText.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -243,13 +243,13 @@ namespace IdentityText.Migrations
                         column: x => x.AcademicYearId,
                         principalTable: "AcademicYears",
                         principalColumn: "AcademicYearId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Students_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -280,7 +280,7 @@ namespace IdentityText.Migrations
                         column: x => x.SubjectId,
                         principalTable: "Subjects",
                         principalColumn: "SubjectId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -307,7 +307,7 @@ namespace IdentityText.Migrations
                         column: x => x.NotificationId,
                         principalTable: "Notifications",
                         principalColumn: "NotificationId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -325,13 +325,13 @@ namespace IdentityText.Migrations
                         column: x => x.AcademicYearsAcademicYearId,
                         principalTable: "AcademicYears",
                         principalColumn: "AcademicYearId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_AcademicYearTeacher_Teachers_TeachersTeacherId",
                         column: x => x.TeachersTeacherId,
                         principalTable: "Teachers",
                         principalColumn: "TeacherId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -348,6 +348,7 @@ namespace IdentityText.Migrations
                     CGStatus = table.Column<int>(type: "int", nullable: false),
                     SubjectId = table.Column<int>(type: "int", nullable: false),
                     TeacherId = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     AcademicYearId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -364,7 +365,7 @@ namespace IdentityText.Migrations
                         column: x => x.SubjectId,
                         principalTable: "Subjects",
                         principalColumn: "SubjectId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_ClassGroups_Teachers_TeacherId",
                         column: x => x.TeacherId,
@@ -384,6 +385,7 @@ namespace IdentityText.Migrations
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     SubjectId = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TeacherId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -394,7 +396,7 @@ namespace IdentityText.Migrations
                         column: x => x.SubjectId,
                         principalTable: "Subjects",
                         principalColumn: "SubjectId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_PrivateLessons_Teachers_TeacherId",
                         column: x => x.TeacherId,
@@ -418,13 +420,13 @@ namespace IdentityText.Migrations
                         column: x => x.AcademicYearId,
                         principalTable: "AcademicYears",
                         principalColumn: "AcademicYearId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_TeacherAcademicYears_Teachers_TeacherId",
                         column: x => x.TeacherId,
                         principalTable: "Teachers",
                         principalColumn: "TeacherId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -447,13 +449,13 @@ namespace IdentityText.Migrations
                         column: x => x.ClassGroupId,
                         principalTable: "ClassGroups",
                         principalColumn: "ClassGroupId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Enrollments_Students_StudentId",
                         column: x => x.StudentId,
                         principalTable: "Students",
                         principalColumn: "StudentId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -473,7 +475,7 @@ namespace IdentityText.Migrations
                         column: x => x.ClassGroupId,
                         principalTable: "ClassGroups",
                         principalColumn: "ClassGroupId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -498,7 +500,7 @@ namespace IdentityText.Migrations
                         column: x => x.ClassGroupId,
                         principalTable: "ClassGroups",
                         principalColumn: "ClassGroupId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -516,13 +518,13 @@ namespace IdentityText.Migrations
                         column: x => x.PrivateLessonId,
                         principalTable: "PrivateLessons",
                         principalColumn: "PrivateLessonId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_PrivateLessonStudents_Students_StudentId",
                         column: x => x.StudentId,
                         principalTable: "Students",
                         principalColumn: "StudentId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -550,7 +552,7 @@ namespace IdentityText.Migrations
                         column: x => x.EnrollmentId,
                         principalTable: "Enrollments",
                         principalColumn: "EnrollmentId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Payments_Students_StudentId",
                         column: x => x.StudentId,
@@ -594,11 +596,7 @@ namespace IdentityText.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-<<<<<<<< HEAD:Migrations/20250616183645_init.cs
                     DeliveryDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-========
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
->>>>>>>> 8b685ce8b20fed54eb52129d85677e20912527df:Migrations/20250611205704_initMig.cs
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     AssessmentLink = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     MaxScore = table.Column<int>(type: "int", nullable: false),
@@ -618,7 +616,7 @@ namespace IdentityText.Migrations
                         column: x => x.LectureId,
                         principalTable: "Lectures",
                         principalColumn: "LectureId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -655,7 +653,7 @@ namespace IdentityText.Migrations
                         column: x => x.LectureId,
                         principalTable: "Lectures",
                         principalColumn: "LectureId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Attendances_Students_StudentId",
                         column: x => x.StudentId,
@@ -674,12 +672,8 @@ namespace IdentityText.Migrations
                     StudentId = table.Column<int>(type: "int", nullable: false),
                     Score = table.Column<int>(type: "int", nullable: false),
                     Grade = table.Column<string>(type: "nvarchar(max)", nullable: false),
-<<<<<<<< HEAD:Migrations/20250616183645_init.cs
                     Feedback = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     StudentSolutionPath = table.Column<string>(type: "nvarchar(max)", nullable: true)
-========
-                    Feedback = table.Column<string>(type: "nvarchar(max)", nullable: true)
->>>>>>>> 8b685ce8b20fed54eb52129d85677e20912527df:Migrations/20250611205704_initMig.cs
                 },
                 constraints: table =>
                 {
@@ -689,13 +683,13 @@ namespace IdentityText.Migrations
                         column: x => x.AssessmentId,
                         principalTable: "Assessments",
                         principalColumn: "AssessmentId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_AssessmentResults_Students_StudentId",
                         column: x => x.StudentId,
                         principalTable: "Students",
                         principalColumn: "StudentId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.InsertData(
@@ -724,13 +718,8 @@ namespace IdentityText.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "Address", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "Photo", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-<<<<<<<< HEAD:Migrations/20250616183645_init.cs
-                    { "7aafd540-fdf8-482b-804d-780fb6726703", 0, "Quesna,Menofia", "cb725b4d-018e-4c58-9fdb-79e2a532e84a", "amin@gmail.com", true, "Amin", "Mohamed", false, null, "AMIN@GMAIL.COM", "AMIN", "AQAAAAIAAYagAAAAEAuIHhwY/+i01zOJWya6kPkvuU+B6XcH/+Tq8xWqOTByZ5kWDBE4+657LoTqd1QLGQ==", null, false, "admin.jpg", "6fb248c4-186a-4a70-b5db-9283341fcb46", false, "amin" },
-                    { "9b4cd611-6c35-4c98-a0dc-1d2e1349ab91", 0, "Port Said", "3a88cb10-a42d-4d06-b2bf-dae00cb3a516", "abdelrahmanmoussan@gmail.com", true, "Abdelrahman", "Moussan", false, null, "ABDELRAHMANMOUSSAN@GMAIL.COM", "ABDELRAHMAN", "AQAAAAIAAYagAAAAECtHuSrbUnXP33+V3tbVejjsjnA+dIjUkr6ix1M4GAG1u96y4MsMxS6WO/IopjHNDQ==", null, false, "Moussan.jpg", "0bcfe135-bd84-4a7d-a04a-7ee1cced524a", false, "abdelrahman" }
-========
-                    { "7aafd540-fdf8-482b-804d-780fb6726703", 0, "Quesna,Menofia", "df26f378-e15b-47e9-9b83-4b15b43310c8", "amin@gmail.com", true, "Amin", "Mohamed", false, null, "AMIN@GMAIL.COM", "AMIN", "AQAAAAIAAYagAAAAEIzxlxoFZ/JMDSK7rmZ5PE8S09QR+ohETR4hlY42V9FU/shbxZwAHl19Y5uB6T/18A==", null, false, "admin.jpg", "451b2440-3db3-4d4a-a88f-04697bc04f74", false, "amin" },
-                    { "9b4cd611-6c35-4c98-a0dc-1d2e1349ab91", 0, "Port Said", "0c764898-e622-4f6a-8a13-980f088d055c", "abdelrahmanmoussan@gmail.com", true, "Abdelrahman", "Moussan", false, null, "ABDELRAHMANMOUSSAN@GMAIL.COM", "ABDELRAHMAN", "AQAAAAIAAYagAAAAEEm8MAPMMlL660zw/XVHPQHWPHkpN6TSva9cM+3qh4qfsyvpbwGcT42Fr7ceEMpMgQ==", null, false, "Moussan.jpg", "5286b88b-d2ba-46fc-884f-000d52200052", false, "abdelrahman" }
->>>>>>>> 8b685ce8b20fed54eb52129d85677e20912527df:Migrations/20250611205704_initMig.cs
+                    { "7aafd540-fdf8-482b-804d-780fb6726703", 0, "Quesna,Menofia", "b9c66960-1cb8-40e7-877e-9a14d3fa6fbb", "amin@gmail.com", true, "Amin", "Mohamed", false, null, "AMIN@GMAIL.COM", "AMIN", "AQAAAAIAAYagAAAAEPWxRMTAusaKGG/SJgrKLbvmD3ZDIEJc4WQvcCr1eoeH/3mIxvihAjGeFFUvQnpCHg==", null, false, "admin.jpg", "21510679-cd4b-4cf3-8ff5-0ad4117636bf", false, "amin" },
+                    { "9b4cd611-6c35-4c98-a0dc-1d2e1349ab91", 0, "Port Said", "f9e7c76f-b6d9-433d-997a-63cd90222ada", "abdelrahmanmoussan@gmail.com", true, "Abdelrahman", "Moussan", false, null, "ABDELRAHMANMOUSSAN@GMAIL.COM", "ABDELRAHMAN", "AQAAAAIAAYagAAAAELttejM7IPDlqT+nFMytTbCO89MMMNUy8Y5gpAN1xdS6FvW0rWDR4Se40lHurYvjwQ==", null, false, "Moussan.jpg", "016ec09c-cf5f-4418-bf69-2cc2884a32c9", false, "abdelrahman" }
                 });
 
             migrationBuilder.InsertData(

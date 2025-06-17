@@ -1,4 +1,10 @@
-﻿namespace IdentityText.Data
+﻿using IdentityText.Enums;
+using IdentityText.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+
+namespace IdentityText.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
@@ -47,43 +53,44 @@
                 .WithMany()
                 .HasForeignKey(t => t.UserId)
                 .IsRequired()
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<Attendance>()
                 .HasOne(a => a.Enrollment)
                 .WithMany()
                 .HasForeignKey(a => a.EnrollmentId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<Attendance>()
                .HasOne(a => a.Student)
                .WithMany()
                .HasForeignKey(a => a.StudentId)
-               .OnDelete(DeleteBehavior.Cascade);
+               .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<ClassGroup>()
                 .HasOne(cg => cg.Teacher)
                 .WithMany(t => t.ClassGroups)
                 .HasForeignKey(cg => cg.TeacherId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<PrivateLesson>()
                 .HasOne(pl => pl.Teacher)
                 .WithMany(t => t.PrivateLessons)
                 .HasForeignKey(pl => pl.TeacherId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<ClassGroup>()
                 .HasOne(cg => cg.AcademicYear)
                 .WithMany(ay => ay.ClassGroups)
                 .HasForeignKey(cg => cg.AcademicYearId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<Subscription>()
                 .HasOne(s => s.Enrollment)
                 .WithMany(e => e.Subscriptions)
                 .HasForeignKey(s => s.EnrollmentId)
                 .OnDelete(DeleteBehavior.Restrict);
+
             builder.Entity<Notification>()
                 .HasOne(n => n.User)
                 .WithMany()
@@ -100,20 +107,10 @@
                 .HasOne(nr => nr.Notification)
                 .WithMany(n => n.NotificationRecipients)
                 .HasForeignKey(nr => nr.NotificationId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            builder.Entity<Enrollment>()
-                .HasOne(s => s.Enrollment)
-                .WithMany(e => e.Subscriptions)
-                .HasForeignKey(s => s.EnrollmentId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
 
 
-            builder.Entity<Student>()
-                .HasMany(s => s.Enrollments)
-                .WithOne(e => e.Student)
-                .OnDelete(DeleteBehavior.Cascade);
 
 
             var hasher = new PasswordHasher<ApplicationUser>();
