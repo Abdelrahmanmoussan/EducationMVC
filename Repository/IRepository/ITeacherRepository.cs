@@ -1,12 +1,5 @@
-﻿
-using IdentityText.Repository.IRepository;
-using IdentityText.Models;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using IdentityText.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Linq.Expressions;
 
 namespace IdentityText.Repository.IRepository
 {
@@ -16,6 +9,11 @@ namespace IdentityText.Repository.IRepository
 
         Task<Teacher?> GetByIdWithIncludesAsync(int id);
         Task<IEnumerable<SelectListItem>> SelectListTeacherAsync();
+
+        Task<string> GetTeacherNameByIdAsync(int teacherId);
+        Task<int> CountByMonthAsync(int month, int year);
+
+
 
     }
 }

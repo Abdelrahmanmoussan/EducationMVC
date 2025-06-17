@@ -4,12 +4,6 @@ using IdentityText.Models;
 using IdentityText.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IdentityText.Repository
 {
@@ -17,7 +11,7 @@ namespace IdentityText.Repository
     {
         private readonly ApplicationDbContext dbContext;
 
-        public TeacherRepository(ApplicationDbContext appDbContext) : base(appDbContext) 
+        public TeacherRepository(ApplicationDbContext appDbContext) : base(appDbContext)
         {
             dbContext = appDbContext;
         }
@@ -41,6 +35,21 @@ namespace IdentityText.Repository
                                   Value = a.TeacherId.ToString(),
                                   Text = a.ApplicationUser.FirstName.ToString() + " " + a.ApplicationUser.LastName.ToString()
                               }).ToListAsync();
+        }
+        public async Task<string> GetTeacherNameByIdAsync(int teacherId)
+        {
+            var teacher = await dbContext.Teachers
+                .Include(t => t.ApplicationUser)
+                .FirstOrDefaultAsync(t => t.TeacherId == teacherId);
+
+            return teacher?.FullName ?? "اسم غير معروف";
+        }
+
+        public async Task<int> CountByMonthAsync(int month, int year)
+        {
+            return await dbContext.Teachers
+                .Where(s => s.TeacherHireDate.Month == month && s.TeacherHireDate.Year == year)
+                .CountAsync();
         }
 
 

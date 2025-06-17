@@ -1,18 +1,12 @@
-﻿using IdentityText.Repository;
-using IdentityText.Repository.IRepository;
+﻿using IdentityText.Data;
 using IdentityText.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using IdentityText.Data;
+using IdentityText.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace IdentityText.Repository
 {
-    public class PrivateLessonRepository : Repository<PrivateLesson> , IPrivateLessonRepository
+    public class PrivateLessonRepository : Repository<PrivateLesson>, IPrivateLessonRepository
     {
         private readonly ApplicationDbContext dbContext;
 
@@ -44,5 +38,21 @@ namespace IdentityText.Repository
 
             return query.ToList();
         }
+
+        public async Task<int> CountAsync()
+        {
+            return await dbContext.PrivateLessons.CountAsync();
+        }
+
+
+
+        public async Task<int> CountByMonthAsync(int month, int year)
+        {
+            return await dbContext.PrivateLessons
+                .Where(s => s.CreatedAt.Month == month && s.CreatedAt.Year == year)
+                .CountAsync();
+        }
+
+
     }
 }

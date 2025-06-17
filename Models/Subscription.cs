@@ -31,7 +31,7 @@ namespace IdentityText.Models
         [MaxLength(20)]
         public SubscriptionStatus SubscriptionStatus { get; set; } // مثلا: Active, Expired
 
-        [Required]
+        //[Required]
         public int EnrollmentId { get; set; }
 
         [ForeignKey("EnrollmentId")]

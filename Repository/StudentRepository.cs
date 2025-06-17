@@ -4,11 +4,6 @@ using IdentityText.Models;
 using IdentityText.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IdentityText.Repository
 {
@@ -26,7 +21,7 @@ namespace IdentityText.Repository
                              .Select(a => new SelectListItem
                              {
                                  Value = a.StudentId.ToString(),
-                                 Text = a.ApplicationUser.FirstName +" "+ a.ApplicationUser.LastName
+                                 Text = a.ApplicationUser.FirstName + " " + a.ApplicationUser.LastName
                              }).ToListAsync();
         }
         public async Task<int> CountAsync()
@@ -85,9 +80,23 @@ namespace IdentityText.Repository
             }
         }
 
+        public async Task<List<Student>> GetLatestStudentsAsync(int count = 5)
+        {
+            return await appDbContext.Students
+                .Include(s => s.ApplicationUser)
+                .OrderByDescending(s => s.EnrollmentDate)
+                .Take(count)
+                .ToListAsync();
+        }
 
 
 
+        public async Task<int> CountByMonthAsync(int month, int year)
+        {
+            return await appDbContext.Students
+                .Where(s => s.EnrollmentDate.Month == month && s.EnrollmentDate.Year == year)
+                .CountAsync();
+        }
 
 
 

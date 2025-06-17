@@ -1,10 +1,6 @@
 ﻿
 using IdentityText.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IdentityText.Repository.IRepository
 {
@@ -22,6 +18,11 @@ namespace IdentityText.Repository.IRepository
         Task AddAsync(Student student);
         Task UpdateAsync(Student student);
         Task DeleteAsync(int id);
+
+        Task<List<Student>> GetLatestStudentsAsync(int count = 5);
+
+        Task<int> CountByMonthAsync(int month, int year);
+
 
     }
 }

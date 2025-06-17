@@ -1,15 +1,8 @@
-﻿using IdentityText.Repository;
-using IdentityText.Repository.IRepository;
+﻿using IdentityText.Data;
 using IdentityText.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using IdentityText.Data;
-using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
+using IdentityText.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace IdentityText.Repository
 {
@@ -26,7 +19,7 @@ namespace IdentityText.Repository
             return await dbContext.ClassGroups.CountAsync();
         }
 
-       
+
 
         public async Task<IEnumerable<SelectListItem>> SelectListClassGroupAsync()
         {
@@ -37,6 +30,30 @@ namespace IdentityText.Repository
                                  Text = a.Title
                              }).ToListAsync();
         }
+
+        public async Task<List<ClassGroup>> GetLatestCoursesAsync(int count = 5)
+        {
+            return await dbContext.ClassGroups
+                .Include(c => c.Subject)
+                .Include(c => c.Teacher)
+                    .ThenInclude(t => t.ApplicationUser)
+                .OrderByDescending(c => c.CreatedAt) // لو عندك CreatedAt
+                .Take(count)
+                .ToListAsync();
+        }
+
+
+
+        public async Task<int> CountByMonthAsync(int month, int year)
+        {
+            return await dbContext.ClassGroups
+                .Where(s => s.CreatedAt.Month == month && s.CreatedAt.Year == year)
+                .CountAsync();
+        }
+
+
     }
+
+
 
 }

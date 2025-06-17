@@ -1,12 +1,6 @@
-﻿using IdentityText.Models;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IdentityText.Models
 {
@@ -23,11 +17,11 @@ namespace IdentityText.Models
         [MaxLength(100)]
         public string? ParentName { get; set; }
 
-       
+
         [Phone]
         public string? ParentPhone { get; set; }
 
-      
+
         [EmailAddress]
         public string? ParentMail { get; set; }
 
@@ -35,16 +29,16 @@ namespace IdentityText.Models
         [DataType(DataType.Date)]
         public DateTime? StudentDB { get; set; }
         [DataType(DataType.Date)]
-       
+
         public DateTime EnrollmentDate { get; set; }
-     
+
         [MaxLength(100)]
         public string? EmergencyContact { get; set; }
         [Range(0, 100)]
         public decimal AttendancePercent { get; set; }
         [MaxLength(500)]
         public string? StudentNotes { get; set; }
-       
+
         /// <summary>
         /// 
         /// </summary>
@@ -61,6 +55,13 @@ namespace IdentityText.Models
         [Required]
         public int AcademicYearId { get; set; }
         public AcademicYear AcademicYear { get; set; }
+
+        [NotMapped]
+        public string FullName =>
+            $"{ApplicationUser?.FirstName ?? ""} {ApplicationUser?.LastName ?? ""}".Trim();
+        [NotMapped]
+        public bool IsActive => AcademicYearId != 0;
+
 
     }
 

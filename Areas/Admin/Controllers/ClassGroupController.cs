@@ -1,11 +1,8 @@
 ﻿using IdentityText.Models;
 using IdentityText.Models.ViewModel;
 using IdentityText.Repository.IRepository;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
 
 namespace IdentityText.Areas.Admin.Controllers
 {
@@ -29,22 +26,10 @@ namespace IdentityText.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            var classGroups = _classGroupRepository.Get(includes: [e=>e.AcademicYear,e=>e.Subject,e=>e.Teacher.ApplicationUser]);
+            var classGroups = _classGroupRepository.Get(includes: [e => e.AcademicYear, e => e.Subject, e => e.Teacher.ApplicationUser]);
             return View(classGroups);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Create()
-        {
-            var model = new ClassGroupVM
-            {
-                AcademicYearsList = await _academicYearRepository.SelectListAcademicYearAsync(),
-                SubjectsList = await _subjectRepository.SelectListSubjectAsync(),
-                TeacherList = await _teacherRepository.SelectListTeacherAsync()
-            };
-
-            return View(model);
-        }
 
         [HttpGet]
         public IActionResult GetTeachersBySubject(int subjectId)
@@ -61,6 +46,18 @@ namespace IdentityText.Areas.Admin.Controllers
             return Json(teachers);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Create()
+        {
+            var model = new ClassGroupVM
+            {
+                AcademicYearsList = await _academicYearRepository.SelectListAcademicYearAsync(),
+                SubjectsList = await _subjectRepository.SelectListSubjectAsync(),
+                TeacherList = await _teacherRepository.SelectListTeacherAsync()
+            };
+
+            return View(model);
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]

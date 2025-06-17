@@ -8,7 +8,15 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace IdentityText.Migrations
 {
     /// <inheritdoc />
+<<<<<<<< HEAD:Migrations/20250617181514_dataInitial.cs
     public partial class dataInitial : Migration
+========
+<<<<<<<< HEAD:Migrations/20250611132510_AddAllTables.cs
+    public partial class AddAllTables : Migration
+========
+    public partial class initMig : Migration
+>>>>>>>> 9430ceacfdd9d9bf11ad4f0abf1d425a7fb96764:Migrations/20250611205704_initMig.cs
+>>>>>>>> 0f856fc3a7c9c6d66488f3344fec8838a118799e:Migrations/20250611132510_AddAllTables.cs
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -274,7 +282,7 @@ namespace IdentityText.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Teachers_Subjects_SubjectId",
                         column: x => x.SubjectId,
@@ -358,7 +366,7 @@ namespace IdentityText.Migrations
                         column: x => x.AcademicYearId,
                         principalTable: "AcademicYears",
                         principalColumn: "AcademicYearId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ClassGroups_Subjects_SubjectId",
                         column: x => x.SubjectId,
@@ -370,7 +378,7 @@ namespace IdentityText.Migrations
                         column: x => x.TeacherId,
                         principalTable: "Teachers",
                         principalColumn: "TeacherId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -400,7 +408,7 @@ namespace IdentityText.Migrations
                         column: x => x.TeacherId,
                         principalTable: "Teachers",
                         principalColumn: "TeacherId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -527,6 +535,7 @@ namespace IdentityText.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Payments",
+<<<<<<<< HEAD:Migrations/20250611132510_AddAllTables.cs
                 columns: table => new
                 {
                     PaymentId = table.Column<int>(type: "int", nullable: false)
@@ -563,6 +572,145 @@ namespace IdentityText.Migrations
                         principalColumn: "TeacherId");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Subscriptions",
+                columns: table => new
+                {
+                    SubscriptionId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    SubscriptionStatus = table.Column<int>(type: "int", maxLength: 20, nullable: false),
+                    EnrollmentId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Subscriptions", x => x.SubscriptionId);
+                    table.ForeignKey(
+                        name: "FK_Subscriptions_Enrollments_EnrollmentId",
+                        column: x => x.EnrollmentId,
+                        principalTable: "Enrollments",
+                        principalColumn: "EnrollmentId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Assessments",
+                columns: table => new
+                {
+                    AssessmentId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    AssessmentLink = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MaxScore = table.Column<int>(type: "int", nullable: false),
+                    LectureId = table.Column<int>(type: "int", nullable: false),
+                    ClassGroupId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Assessments", x => x.AssessmentId);
+                    table.ForeignKey(
+                        name: "FK_Assessments_ClassGroups_ClassGroupId",
+                        column: x => x.ClassGroupId,
+                        principalTable: "ClassGroups",
+                        principalColumn: "ClassGroupId");
+                    table.ForeignKey(
+                        name: "FK_Assessments_Lectures_LectureId",
+                        column: x => x.LectureId,
+                        principalTable: "Lectures",
+                        principalColumn: "LectureId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Attendances",
+                columns: table => new
+                {
+                    AttendanceId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    AttendanceStatus = table.Column<int>(type: "int", nullable: false),
+                    Remark = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    StudentId = table.Column<int>(type: "int", nullable: false),
+                    EnrollmentId = table.Column<int>(type: "int", nullable: false),
+                    LectureId = table.Column<int>(type: "int", nullable: false),
+                    EnrollmentId1 = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Attendances", x => x.AttendanceId);
+                    table.ForeignKey(
+                        name: "FK_Attendances_Enrollments_EnrollmentId",
+                        column: x => x.EnrollmentId,
+                        principalTable: "Enrollments",
+                        principalColumn: "EnrollmentId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Attendances_Enrollments_EnrollmentId1",
+                        column: x => x.EnrollmentId1,
+                        principalTable: "Enrollments",
+                        principalColumn: "EnrollmentId");
+                    table.ForeignKey(
+                        name: "FK_Attendances_Lectures_LectureId",
+                        column: x => x.LectureId,
+                        principalTable: "Lectures",
+                        principalColumn: "LectureId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Attendances_Students_StudentId",
+                        column: x => x.StudentId,
+                        principalTable: "Students",
+                        principalColumn: "StudentId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AssessmentResults",
+========
+>>>>>>>> 9430ceacfdd9d9bf11ad4f0abf1d425a7fb96764:Migrations/20250611205704_initMig.cs
+                columns: table => new
+                {
+                    PaymentId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    EnrollmentId = table.Column<int>(type: "int", nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    PaymentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    PaymentMethod = table.Column<string>(type: "varchar(20)", nullable: false),
+                    Notes = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    PlatformPercentage = table.Column<decimal>(type: "decimal(5,2)", nullable: false),
+                    NetAmountForTeacher = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    PaymentStatus = table.Column<string>(type: "varchar(20)", nullable: false),
+                    StudentId = table.Column<int>(type: "int", nullable: true),
+                    TeacherId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Payments", x => x.PaymentId);
+                    table.ForeignKey(
+                        name: "FK_Payments_Enrollments_EnrollmentId",
+                        column: x => x.EnrollmentId,
+                        principalTable: "Enrollments",
+                        principalColumn: "EnrollmentId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Payments_Students_StudentId",
+                        column: x => x.StudentId,
+                        principalTable: "Students",
+                        principalColumn: "StudentId");
+                    table.ForeignKey(
+                        name: "FK_Payments_Teachers_TeacherId",
+                        column: x => x.TeacherId,
+                        principalTable: "Teachers",
+                        principalColumn: "TeacherId");
+                });
+
+<<<<<<<< HEAD:Migrations/20250611132510_AddAllTables.cs
+========
             migrationBuilder.CreateTable(
                 name: "Subscriptions",
                 columns: table => new
@@ -690,6 +838,7 @@ namespace IdentityText.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+>>>>>>>> 9430ceacfdd9d9bf11ad4f0abf1d425a7fb96764:Migrations/20250611205704_initMig.cs
             migrationBuilder.InsertData(
                 table: "AcademicYears",
                 columns: new[] { "AcademicYearId", "Name" },
@@ -716,8 +865,23 @@ namespace IdentityText.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "Address", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "Photo", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
+<<<<<<<< HEAD:Migrations/20250617181514_dataInitial.cs
                     { "7aafd540-fdf8-482b-804d-780fb6726703", 0, "Quesna,Menofia", "05526258-507b-4db7-8803-9b249da553b1", "amin@gmail.com", true, "Amin", "Mohamed", false, null, "AMIN@GMAIL.COM", "AMIN", "AQAAAAIAAYagAAAAEFAP9o1+B7oV21BRYmqzMIrFhqnzsYG7cii7TQ9R3f+vPjoHaZtfvgpjsmUwXwVRuA==", null, false, "admin.jpg", "c90c2ed2-cea3-4f44-8105-a3dda4279f67", false, "amin" },
                     { "9b4cd611-6c35-4c98-a0dc-1d2e1349ab91", 0, "Port Said", "cd935f4b-9734-4318-a237-f74e310f7fad", "abdelrahmanmoussan@gmail.com", true, "Abdelrahman", "Moussan", false, null, "ABDELRAHMANMOUSSAN@GMAIL.COM", "ABDELRAHMAN", "AQAAAAIAAYagAAAAEEEgWIUnP2VjLSvLnk3kfhpSCcDWVhVKzruY/aygexbEQbvkYouy2Jkee7PJEfaALQ==", null, false, "Moussan.jpg", "f6780014-2415-4408-b6eb-f1dea417fdcf", false, "abdelrahman" }
+========
+<<<<<<<< HEAD:Migrations/20250611132510_AddAllTables.cs
+                    { "7aafd540-fdf8-482b-804d-780fb6726703", 0, "Quesna,Menofia", "9b030195-6599-44cc-8638-a06251d3b5c1", "amin@gmail.com", true, "Amin", "Mohamed", false, null, "AMIN@GMAIL.COM", "AMIN", "AQAAAAIAAYagAAAAEKrtoYqEBJH+5S9mG0Lxa3e49yotYhZE9uhsy31H8GMgRt4Ix1Be19ngST6py/zdEw==", null, false, "admin.jpg", "5b3eee54-31fa-4fb0-a01c-24ff584056ce", false, "amin" },
+                    { "9b4cd611-6c35-4c98-a0dc-1d2e1349ab91", 0, "Port Said", "cd8ba5e5-3575-4f28-9599-5d22ecb77988", "abdelrahmanmoussan@gmail.com", true, "Abdelrahman", "Moussan", false, null, "ABDELRAHMANMOUSSAN@GMAIL.COM", "ABDELRAHMAN", "AQAAAAIAAYagAAAAEAopRSFtYW5sen4tJdCSfuqXwp01onTTW9qk4SCd1ubfkidS7L+4d4zuwU1BegYB1g==", null, false, "Moussan.jpg", "809aec49-0b7e-4a59-962e-acbe89f21e40", false, "abdelrahman" }
+========
+<<<<<<<< HEAD:Migrations/20250616183645_init.cs
+                    { "7aafd540-fdf8-482b-804d-780fb6726703", 0, "Quesna,Menofia", "cb725b4d-018e-4c58-9fdb-79e2a532e84a", "amin@gmail.com", true, "Amin", "Mohamed", false, null, "AMIN@GMAIL.COM", "AMIN", "AQAAAAIAAYagAAAAEAuIHhwY/+i01zOJWya6kPkvuU+B6XcH/+Tq8xWqOTByZ5kWDBE4+657LoTqd1QLGQ==", null, false, "admin.jpg", "6fb248c4-186a-4a70-b5db-9283341fcb46", false, "amin" },
+                    { "9b4cd611-6c35-4c98-a0dc-1d2e1349ab91", 0, "Port Said", "3a88cb10-a42d-4d06-b2bf-dae00cb3a516", "abdelrahmanmoussan@gmail.com", true, "Abdelrahman", "Moussan", false, null, "ABDELRAHMANMOUSSAN@GMAIL.COM", "ABDELRAHMAN", "AQAAAAIAAYagAAAAECtHuSrbUnXP33+V3tbVejjsjnA+dIjUkr6ix1M4GAG1u96y4MsMxS6WO/IopjHNDQ==", null, false, "Moussan.jpg", "0bcfe135-bd84-4a7d-a04a-7ee1cced524a", false, "abdelrahman" }
+========
+                    { "7aafd540-fdf8-482b-804d-780fb6726703", 0, "Quesna,Menofia", "df26f378-e15b-47e9-9b83-4b15b43310c8", "amin@gmail.com", true, "Amin", "Mohamed", false, null, "AMIN@GMAIL.COM", "AMIN", "AQAAAAIAAYagAAAAEIzxlxoFZ/JMDSK7rmZ5PE8S09QR+ohETR4hlY42V9FU/shbxZwAHl19Y5uB6T/18A==", null, false, "admin.jpg", "451b2440-3db3-4d4a-a88f-04697bc04f74", false, "amin" },
+                    { "9b4cd611-6c35-4c98-a0dc-1d2e1349ab91", 0, "Port Said", "0c764898-e622-4f6a-8a13-980f088d055c", "abdelrahmanmoussan@gmail.com", true, "Abdelrahman", "Moussan", false, null, "ABDELRAHMANMOUSSAN@GMAIL.COM", "ABDELRAHMAN", "AQAAAAIAAYagAAAAEEm8MAPMMlL660zw/XVHPQHWPHkpN6TSva9cM+3qh4qfsyvpbwGcT42Fr7ceEMpMgQ==", null, false, "Moussan.jpg", "5286b88b-d2ba-46fc-884f-000d52200052", false, "abdelrahman" }
+>>>>>>>> 8b685ce8b20fed54eb52129d85677e20912527df:Migrations/20250611205704_initMig.cs
+>>>>>>>> 9430ceacfdd9d9bf11ad4f0abf1d425a7fb96764:Migrations/20250611205704_initMig.cs
+>>>>>>>> 0f856fc3a7c9c6d66488f3344fec8838a118799e:Migrations/20250611132510_AddAllTables.cs
                 });
 
             migrationBuilder.InsertData(
