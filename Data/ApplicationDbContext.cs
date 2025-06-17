@@ -93,6 +93,7 @@ namespace IdentityText.Data
                 .WithMany(e => e.Subscriptions) 
                 .HasForeignKey(s => s.EnrollmentId) 
                 .OnDelete(DeleteBehavior.Restrict);
+
             builder.Entity<Notification>()
                 .HasOne(n => n.User)
                 .WithMany()

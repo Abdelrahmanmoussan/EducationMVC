@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace IdentityText.Migrations
 {
     /// <inheritdoc />
-    public partial class initMig : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -594,11 +594,7 @@ namespace IdentityText.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-<<<<<<<< HEAD:Migrations/20250616183645_init.cs
                     DeliveryDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-========
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
->>>>>>>> 8b685ce8b20fed54eb52129d85677e20912527df:Migrations/20250611205704_initMig.cs
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     AssessmentLink = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     MaxScore = table.Column<int>(type: "int", nullable: false),
@@ -674,12 +670,8 @@ namespace IdentityText.Migrations
                     StudentId = table.Column<int>(type: "int", nullable: false),
                     Score = table.Column<int>(type: "int", nullable: false),
                     Grade = table.Column<string>(type: "nvarchar(max)", nullable: false),
-<<<<<<<< HEAD:Migrations/20250616183645_init.cs
                     Feedback = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     StudentSolutionPath = table.Column<string>(type: "nvarchar(max)", nullable: true)
-========
-                    Feedback = table.Column<string>(type: "nvarchar(max)", nullable: true)
->>>>>>>> 8b685ce8b20fed54eb52129d85677e20912527df:Migrations/20250611205704_initMig.cs
                 },
                 constraints: table =>
                 {
@@ -724,13 +716,8 @@ namespace IdentityText.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "Address", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "Photo", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-<<<<<<<< HEAD:Migrations/20250616183645_init.cs
-                    { "7aafd540-fdf8-482b-804d-780fb6726703", 0, "Quesna,Menofia", "cb725b4d-018e-4c58-9fdb-79e2a532e84a", "amin@gmail.com", true, "Amin", "Mohamed", false, null, "AMIN@GMAIL.COM", "AMIN", "AQAAAAIAAYagAAAAEAuIHhwY/+i01zOJWya6kPkvuU+B6XcH/+Tq8xWqOTByZ5kWDBE4+657LoTqd1QLGQ==", null, false, "admin.jpg", "6fb248c4-186a-4a70-b5db-9283341fcb46", false, "amin" },
-                    { "9b4cd611-6c35-4c98-a0dc-1d2e1349ab91", 0, "Port Said", "3a88cb10-a42d-4d06-b2bf-dae00cb3a516", "abdelrahmanmoussan@gmail.com", true, "Abdelrahman", "Moussan", false, null, "ABDELRAHMANMOUSSAN@GMAIL.COM", "ABDELRAHMAN", "AQAAAAIAAYagAAAAECtHuSrbUnXP33+V3tbVejjsjnA+dIjUkr6ix1M4GAG1u96y4MsMxS6WO/IopjHNDQ==", null, false, "Moussan.jpg", "0bcfe135-bd84-4a7d-a04a-7ee1cced524a", false, "abdelrahman" }
-========
-                    { "7aafd540-fdf8-482b-804d-780fb6726703", 0, "Quesna,Menofia", "df26f378-e15b-47e9-9b83-4b15b43310c8", "amin@gmail.com", true, "Amin", "Mohamed", false, null, "AMIN@GMAIL.COM", "AMIN", "AQAAAAIAAYagAAAAEIzxlxoFZ/JMDSK7rmZ5PE8S09QR+ohETR4hlY42V9FU/shbxZwAHl19Y5uB6T/18A==", null, false, "admin.jpg", "451b2440-3db3-4d4a-a88f-04697bc04f74", false, "amin" },
-                    { "9b4cd611-6c35-4c98-a0dc-1d2e1349ab91", 0, "Port Said", "0c764898-e622-4f6a-8a13-980f088d055c", "abdelrahmanmoussan@gmail.com", true, "Abdelrahman", "Moussan", false, null, "ABDELRAHMANMOUSSAN@GMAIL.COM", "ABDELRAHMAN", "AQAAAAIAAYagAAAAEEm8MAPMMlL660zw/XVHPQHWPHkpN6TSva9cM+3qh4qfsyvpbwGcT42Fr7ceEMpMgQ==", null, false, "Moussan.jpg", "5286b88b-d2ba-46fc-884f-000d52200052", false, "abdelrahman" }
->>>>>>>> 8b685ce8b20fed54eb52129d85677e20912527df:Migrations/20250611205704_initMig.cs
+                    { "7aafd540-fdf8-482b-804d-780fb6726703", 0, "Quesna,Menofia", "a6c3ca07-c255-4f35-8c9e-7ae32a370dc5", "amin@gmail.com", true, "Amin", "Mohamed", false, null, "AMIN@GMAIL.COM", "AMIN", "AQAAAAIAAYagAAAAEM0dJg3qqBNEAwrrw7NbS8vEgrxV6Hr2EqqNZTwam/qIdr0ateMTS2zZ92hX4wknRQ==", null, false, "admin.jpg", "49c3dc8d-9fef-47d9-ae35-c3dc058be610", false, "amin" },
+                    { "9b4cd611-6c35-4c98-a0dc-1d2e1349ab91", 0, "Port Said", "50d0edf8-59ef-4bc6-8d76-9d5898ed0cc6", "abdelrahmanmoussan@gmail.com", true, "Abdelrahman", "Moussan", false, null, "ABDELRAHMANMOUSSAN@GMAIL.COM", "ABDELRAHMAN", "AQAAAAIAAYagAAAAELoGo4WgmU2BPIkPzRciJjBZLsuSepM5WK+JWfdOtyuAbzgrfgQC4amRYboEO56jEA==", null, false, "Moussan.jpg", "f00b4bad-197a-43a7-8965-978d5269f5a5", false, "abdelrahman" }
                 });
 
             migrationBuilder.InsertData(
