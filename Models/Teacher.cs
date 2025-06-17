@@ -1,13 +1,6 @@
-﻿
-using IdentityText.Models;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IdentityText.Models
 {
@@ -39,7 +32,7 @@ namespace IdentityText.Models
         [Required]
         public int SubjectId { get; set; }
 
-        [Required] 
+        [Required]
         public Subject Subject { get; set; }
         [BindNever]
         public ICollection<AcademicYear> AcademicYears { get; set; }
@@ -51,6 +44,11 @@ namespace IdentityText.Models
         public ICollection<ClassGroup> ClassGroups { get; set; }
         [BindNever]
         public ICollection<TeacherAcademicYear> TeacherAcademicYears { get; set; }
+
+        [NotMapped]
+        public string FullName =>
+    $"{ApplicationUser?.FirstName ?? ""} {ApplicationUser?.LastName ?? ""}".Trim();
+
     }
 
 }

@@ -1,11 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IdentityText.Models
 {
@@ -29,6 +24,8 @@ namespace IdentityText.Models
         [ForeignKey("SubjectId")]
         public Subject Subject { get; set; }
         [Required]
+
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public int TeacherId { get; set; }
         [ForeignKey("TeacherId")]
         public Teacher Teacher { get; set; }
