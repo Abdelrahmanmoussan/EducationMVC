@@ -157,11 +157,7 @@ namespace IdentityText.Migrations
                             Id = "7aafd540-fdf8-482b-804d-780fb6726703",
                             AccessFailedCount = 0,
                             Address = "Quesna,Menofia",
-<<<<<<< HEAD
-                            ConcurrencyStamp = "cb725b4d-018e-4c58-9fdb-79e2a532e84a",
-=======
-                            ConcurrencyStamp = "df26f378-e15b-47e9-9b83-4b15b43310c8",
->>>>>>> 8b685ce8b20fed54eb52129d85677e20912527df
+                            ConcurrencyStamp = "05526258-507b-4db7-8803-9b249da553b1",
                             Email = "amin@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Amin",
@@ -169,17 +165,10 @@ namespace IdentityText.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "AMIN@GMAIL.COM",
                             NormalizedUserName = "AMIN",
-<<<<<<< HEAD
-                            PasswordHash = "AQAAAAIAAYagAAAAEAuIHhwY/+i01zOJWya6kPkvuU+B6XcH/+Tq8xWqOTByZ5kWDBE4+657LoTqd1QLGQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEFAP9o1+B7oV21BRYmqzMIrFhqnzsYG7cii7TQ9R3f+vPjoHaZtfvgpjsmUwXwVRuA==",
                             PhoneNumberConfirmed = false,
                             Photo = "admin.jpg",
-                            SecurityStamp = "6fb248c4-186a-4a70-b5db-9283341fcb46",
-=======
-                            PasswordHash = "AQAAAAIAAYagAAAAEIzxlxoFZ/JMDSK7rmZ5PE8S09QR+ohETR4hlY42V9FU/shbxZwAHl19Y5uB6T/18A==",
-                            PhoneNumberConfirmed = false,
-                            Photo = "admin.jpg",
-                            SecurityStamp = "451b2440-3db3-4d4a-a88f-04697bc04f74",
->>>>>>> 8b685ce8b20fed54eb52129d85677e20912527df
+                            SecurityStamp = "c90c2ed2-cea3-4f44-8105-a3dda4279f67",
                             TwoFactorEnabled = false,
                             UserName = "amin"
                         },
@@ -188,11 +177,7 @@ namespace IdentityText.Migrations
                             Id = "9b4cd611-6c35-4c98-a0dc-1d2e1349ab91",
                             AccessFailedCount = 0,
                             Address = "Port Said",
-<<<<<<< HEAD
-                            ConcurrencyStamp = "3a88cb10-a42d-4d06-b2bf-dae00cb3a516",
-=======
-                            ConcurrencyStamp = "0c764898-e622-4f6a-8a13-980f088d055c",
->>>>>>> 8b685ce8b20fed54eb52129d85677e20912527df
+                            ConcurrencyStamp = "cd935f4b-9734-4318-a237-f74e310f7fad",
                             Email = "abdelrahmanmoussan@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Abdelrahman",
@@ -200,17 +185,10 @@ namespace IdentityText.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ABDELRAHMANMOUSSAN@GMAIL.COM",
                             NormalizedUserName = "ABDELRAHMAN",
-<<<<<<< HEAD
-                            PasswordHash = "AQAAAAIAAYagAAAAECtHuSrbUnXP33+V3tbVejjsjnA+dIjUkr6ix1M4GAG1u96y4MsMxS6WO/IopjHNDQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEEEgWIUnP2VjLSvLnk3kfhpSCcDWVhVKzruY/aygexbEQbvkYouy2Jkee7PJEfaALQ==",
                             PhoneNumberConfirmed = false,
                             Photo = "Moussan.jpg",
-                            SecurityStamp = "0bcfe135-bd84-4a7d-a04a-7ee1cced524a",
-=======
-                            PasswordHash = "AQAAAAIAAYagAAAAEEm8MAPMMlL660zw/XVHPQHWPHkpN6TSva9cM+3qh4qfsyvpbwGcT42Fr7ceEMpMgQ==",
-                            PhoneNumberConfirmed = false,
-                            Photo = "Moussan.jpg",
-                            SecurityStamp = "5286b88b-d2ba-46fc-884f-000d52200052",
->>>>>>> 8b685ce8b20fed54eb52129d85677e20912527df
+                            SecurityStamp = "f6780014-2415-4408-b6eb-f1dea417fdcf",
                             TwoFactorEnabled = false,
                             UserName = "abdelrahman"
                         });
