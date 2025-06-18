@@ -1,12 +1,15 @@
 ﻿using IdentityText.Enums;
 using IdentityText.Models.ViewModel;
 using IdentityText.Repository.IRepository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace IdentityText.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
+
     public class ReportController : Controller
     {
         private readonly IPaymentRepository _paymentRepository;

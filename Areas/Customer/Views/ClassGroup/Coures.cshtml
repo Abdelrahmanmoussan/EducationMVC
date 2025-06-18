@@ -79,10 +79,10 @@
                             <small><i class="bi bi-geo-alt"></i> @item.Location</small>
                         </div>
                         <div class="course-body course-info">
-                            <p><i class="bi bi-currency-dollar text-success"></i> <strong>Price:</strong> @item.Price.ToString("C")</p>
+                            <p class="fw-bold"> <i class="bi bi-credit-card"></i> Price: @String.Format("{0:N2} ج.م", @item.Price) </p>
                             <p><i class="bi bi-calendar-range text-primary"></i> <strong>Duration:</strong> @item.StartDate.ToString("dd/MM/yyyy") - @item.EndDate.ToString("dd/MM/yyyy")</p>
                             <p><i class="bi bi-layers text-warning"></i> <strong>Subject:</strong> @item.Subject.Title</p>
-                            <p><i class="bi bi-person text-info"></i> <strong>Teacher:</strong> @item.Teacher.ApplicationUser.FirstName</p>
+                            <p><i class="bi bi-person text-info"></i> <strong>Teacher:</strong> @item.Teacher.ApplicationUser.FirstName @item.Teacher.ApplicationUser.LastName</p>
                             <p><i class="bi bi-clock-history text-secondary"></i> <strong>Academic Year:</strong> @item.AcademicYear.Name</p>
                             <a asp-action="Details" asp-route-id="@item.ClassGroupId" class="btn rounded-pill px-4 shadow-sm w-100 custom-blue-btn">
                                 <i class="bi bi-eye"></i> View Details

@@ -109,7 +109,61 @@ namespace IdentityText.Data
                 .HasForeignKey(nr => nr.NotificationId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-
+            // seeding data for subject table
+            builder.Entity<Subject>().HasData(
+                new Subject
+                {
+                    SubjectId = 1,
+                    Title = "mathematics",
+                    Description = "Basic mathematics subject",
+                    SubjectType = SubjectType.General
+                },
+                new Subject
+                {
+                    SubjectId = 2,
+                    Title = "sciences",
+                    Description = "Basic science subject",
+                    SubjectType = SubjectType.General
+                },
+                new Subject
+                {
+                    SubjectId = 3,
+                    Title = "Arabic",
+                    Description = "Basic Arabic language subject",
+                    SubjectType = SubjectType.General
+                },
+                new Subject
+                {
+                    SubjectId = 4,
+                    Title = "english",
+                    Description = "Basic English subject",
+                    SubjectType = SubjectType.Optional
+                },
+                new Subject
+                {
+                    SubjectId = 5,
+                    Title = "Social studies",
+                    Description = "Basic social studies subject",
+                    SubjectType = SubjectType.Optional
+                }
+            );
+            builder.Entity<AcademicYear>().HasData(
+                new AcademicYear
+                {
+                    AcademicYearId = 1,
+                    Name = "First year of middle school "
+                },
+                new AcademicYear
+                {
+                    AcademicYearId = 2,
+                    Name = "Second year of middle school"
+                },
+                new AcademicYear
+                {
+                    AcademicYearId = 3,
+                    Name = "Third year of middle school"
+                }
+            );
 
 
 
@@ -146,10 +200,68 @@ namespace IdentityText.Data
                 Photo = "Moussan.jpg"
             };
             adminUser2.PasswordHash = hasher.HashPassword(adminUser2, "Admin@1234");
+            // Customer 
+            var Customer = new ApplicationUser
+            {
+                Id = "7zzfd540-fdf8-482b-804d-780fb6726703", 
+                UserName = "ahmed",
+                NormalizedUserName = "AHMED",
+                Email = "ahmed@gmail.com",
+                NormalizedEmail = "AHMED@GMAIL.COM",
+                EmailConfirmed = true,
+                FirstName = "Ahmed",
+                LastName = "Samir",
+                Address = "Quesna,Menofia",
+                Photo = "Customer.jpg"
+            };
 
+            Customer.PasswordHash = hasher.HashPassword(Customer, "Ahmed@1234");
+            // Teacher 
+            var Teacher = new ApplicationUser
+            {
+                Id = "7nnfd540-fdf8-482b-804d-780fb6726703",
+                UserName = "omar",
+                NormalizedUserName = "Omar",
+                Email = "omar@gmail.com",
+                NormalizedEmail = "Omar@GMAIL.COM",
+                EmailConfirmed = true,
+                FirstName = "Omar",
+                LastName = "Fathi",
+                Address = "Quesna,Menofia",
+                Photo = "Teacher.jpg"
+            };
+
+            Teacher.PasswordHash = hasher.HashPassword(Teacher, "Omar@1234");
             // Seed users
-            builder.Entity<ApplicationUser>().HasData(adminUser1, adminUser2);
+            builder.Entity<ApplicationUser>().HasData(adminUser1, adminUser2, Customer, Teacher);
+            // 
+            var student1 = new Student
+            {
+                StudentId = 1, 
+                UserId = Customer.Id,
+                ParentName = "Mr. Samir",
+                ParentPhone = "01012345678",
+                ParentMail = "samir@gmail.com",
+                StudentDB = new DateTime(2008, 5, 10),
+                EnrollmentDate = DateTime.Now,
+                EmergencyContact = "01098765432",
+                AttendancePercent = 100,
+                AcademicYearId = 2
+            };
 
+            builder.Entity<Student>().HasData(student1);
+
+            builder.Entity<Teacher>().HasData(new Teacher
+            {
+                TeacherId = 1,
+                UserId = Teacher.Id,
+                TeacherHireDate = new DateTime(2023, 1, 15),
+                TeacherDB = new DateTime(1995, 5, 20),
+                TeacherNetAmount = 3000,
+                TeacherNotes = "Expert in physics",
+                SubjectId = 1, 
+                Rating = 4.5m
+            });
 
             builder.Entity<IdentityRole>().HasData(
                 new IdentityRole
@@ -166,7 +278,7 @@ namespace IdentityText.Data
                 },
                 new IdentityRole
                 {
-                    Id = "8ccc91c3-0b30-4451-b78e-a26edf6e1c61",
+                    Id = "7vvfd540-fdf8-482b-804d-780fb6726703",
                     Name = "Student",
                     NormalizedName = "STUDENT"
                 },
@@ -187,65 +299,18 @@ namespace IdentityText.Data
                 {
                     UserId = "9b4cd611-6c35-4c98-a0dc-1d2e1349ab91", // Abdelrahman
                     RoleId = "5aa54943-8b55-4399-91b7-d247ab235cf3"
+                },
+                new IdentityUserRole<string>
+                {
+                    UserId = "7zzfd540-fdf8-482b-804d-780fb6726703", // student
+                    RoleId = "7vvfd540-fdf8-482b-804d-780fb6726703"
+                },
+                new IdentityUserRole<string>
+                {
+                    UserId = "7nnfd540-fdf8-482b-804d-780fb6726703", // teacher
+                    RoleId = "8ddc91c3-0b30-4451-b78e-a26edf6e1c61"
                 }
            );
-
-            // seeding data for subject table
-            builder.Entity<Subject>().HasData(
-                new Subject
-                {
-                    SubjectId = 1,
-                    Title = "الرياضيات",
-                    Description = "مادة الرياضيات الأساسية",
-                    SubjectType = SubjectType.General
-                },
-                new Subject
-                {
-                    SubjectId = 2,
-                    Title = "العلوم",
-                    Description = "مادة العلوم الأساسية",
-                    SubjectType = SubjectType.General
-                },
-                new Subject
-                {
-                    SubjectId = 3,
-                    Title = "اللغة العربية",
-                    Description = "مادة اللغة العربية الأساسية",
-                    SubjectType = SubjectType.General
-                },
-                new Subject
-                {
-                    SubjectId = 4,
-                    Title = "اللغة الإنجليزية",
-                    Description = "مادة اللغة الإنجليزية الأساسية",
-                    SubjectType = SubjectType.Optional
-                },
-                new Subject
-                {
-                    SubjectId = 5,
-                    Title = "الدراسات الاجتماعية",
-                    Description = "مادة الدراسات الاجتماعية الأساسية",
-                    SubjectType = SubjectType.Optional
-                }
-            );
-            builder.Entity<AcademicYear>().HasData(
-                new AcademicYear
-                {
-                    AcademicYearId = 1,
-                    Name = "الصف  الاول الاعدادي "
-                },
-                new AcademicYear
-                {
-                    AcademicYearId = 2,
-                    Name = "الصف  الثانى الاعدادي"
-                },
-                new AcademicYear
-                {
-                    AcademicYearId = 3,
-                    Name = "الصف  الثالث الاعدادي"
-                }
-            );
-
 
         }
 

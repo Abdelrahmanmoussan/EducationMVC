@@ -171,6 +171,32 @@
                                 }
                             </small>
                         </p>
+                        @{
+                            var assessmentObj = lecture.Assessment;
+                            var assessmentResult = assessmentObj?.AssessmentResults
+                            .FirstOrDefault(ar => ar.StudentId == studentId);
+
+                            if (assessmentObj != null)
+                            {
+                                <p class="card-footer text-muted text-center">
+                                    <small>
+                                        التقييم:
+                                        @if (assessmentResult != null)
+                                        {
+                                            <a href="@Url.Action("Details", "Assessment", new { area = "Customer", lectureId = lecture.LectureId })" class="text-decoration-none">
+                                                <i class="bi bi-check-circle-fill text-success"></i> تم التقييم
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a href="@Url.Action("Details", "Assessment", new { area = "Customer", lectureId = lecture.LectureId })" class="text-decoration-none">
+                                                <i class="bi bi-info-circle text-warning"></i> لم يتم التقييم بعد - اضغط للدخول
+                                            </a>
+                                        }
+                                    </small>
+                                </p>
+                            }
+                        }
                     </div>
                 </div>
                 index++;

@@ -1,5 +1,6 @@
 ﻿using IdentityText.Repository.IRepository;
 using IdentityText.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -7,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace IdentityText.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,Teacher")]
     public class HomeController : Controller
     {
         private readonly IStudentRepository _studentRepository;

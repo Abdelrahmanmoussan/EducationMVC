@@ -14,16 +14,21 @@ namespace IdentityText.Areas.Customer.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IClassGroupRepository _classGroupRepository;
         private readonly ITeacherRepository _teacherRepository;
+        private readonly IEnrollmentRepository _enrollmentRepository;
 
-        public HomeController(ILogger<HomeController> logger,IClassGroupRepository classGroupRepository, ITeacherRepository teacherRepository)
+        public HomeController(ILogger<HomeController> logger,
+            IClassGroupRepository classGroupRepository,
+            ITeacherRepository teacherRepository,
+            IEnrollmentRepository enrollmentRepository)
         {
             _logger = logger;
             _classGroupRepository = classGroupRepository;
             _teacherRepository = teacherRepository;
+            _enrollmentRepository = enrollmentRepository;
         }
 
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             ViewBag.WelcomeMessage = "أهلاً بيك في موقعنا!";
             ViewBag.AboutUs = "نحن نقدم أفضل الخدمات التعليمية مع مدرسين محترفين.";
@@ -41,10 +46,10 @@ namespace IdentityText.Areas.Customer.Controllers
             var allCourses = _classGroupRepository.Get(
                 includes: [
                     e => e.Teacher,
-            e => e.Teacher.ApplicationUser,
-            e => e.Subject,
-            e => e.AcademicYear,
-            e => e.Enrollments
+                    e => e.Teacher.ApplicationUser,
+                    e => e.Subject,
+                    e => e.AcademicYear,
+                    e => e.Enrollments
                 ]);
 
             var popularCourses = allCourses?
@@ -59,6 +64,14 @@ namespace IdentityText.Areas.Customer.Controllers
                 PopularClassGroups = popularCourses,
                 Portfolio = popularCourses
             };
+            ViewBag.StudentNumber = _classGroupRepository.Get()
+                .SelectMany(c => c.Enrollments)
+                .Select(e => e.StudentId)
+                .Distinct()
+                .Count();
+            //ViewBag.StudentNumber = _enrollmentRepository.Get(e=>e.StudentId ==)
+            //   .Distinct()
+            //   .Count();
 
             return View(model);
         }

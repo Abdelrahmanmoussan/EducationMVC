@@ -1,6 +1,7 @@
 ﻿using IdentityText.Models;
 using IdentityText.Models.ViewModel;
 using IdentityText.Repository.IRepository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +12,8 @@ using System.Text.Encodings.Web;
 namespace IdentityText.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
+
     public class UserController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace IdentityText.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public class AcademicYearController : Controller
     {
         private readonly IAcademicYearRepository _academicYearRepository;

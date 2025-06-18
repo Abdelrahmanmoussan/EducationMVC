@@ -23,7 +23,6 @@ namespace IdentityText.Areas.Customer.Controllers
         private readonly ISubjectRepository _subjectRepository;
         private readonly UserManager<ApplicationUser> _userManager;
 
-
         public ClassGroupController(
          IClassGroupRepository classGroupRepository,
          ITeacherRepository teacherRepository,
@@ -67,8 +66,8 @@ namespace IdentityText.Areas.Customer.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            // Assuming your Teacher entity has a property ApplicationUserId that links to Identity user Id
-            var teacher = _teacherRepository.Get(t => t.ApplicationUser.Id == currentUser.Id).FirstOrDefault();
+            var teacher = _teacherRepository.GetOne( t => t.UserId == currentUser.Id,
+                includes: [e => e.Subject , e => e.ApplicationUser]);
 
             var model = new ClassGroupVM
             {
@@ -84,6 +83,22 @@ namespace IdentityText.Areas.Customer.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ClassGroupVM model)
         {
+            var currentUser = await _userManager.GetUserAsync(User);
+            if (currentUser == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var teacher = _teacherRepository.GetOne(t => t.UserId == currentUser.Id,
+                includes: [e => e.Subject, e => e.ApplicationUser]);
+            if (teacher == null)
+            {
+                ModelState.AddModelError("", "You must be a teacher to create a class group.");
+                model.AcademicYearsList = await _academicYearRepository.SelectListAcademicYearAsync();
+                model.TeacherId = 0; // No teacher available
+                model.SubjectId = 0; // No subject available
+                return View(model);
+            }
             if (ModelState.IsValid)
             {
                 var classGroup = new ClassGroup
@@ -94,8 +109,8 @@ namespace IdentityText.Areas.Customer.Controllers
                     StartDate = model.StartDate,
                     EndDate = model.EndDate,
                     AcademicYearId = model.AcademicYearId,
-                    SubjectId = model.SubjectId,
-                    TeacherId = model.TeacherId
+                    SubjectId = teacher.SubjectId,
+                    TeacherId = teacher.TeacherId
                 };
                 _classGroupRepository.Create(classGroup);
                 _classGroupRepository.Commit();
@@ -103,8 +118,8 @@ namespace IdentityText.Areas.Customer.Controllers
                 return RedirectToAction(controllerName: "Home", actionName:"Index");
             }
             model.AcademicYearsList = await _academicYearRepository.SelectListAcademicYearAsync();
-            model.SubjectsList = await _subjectRepository.SelectListSubjectAsync();
-            model.TeacherList = await _teacherRepository.SelectListTeacherAsync();
+            //model.SubjectsList = await _subjectRepository.SelectListSubjectAsync();
+            //model.TeacherList = await _teacherRepository.SelectListTeacherAsync();
             return View(model);
         }
         public async Task<IActionResult> CouresAsync()

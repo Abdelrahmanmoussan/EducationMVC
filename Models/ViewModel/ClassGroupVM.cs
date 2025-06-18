@@ -34,10 +34,6 @@ namespace IdentityText.Models.ViewModel
         public IEnumerable<SelectListItem> SubjectsList { get; set; } = Enumerable.Empty<SelectListItem>();
         public IEnumerable<SelectListItem> TeacherList { get; set; } = Enumerable.Empty<SelectListItem>();
 
-        //public static implicit operator ClassGroupVM(ClassGroupVM v)
-        //{
-        //    throw new NotImplementedException();
-        //}
     }
 
 }

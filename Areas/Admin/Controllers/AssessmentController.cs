@@ -14,7 +14,7 @@ using System.Security.Claims;
 namespace IdentityText.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    //[Authorize(Roles = "Admin, Teacher")]
+    [Authorize(Roles = "Teacher")]
 
     public class AssessmentController : Controller
     {
@@ -234,7 +234,7 @@ namespace IdentityText.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Evaluate(StudentSolutionVM vm)
         {
-            var result = _assessmentResultRepository.GetOne(e=>e.AssessmentResultId == vm.AssessmentResultId,
+            var result = _assessmentResultRepository.GetOne(e => e.AssessmentResultId == vm.AssessmentResultId,
                 includes: [e => e.Student.ApplicationUser]);
 
             if (result == null)
@@ -245,7 +245,7 @@ namespace IdentityText.Areas.Admin.Controllers
                 return NotFound();
 
             result.Score = vm.Score ?? 0;
-            result.Grade = GradeHelper.GetGrade(result.Score, ass.MaxScore); 
+            result.Grade = GradeHelper.GetGrade(result.Score, ass.MaxScore);
             result.Feedback = vm.Feedback;
 
             _assessmentResultRepository.Edit(result);
@@ -256,7 +256,7 @@ namespace IdentityText.Areas.Admin.Controllers
                 Message = $"تم تقييمك في '{ass.Title}' وحصلت على درجة {result.Grade}",
                 IsRead = false,
                 Date = DateTime.Now,
-                UserId = User.GetUserId(),
+                UserId = result.Student.UserId,
                 NotificationRecipients = new List<NotificationRecipient>
                 {
                     new NotificationRecipient
@@ -278,7 +278,7 @@ namespace IdentityText.Areas.Admin.Controllers
             return RedirectToAction("ReviewSolutions", new { assessmentId = result.AssessmentId });
         }
 
-        
+
 
     }
    

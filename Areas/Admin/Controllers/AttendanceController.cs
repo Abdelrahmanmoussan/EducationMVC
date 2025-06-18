@@ -2,6 +2,7 @@
 using IdentityText.Models;
 using IdentityText.Models.ViewModel;
 using IdentityText.Repository.IRepository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +14,7 @@ using System.Threading.Tasks;
 namespace IdentityText.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin,Teacher")]
     public class AttendanceController : Controller
     {
         private readonly IClassGroupRepository _classGroupRepository;
@@ -37,6 +39,8 @@ namespace IdentityText.Areas.Admin.Controllers
             _studentRepository = studentRepository;
             _emailSender = emailSender;
         }
+
+        [Authorize(Roles = "Teacher")]
         public async Task<IActionResult> TakeAttendance()
         {
             var model = new StudentAttendanceVM
@@ -70,7 +74,8 @@ namespace IdentityText.Areas.Admin.Controllers
                 .Select(e => new {
                     id = e.Student.StudentId,
                     fullName = e.Student.ApplicationUser.FirstName + " " + e.Student.ApplicationUser.LastName,
-                    email = e.Student.ApplicationUser.Email });
+                    email = e.Student.ApplicationUser.Email
+                });
 
             return Json(students);
         }
@@ -83,13 +88,13 @@ namespace IdentityText.Areas.Admin.Controllers
                 // Get EnrollmentId for this student and class group
                 var enrollment = _enrollmentRepository
                     .Get(filter: e => e.StudentId == entry.StudentId && e.ClassGroupId == model.ClassGroupId,
-                    includes: [e=>e.ClassGroup.Lectures])
+                    includes: [e => e.ClassGroup.Lectures])
                     .FirstOrDefault();
 
                 if (enrollment == null)
                     continue; // Skip if enrollment not found
 
-                   // check if attendance already exists
+                // check if attendance already exists
                 var existingAttendance = _attendanceRepository.GetOne(
                     filter: a => a.StudentId == entry.StudentId && a.LectureId == model.LectureId);
 
@@ -141,10 +146,10 @@ namespace IdentityText.Areas.Admin.Controllers
                 }
             }
 
-                _attendanceRepository.Commit();
+            _attendanceRepository.Commit();
 
-                return RedirectToAction("ShowAttendance");
-            
+            return RedirectToAction("ShowAttendance");
+
         }
 
         [HttpGet]
@@ -159,7 +164,7 @@ namespace IdentityText.Areas.Admin.Controllers
             if (allAttendances == null || !allAttendances.Any())
             {
                 TempData["Error"] = "لا توجد سجلات حضور.";
-                return RedirectToAction("TakeAttendance");
+                return RedirectToAction("TakeAttendance");  
             }
 
             if (classGroupId.HasValue)

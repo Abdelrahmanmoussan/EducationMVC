@@ -128,13 +128,22 @@
                             </div>
 
                             <div class="enroll-section">
-                                <h5><i class="bi bi-easel-fill me-2"></i> @enrollment.ClassGroup?.Title</h5>
-                                <p><i class="bi bi-person-fill me-1"></i> Teacher: </p>
+                                <h5 class="text-center"><i class="bi bi-easel-fill me-2"></i> @enrollment.ClassGroup?.Title</h5>
+                                <p>
+                                    <i class="bi bi-person-fill me-1"></i>
+                                    <b>
+                                        Teacher: @enrollment.ClassGroup?.Teacher.ApplicationUser.FirstName 
+                                        @enrollment.ClassGroup?.Teacher.ApplicationUser.LastName
+                                    </b>
+                                </p>
                             </div>
 
                             <div class="enroll-section">
                                 <p><i class="bi bi-calendar-event me-1"></i> Enrolled: @enrollment.EnrollmentDate.ToString("dd MMM yyyy")</p>
-                                <p><i class="bi bi-currency-dollar me-1"></i> Price: @enrollment.ClassGroup?.Price</p>
+                                <p class ="fw-bold">
+                                    <i class="bi bi-credit-card"></i>
+                                     Price: @String.Format("{0:N2} ج.م", enrollment.ClassGroup?.Price)
+                                </p>
                             </div>
 
                             <div class="enroll-section enroll-actions">
@@ -150,9 +159,16 @@
                                 }
                                 else if (enrollment.EnrollmentStatus == IdentityText.Enums.EnrollmentStatus.PendingPayment)
                                 {
-                                    <a asp-action="ProcessPayment" asp-route-id="@enrollment.EnrollmentId" class="btn btn-go">
+                                    <button type="button" onclick="confirmDelete(@enrollment.EnrollmentId)"
+                                            class="btn btn-danger rounded-pill">
+                                        <i class="bi bi-trash me-1"></i> Delete
+                                    </button>
+                                    <a 
+                                        asp-action="ProcessPayment" 
+                                        asp-route-id="@enrollment.EnrollmentId" 
+                                        class="btn btn-go">
                                         <i class="bi bi-credit-card me-1"></i> Pay
-                                    </a>
+                                    </a> 
                                 }
                             </div>
                         </div>

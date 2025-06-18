@@ -51,7 +51,7 @@ namespace IdentityText.Areas.Customer.Controllers
 
             var enrollments = _enrollmentRepository
                 .Get(e => e.Student.UserId == userId,
-                includes: [e => e.ClassGroup, e => e.Student.ApplicationUser])
+                includes: [e => e.ClassGroup.Teacher.ApplicationUser, e => e.Student.ApplicationUser])
                 .ToList();
             if (enrollments == null || !enrollments.Any())
             {
@@ -60,75 +60,6 @@ namespace IdentityText.Areas.Customer.Controllers
             
             return View(enrollments);
         }
-
-        //public async Task<IActionResult> RegisterAsync(int id)
-        //{
-        //    var currentCG = _clasGroupRepository.GetOne(e => e.ClassGroupId == id, tracked: true);
-        //    if (currentCG == null)
-        //    {
-        //        TempData["Error"] = "المجموعة غير موجودة.";
-        //        return RedirectToAction(actionName: "Index", controllerName: "Home");
-        //    }
-        //    var currentUser = await _userManager.GetUserAsync(User);
-        //    if (currentUser == null)
-        //    {
-        //        return RedirectToAction("Login", "Account");
-        //    }
-        //    var student = _studentRepository.GetOne(s => s.UserId == currentUser.Id, tracked: true);
-        //    if (student == null)
-        //    {
-        //        TempData["Error"] = "المجموعة غير موجودة.";
-        //        return RedirectToAction(actionName: "Index", controllerName: "Home");
-        //    }
-        //    var userId = student.StudentId;
-            
-        //    if (student.AcademicYear.Name == currentCG.AcademicYear.Name)
-        //    {
-        //        // التحقق من عدم وجود تسجيل سابق لنفس الطالب في نفس المجموعة
-        //        bool alreadyEnrolled = _enrollmentRepository
-        //            .Get(e => e.ClassGroupId == id && e.StudentId == userId)
-        //            .Any();
-        //        if (alreadyEnrolled)
-        //        {
-        //            TempData["Error"] = "أنت مسجل بالفعل في هذه المجموعة.";
-        //            return RedirectToAction(actionName: "Index", controllerName: "Home");
-        //        }
-        //        // create enrollment
-        //        var enrollment = new Enrollment
-        //        {
-        //            ClassGroupId = currentCG.ClassGroupId,
-        //            StudentId = userId, // Convert string to int
-        //            EnrollmentDate = DateTime.Now,
-        //            EnrollmentStatus = EnrollmentStatus.PendingPayment, // حالة الانتظار حتى الدفع
-        //            Notes = "تم التسجيل في المجموعة " + currentCG.Title + " في " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
-
-        //        };
-        //        _enrollmentRepository.Create(enrollment);
-        //        _enrollmentRepository.Commit();
-        //        // create Payment
-        //        var payment = new Models.Payment
-        //        {
-        //            EnrollmentId = enrollment.EnrollmentId,
-        //            Amount = currentCG.Price,
-        //            PaymentDate = DateTime.Now,
-        //            PaymentStatus = PaymentStatus.Pending,
-        //            PaymentMethod = PaymentMethod.Cash,
-        //            PlatformPercentage = 0.10m,
-        //            NetAmountForTeacher = currentCG.Price * (1 - 0.10m),
-        //            Notes = "Payment for enrollment in class group " + currentCG.Title
-        //        };
-        //        _paymentRepository.Create(payment);
-        //        _paymentRepository.Commit();
-        //        TempData["notification"] = "تم التسجيل في الكورس وتم انشاء دفع له";
-        //        return RedirectToAction("Index");
-        //    }
-        //    else
-        //    {
-        //        TempData["notification"] = "هذا الكورس غير مناسب ليك";
-        //        return RedirectToAction(actionName:"Index"  , controllerName:"Home");
-        //    }  
-        //}
-
 
         public async Task<IActionResult> RegisterAsync(int id)
         {
