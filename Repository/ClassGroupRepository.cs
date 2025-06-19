@@ -20,7 +20,6 @@ namespace IdentityText.Repository
         }
 
 
-
         public async Task<IEnumerable<SelectListItem>> SelectListClassGroupAsync()
         {
             return await dbSet.OrderBy(a => a.Title)
@@ -31,13 +30,25 @@ namespace IdentityText.Repository
                              }).ToListAsync();
         }
 
+        public async Task<List<SelectListItem>> SelectListClassGroupByTeacherIdAsync(int teacherId)
+        {
+            return await dbContext.ClassGroups
+                .Where(cg => cg.TeacherId == teacherId)
+                .Select(cg => new SelectListItem
+                {
+                    Value = cg.ClassGroupId.ToString(),
+                    Text = cg.Title
+                }).ToListAsync();
+        }
+
+
         public async Task<List<ClassGroup>> GetLatestCoursesAsync(int count = 5)
         {
             return await dbContext.ClassGroups
                 .Include(c => c.Subject)
                 .Include(c => c.Teacher)
                     .ThenInclude(t => t.ApplicationUser)
-                .OrderByDescending(c => c.CreatedAt) // لو عندك CreatedAt
+                .OrderByDescending(c => c.CreatedAt) 
                 .Take(count)
                 .ToListAsync();
         }

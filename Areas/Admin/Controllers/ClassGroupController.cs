@@ -2,32 +2,39 @@
 using IdentityText.Models.ViewModel;
 using IdentityText.Repository.IRepository;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq.Expressions;
 
 namespace IdentityText.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = "Admin,Teacher")]
+    [Authorize(Roles = "Admin")]
     public class ClassGroupController : Controller
     {
         private readonly IClassGroupRepository _classGroupRepository;
         private readonly ISubjectRepository _subjectRepository;
         private readonly ITeacherRepository _teacherRepository;
         private readonly IAcademicYearRepository _academicYearRepository;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public ClassGroupController(IClassGroupRepository classGroupRepository, ISubjectRepository subjectRepository, ITeacherRepository teacherRepository, IAcademicYearRepository academicYearRepository)
+        public ClassGroupController(IClassGroupRepository classGroupRepository,
+            ISubjectRepository subjectRepository,
+            ITeacherRepository teacherRepository,
+            UserManager<ApplicationUser> userManager,
+            IAcademicYearRepository academicYearRepository)
         {
             _classGroupRepository = classGroupRepository;
             _subjectRepository = subjectRepository;
             _teacherRepository = teacherRepository;
             _academicYearRepository = academicYearRepository;
+            _userManager = userManager;
         }
 
         [HttpGet]
         public IActionResult Index()
         {
-            var classGroups = _classGroupRepository.Get(includes: [e => e.AcademicYear, e => e.Subject, e => e.Teacher.ApplicationUser]);
+            var classGroups = _classGroupRepository.Get( includes: [e => e.AcademicYear, e => e.Subject, e => e.Teacher.ApplicationUser]);
             return View(classGroups);
         }
 
@@ -37,7 +44,7 @@ namespace IdentityText.Areas.Admin.Controllers
         {
             var teachers = _teacherRepository.Get(
                 filter: t => t.SubjectId == subjectId,
-                includes: new Expression<Func<Teacher, object>>[] { t => t.ApplicationUser }
+                includes: [ t => t.ApplicationUser ]
             )
             .Select(t => new
             {
@@ -50,6 +57,7 @@ namespace IdentityText.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
+
             var model = new ClassGroupVM
             {
                 AcademicYearsList = await _academicYearRepository.SelectListAcademicYearAsync(),

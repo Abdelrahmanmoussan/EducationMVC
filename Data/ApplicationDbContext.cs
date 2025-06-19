@@ -245,7 +245,7 @@ namespace IdentityText.Data
                 StudentDB = new DateTime(2008, 5, 10),
                 EnrollmentDate = DateTime.Now,
                 EmergencyContact = "01098765432",
-                AttendancePercent = 100,
+                //AttendancePercent = 100,
                 AcademicYearId = 2
             };
 

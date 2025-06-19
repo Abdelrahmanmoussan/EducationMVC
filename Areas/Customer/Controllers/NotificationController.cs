@@ -21,7 +21,16 @@ namespace IdentityText.Areas.Customer.Controllers
         public IActionResult Index()
         {
             var userId = _userManager.GetUserId(User);
-            //var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var unreadNotifications = _notificationRepository.Get(n => n.UserId == userId && !n.IsRead);
+
+            foreach (var notification in unreadNotifications)
+            {
+                notification.IsRead = true;
+                _notificationRepository.Edit(notification); 
+            }
+
+            _notificationRepository.Commit(); 
 
             var notifications = _notificationRepository.Get(n => n.UserId == userId)
                 .OrderByDescending(n => n.Date)
@@ -35,5 +44,6 @@ namespace IdentityText.Areas.Customer.Controllers
 
             return View(notifications);
         }
+
     }
 }

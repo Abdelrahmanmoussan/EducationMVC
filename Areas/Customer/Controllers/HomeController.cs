@@ -64,15 +64,7 @@ namespace IdentityText.Areas.Customer.Controllers
                 PopularClassGroups = popularCourses,
                 Portfolio = popularCourses
             };
-            ViewBag.StudentNumber = _classGroupRepository.Get()
-                .SelectMany(c => c.Enrollments)
-                .Select(e => e.StudentId)
-                .Distinct()
-                .Count();
-            //ViewBag.StudentNumber = _enrollmentRepository.Get(e=>e.StudentId ==)
-            //   .Distinct()
-            //   .Count();
-
+            
             return View(model);
         }
 

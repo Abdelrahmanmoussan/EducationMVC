@@ -5,114 +5,114 @@
 
 <style>
     .timeline {
-        position: relative;
-        margin: 2rem auto;
-        padding: 2rem 0;
-        width: 100%;
+    position: relative;
+    margin: 2rem auto;
+    padding: 2rem 0;
+    width: 100%;
     }
 
-        .timeline::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 4px;
-            height: 100%;
-            background: rgba(6, 187, 204, 1);
-            z-index: 0;
-        }
+    .timeline::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 100%;
+    background: rgba(6, 187, 204, 1);
+    z-index: 0;
+    }
 
     .timeline-item {
-        position: relative;
-        width: 50%;
-        padding: 1rem;
+    position: relative;
+    width: 50%;
+    padding: 1rem;
     }
 
-        .timeline-item:nth-child(odd) {
-            left: 0;
-            text-align: right;
-        }
+    .timeline-item:nth-child(odd) {
+    left: 0;
+    text-align: right;
+    }
 
-        .timeline-item:nth-child(even) {
-            left: 50%;
-            text-align: left;
-        }
+    .timeline-item:nth-child(even) {
+    left: 50%;
+    text-align: left;
+    }
 
-        .timeline-item::before {
-            content: attr(data-number);
-            position: absolute;
-            width: 2rem;
-            height: 2rem;
-            background: white;
-            border: 3px solid rgba(6, 187, 204, 1);
-            border-radius: 50%;
-            color: rgba(6, 187, 204, 1);
-            font-weight: bold;
-            text-align: center;
-            line-height: 1.4rem;
-            font-size: 0.9rem;
-            z-index: 2;
-        }
+    .timeline-item::before {
+    content: attr(data-number);
+    position: absolute;
+    width: 2rem;
+    height: 2rem;
+    background: white;
+    border: 3px solid rgba(6, 187, 204, 1);
+    border-radius: 50%;
+    color: rgba(6, 187, 204, 1);
+    font-weight: bold;
+    text-align: center;
+    line-height: 1.4rem;
+    font-size: 0.9rem;
+    z-index: 2;
+    }
 
-        .timeline-item:nth-child(1)::before {
-            top: 1.5rem;
-        }
+    .timeline-item:nth-child(1)::before {
+    top: 1.5rem;
+    }
 
-        .timeline-item:nth-child(n+2)::before {
-            top: 2rem; /*   موجب ينزل سالب يرفع الدائره */
-        }
+    .timeline-item:nth-child(n+2)::before {
+    top: 2rem; /*   موجب ينزل سالب يرفع الدائره */
+    }
 
-        .timeline-item:nth-child(odd)::before {
-            right: -1rem;
-        }
+    .timeline-item:nth-child(odd)::before {
+    right: -1rem;
+    }
 
-        .timeline-item:nth-child(even)::before {
-            left: -1rem;
-        }
+    .timeline-item:nth-child(even)::before {
+    left: -1rem;
+    }
 
-        .timeline-item:nth-child(n+2) {
-            margin-top: -10.5rem; /* موجب ينزل سالب يرفع الكارد لمواكبة الدائرة */
-        }
+    .timeline-item:nth-child(n+2) {
+    margin-top: -10.5rem; /* موجب ينزل سالب يرفع الكارد لمواكبة الدائرة */
+    }
 
     .timeline-card {
-        background: white;
-        border-radius: 1rem;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        padding: 1rem;
-        position: relative;
-        margin-bottom: 2rem;
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    position: relative;
+    margin-bottom: 2rem;
     }
 
-        .timeline-card::after {
-            content: "";
-            position: absolute;
-            top: 1.2rem;
-            width: 0;
-            height: 0;
-            border: 10px solid transparent;
-        }
+    .timeline-card::after {
+    content: "";
+    position: absolute;
+    top: 1.2rem;
+    width: 0;
+    height: 0;
+    border: 10px solid transparent;
+    }
 
     .timeline-item:nth-child(odd) .timeline-card::after {
-        right: -20px;
-        border-left-color: white;
+    right: -20px;
+    border-left-color: white;
     }
 
     .timeline-item:nth-child(even) .timeline-card::after {
-        left: -20px;
-        border-right-color: white;
+    left: -20px;
+    border-right-color: white;
     }
 
     .timeline-card .card-title {
-        font-size: 1rem;
-        font-weight: 600;
+    font-size: 1rem;
+    font-weight: 600;
     }
 
     .timeline-card .card-footer {
-        background: none;
-        border-top: none;
-        padding: 0.25rem 0;
-        font-size: 0.85rem;
+    background: none;
+    border-top: none;
+    padding: 0.25rem 0;
+    font-size: 0.85rem;
     }
 </style>
 
@@ -129,11 +129,13 @@
     {
         <div class="timeline">
             @{
-                var studentId = (int)ViewBag.StudentId; int index = 1;
+                var studentId = (int)ViewBag.StudentId;
+                int index = 1;
             }
             @foreach (var lecture in Model)
             {
                 var attendance = lecture.Attendances.FirstOrDefault(a => a.StudentId == studentId);
+
                 <div class="timeline-item" data-number="@index">
                     <div class="timeline-card">
                         <h5 class="card-title">@lecture.Title</h5>
@@ -172,31 +174,45 @@
                             </small>
                         </p>
                         @{
-                            var assessmentObj = lecture.Assessment;
-                            var assessmentResult = assessmentObj?.AssessmentResults
-                            .FirstOrDefault(ar => ar.StudentId == studentId);
+                            var assessment = lecture?.Assessment;
+                            var assessmentResult = assessment?.AssessmentResults.FirstOrDefault(ar => ar.StudentId == studentId);
+                        }
 
-                            if (assessmentObj != null)
-                            {
-                                <p class="card-footer text-muted text-center">
-                                    <small>
-                                        التقييم:
-                                        @if (assessmentResult != null)
+                        <p class="card-footer text-muted text-center">
+                            <small>
+                                @if (assessment == null)
+                                {
+                                    <text>لا يوجد تاسك</text>
+                                }
+                                else
+                                {
+                                    <text>يوجد تاسك - </text>
+                                    @if (assessmentResult == null)
+                                    {
+                                        <a href="@Url.Action("Details", "Assessment", new { area = "Customer", lectureId = lecture.LectureId })" class="text-decoration-none">
+                                            <i class="bi bi-info-circle text-warning"></i> لم يتم التقييم بعد
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        if (assessmentResult.Score > 0)
                                         {
                                             <a href="@Url.Action("Details", "Assessment", new { area = "Customer", lectureId = lecture.LectureId })" class="text-decoration-none">
-                                                <i class="bi bi-check-circle-fill text-success"></i> تم التقييم
+                                                <i class="bi bi-info-circle text-warning"></i>  تم التقييم
                                             </a>
                                         }
                                         else
                                         {
                                             <a href="@Url.Action("Details", "Assessment", new { area = "Customer", lectureId = lecture.LectureId })" class="text-decoration-none">
-                                                <i class="bi bi-info-circle text-warning"></i> لم يتم التقييم بعد - اضغط للدخول
+                                                <i class="bi bi-info-circle text-warning"></i> لم يتم التقييم بعد
                                             </a>
+                                 
                                         }
-                                    </small>
-                                </p>
-                            }
-                        }
+                                    }
+                                }
+                            </small>
+                        </p>
+
                     </div>
                 </div>
                 index++;

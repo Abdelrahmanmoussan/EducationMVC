@@ -79,14 +79,14 @@
 @section Scripts {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        $(document).ready(function () {
+               $(document).ready(function () {
             $('#ClassGroupId').change(function () {
-                var classGroupId = $(this).val();
+                var classGroupId = $(this).val(); // خذ القيمة المختارة
                 if (classGroupId) {
                     $.ajax({
                         url: '@Url.Action("GetLecturesByClassGroup", "Assessment", new { area = "Admin" })',
                         type: 'GET',
-                        data: { classGroupId: classGroupId },
+                        data: { classGroupId: classGroupId }, // استخدم المتغير الصحيح
                         success: function (data) {
                             var lectureSelect = $('#LectureId');
                             lectureSelect.empty();
@@ -104,6 +104,7 @@
                 }
             });
         });
+
     </script>
 
     @{

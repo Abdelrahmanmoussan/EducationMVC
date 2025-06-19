@@ -131,13 +131,10 @@ namespace IdentityText.Areas.Identity.Pages.Account
             [MaxLength(50)]
        
             public string EmergencyContact { get; set; }
-            [Range(0, 100)]
-            public decimal AttendancePercent { get; set; }
+
             [MaxLength(500)]
             public string StudentNotes { get; set; }
-            //public int SubscriptionId { get; set; }
             public int AcademicYearId { get; set; }
-            //public IEnumerable<SelectListItem> SubscriptionsList { get; set; } = Enumerable.Empty<SelectListItem>();
             public IEnumerable<SelectListItem> AcademicYearsList { get; set; } = Enumerable.Empty<SelectListItem>();
 
 
@@ -163,13 +160,11 @@ namespace IdentityText.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             Input = new InputModel
             {
-                //Role = "Student",
-                //Role = "Teacher",
+
                 EnrollmentDate = DateTime.Now,
                 TeacherHireDate = DateTime.Now,
                 StudentDB = DateTime.Now,
                 TeacherDB = DateTime.Now,
-                AttendancePercent = 0,
                 AcademicYearId = 1,
                 ParentName = "",
                 ParentPhone = "",
@@ -179,8 +174,6 @@ namespace IdentityText.Areas.Identity.Pages.Account
                 TeacherNotes = "",
             };
 
-            // Fill the Subject list for the teacher
-            //Input.SubscriptionsList = await _subscriptionRepository.SelectListSubscriptionAsync();
             Input.AcademicYearsList = await _academicYearRepository.SelectListAcademicYearAsync();
             Input.SubjectsList = await _subjectRepository.SelectListSubjectAsync();
         }
@@ -207,9 +200,7 @@ namespace IdentityText.Areas.Identity.Pages.Account
                 ModelState.Remove("Input.StudentDB");
                 ModelState.Remove("Input.EnrollmentDate");
                 ModelState.Remove("Input.EmergencyContact");
-                ModelState.Remove("Input.AttendancePercent");
                 ModelState.Remove("Input.StudentNotes");
-                //ModelState.Remove("Input.SubscriptionId");
                 ModelState.Remove("Input.AcademicYearId");
             }
 
@@ -257,10 +248,8 @@ namespace IdentityText.Areas.Identity.Pages.Account
                             StudentDB = Input.StudentDB,
                             EnrollmentDate = Input.EnrollmentDate,
                             EmergencyContact = Input.EmergencyContact,
-                            AttendancePercent = Input.AttendancePercent,
                             StudentNotes = Input.StudentNotes,
                             AcademicYearId = Input.AcademicYearId,
-                            //SubscriptionId = Input.SubscriptionId
                         };
 
                         _studentRepository.Create(student);

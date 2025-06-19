@@ -5,8 +5,10 @@ using IdentityText.Repository;
 using IdentityText.Repository.IRepository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using NuGet.DependencyResolver;
 using System.Linq.Expressions;
 
 namespace IdentityText.Areas.Admin.Controllers
@@ -22,14 +24,25 @@ namespace IdentityText.Areas.Admin.Controllers
         private readonly IAttendanceRepository _attendanceRepository;
         private readonly IStudentRepository _studentRepository;
         private readonly IAssessmentRepository _assessmentRepository;
+        private readonly ITeacherRepository _teacherRepository;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public LectureController(IAttendanceRepository attendanceRepository , ILectureRepository lectureRepository, IStudentRepository studentRepository, IEnrollmentRepository enrollmentRepository, IClassGroupRepository classGroupRepository, IAssessmentRepository assessmentRepository)
+        public LectureController(IAttendanceRepository attendanceRepository ,
+            ILectureRepository lectureRepository,
+            IStudentRepository studentRepository,
+            IEnrollmentRepository enrollmentRepository,
+            IClassGroupRepository classGroupRepository,
+            ITeacherRepository teacherRepository,
+             UserManager<ApplicationUser> userManager,
+            IAssessmentRepository assessmentRepository)
         {
             _lectureRepository = lectureRepository;
+            _teacherRepository = teacherRepository;
             _classGroupRepository = classGroupRepository;
             _assessmentRepository = assessmentRepository;
             _enrollmentRepository = enrollmentRepository;
             _attendanceRepository = attendanceRepository;
+            _userManager = userManager;
             _studentRepository = studentRepository;
         }
 
@@ -37,18 +50,27 @@ namespace IdentityText.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            var lectures = _lectureRepository.Get(includes: [e=>e.Assessment,e=>e.ClassGroup] );
+            var userId = _userManager.GetUserId(User);
+            var teacher = _teacherRepository.GetOne(t => t.UserId == userId);
+            if (teacher == null)
+                return NotFound();
+            var lectures = _lectureRepository.Get(filter: e => e.ClassGroup.TeacherId == teacher.TeacherId, includes: [e => e.Assessment, e => e.ClassGroup.Teacher]);
             return View(lectures);
         }
 
         [HttpGet]
         public async Task<IActionResult> CreateAsync()
         {
+            var userId = _userManager.GetUserId(User);
+            var teacher = _teacherRepository.GetOne(t => t.UserId == userId);
+            if (teacher == null)
+                return NotFound();
             var model = new LectureVM
             {
                 AssessmentList = await _assessmentRepository.SelectListAssessmentAsync(),
-                ClassGroupList = await _classGroupRepository.SelectListClassGroupAsync()
+                ClassGroupList = await _classGroupRepository.SelectListClassGroupByTeacherIdAsync(teacher.TeacherId)
             };
+
 
             return View(model);
         }
@@ -81,6 +103,10 @@ namespace IdentityText.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> EditAsync(int id)
         {
+            var userId = _userManager.GetUserId(User);
+            var teacher = _teacherRepository.GetOne(t => t.UserId == userId);
+            if (teacher == null)
+                return NotFound();
             var lecture = _lectureRepository.GetOne( filter: e => e.LectureId == id);
 
             if (lecture == null)
@@ -99,7 +125,7 @@ namespace IdentityText.Areas.Admin.Controllers
                 ClassGroupId = lecture.ClassGroupId,
                 AssessmentId = lecture.AssessmentId,
                 AssessmentList = await _assessmentRepository.SelectListAssessmentAsync(),
-                ClassGroupList = await _classGroupRepository.SelectListClassGroupAsync(),
+                ClassGroupList = await _classGroupRepository.SelectListClassGroupByTeacherIdAsync(teacher.TeacherId),
             };
             return View(model);
         }

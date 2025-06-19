@@ -7,6 +7,8 @@ namespace IdentityText.Repository.IRepository
     {
 
         Task<IEnumerable<SelectListItem>> SelectListClassGroupAsync();
+        Task<List<SelectListItem>> SelectListClassGroupByTeacherIdAsync(int teacherId);
+
         Task<int> CountAsync();
 
         Task<List<ClassGroup>> GetLatestCoursesAsync(int count = 5);

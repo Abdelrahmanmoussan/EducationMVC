@@ -34,8 +34,7 @@ namespace IdentityText.Models
 
         [MaxLength(100)]
         public string? EmergencyContact { get; set; }
-        [Range(0, 100)]
-        public decimal AttendancePercent { get; set; }
+
         [MaxLength(500)]
         public string? StudentNotes { get; set; }
 

@@ -4,9 +4,11 @@ using IdentityText.Repository;
 using IdentityText.Repository.IRepository;
 using IdentityText.Utility;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using System.Runtime.InteropServices;
 using System.Security.Claims;
 
 
@@ -23,23 +25,34 @@ namespace IdentityText.Areas.Admin.Controllers
         private readonly ILectureRepository _lectureRepository;
         private readonly IClassGroupRepository _classGroupRepository;
         private readonly INotificationRepository _notificationRepository;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ITeacherRepository _teacherRepository;
         public AssessmentController(
             IAssessmentRepository assessmentRepository,
             IAssessmentResultRepository assessmentResultRepository,
             ILectureRepository lectureRepository,
+            ITeacherRepository teacherRepository,
             INotificationRepository notificationRepository,
-            IClassGroupRepository classGroupRepository)
+            IClassGroupRepository classGroupRepository,
+            UserManager<ApplicationUser> userManager)
         {
             _assessmentRepository = assessmentRepository;
             _assessmentResultRepository = assessmentResultRepository;
             _lectureRepository = lectureRepository;
             _notificationRepository = notificationRepository;
             _classGroupRepository = classGroupRepository;
+            _teacherRepository = teacherRepository;
+            _userManager = userManager;
         }
         public IActionResult Index()
         {
-            var assessments = _assessmentRepository.GetWithFullIncludes(
-                include: q => q.Include(a => a.Lecture).ThenInclude(l => l.ClassGroup));
+            var userId = _userManager.GetUserId(User);
+            var teacher = _teacherRepository.GetOne(t => t.UserId == userId);
+            if (teacher == null)
+                return NotFound();
+
+            var assessments = _assessmentRepository.Get(filter: e => e.Lecture.ClassGroup.TeacherId == teacher.TeacherId,
+                includes: [a => a.Lecture.ClassGroup]);
             if (assessments == null)
             {
                 return NotFound();
@@ -50,36 +63,60 @@ namespace IdentityText.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> CreateAsync()
         {
+            var userId = _userManager.GetUserId(User);
+            var teacher = _teacherRepository.GetOne(t => t.UserId == userId);
+
+            if (teacher == null)
+                return NotFound();
+
             var model = new AssessmentVM
             {
                 LectureList = await _lectureRepository.SelectListLectureAsync(),
-                ClassGroupList = await _classGroupRepository.SelectListClassGroupAsync()
+                ClassGroupList = await _classGroupRepository.SelectListClassGroupByTeacherIdAsync(teacher.TeacherId)
             };
 
             return View(model);
         }
-        
+
+        [HttpGet]
+        public JsonResult GetLecturesByClassGroup(int classGroupId)
+        {
+            var lectures = _lectureRepository.Get(filter: l => l.ClassGroupId == classGroupId)
+                                            .Select(l => new { l.LectureId, l.Title });
+
+            return Json(lectures);
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateAsync(AssessmentVM model)
         {
+          
             if (ModelState.IsValid)
             {
-                var assessment = new Assessment
+                var exists = _assessmentRepository.Get(a => a.LectureId == model.LectureId).Any();
+                if (exists)
                 {
-                    Title = model.Title,
-                    Description = model.Description,
-                    DeliveryDate = model.DeliveryDate,
-                    CreatedAt = model.CreatedAt,
-                    AssessmentLink = model.AssessmentLink,
-                    MaxScore = model.MaxScore,
-                    LectureId = model.LectureId,
-                };
-                _assessmentRepository.Create(assessment);
-                _assessmentRepository.Commit();
-                TempData["notification"] = "Successfully Created";
-                return RedirectToAction(nameof(Index));
+                    ModelState.AddModelError(string.Empty, "This lecture already has an assigned task.");
+                }
+                else
+                {
+                    var assessment = new Assessment
+                    {
+                        Title = model.Title,
+                        Description = model.Description,
+                        DeliveryDate = model.DeliveryDate,
+                        CreatedAt = model.CreatedAt,
+                        AssessmentLink = model.AssessmentLink,
+                        MaxScore = model.MaxScore,
+                        LectureId = model.LectureId,
+                    };
+                    _assessmentRepository.Create(assessment);
+                    _assessmentRepository.Commit();
+                    TempData["notification"] = "Successfully Created";
+                    return RedirectToAction(nameof(Index));
+                }
+                    
             }
             model.LectureList = await _lectureRepository.SelectListLectureAsync();
             model.ClassGroupList = await _classGroupRepository.SelectListClassGroupAsync(); 
@@ -89,9 +126,13 @@ namespace IdentityText.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> EditAsync(int id)
         {
-            var assessment = _assessmentRepository.GetOneWithFullIncludes(
-                filter: e => e.AssessmentId == id,
-                  include: q => q.Include(a => a.Lecture).ThenInclude(l => l.ClassGroup));
+            var userId = _userManager.GetUserId(User);
+            var teacher = _teacherRepository.GetOne(t => t.UserId == userId);
+            if (teacher == null)
+                return NotFound();
+
+            var assessment = _assessmentRepository.GetOne(
+            filter: e => e.AssessmentId == id,includes:[a => a.Lecture.ClassGroup] );
 
             if (assessment == null)
             {
@@ -110,18 +151,11 @@ namespace IdentityText.Areas.Admin.Controllers
                 LectureId = assessment.LectureId,
                 ClassGroupId = assessment.Lecture.ClassGroupId,
                 LectureList = await _lectureRepository.SelectListLectureAsync(),
-                ClassGroupList = await _classGroupRepository.SelectListClassGroupAsync()
+                ClassGroupList = await _classGroupRepository.SelectListClassGroupByTeacherIdAsync(teacher.TeacherId),
             };
             return View(model);
         }
-        [HttpGet]
-        public JsonResult GetLecturesByClassGroup(int classGroupId)
-        {
-            var lectures = _lectureRepository.Get(filter: l => l.ClassGroupId == classGroupId)
-                                            .Select(l => new { l.LectureId, l.Title });
-
-            return Json(lectures);
-        }
+       
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -130,7 +164,6 @@ namespace IdentityText.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-                //var assessment = _assessmentRepository.GetOne(filter: e => e.AssessmentId == model.AssessmentId);
                 var assessment = _assessmentRepository.GetOneWithFullIncludes(
                 filter: e => e.AssessmentId == model.AssessmentId,
                   include: q => q.Include(a => a.Lecture).ThenInclude(l => l.ClassGroup));
@@ -269,7 +302,6 @@ namespace IdentityText.Areas.Admin.Controllers
             };
 
             var studentUserId = result.Student.ApplicationUser.Id;
-            //notification.NotificationRecipients.First().UserId = studentUserId;
 
             _notificationRepository.Create(notification);
             _notificationRepository.Commit();

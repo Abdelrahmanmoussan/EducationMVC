@@ -60,7 +60,7 @@ namespace IdentityText.Areas.Customer.Controllers
 
             var lectures = _lectureRepository.Get(
                 filter: l => l.ClassGroupId == classGroupId,
-                includes: [e => e.ClassGroup, e => e.Assessment, e => e.Attendances]
+                includes: [e => e.ClassGroup, e => e.Assessment.AssessmentResults, e => e.Attendances]
                 );
             ViewBag.ClassGroupId = classGroupId;
             ViewBag.StudentId = currentStudent.StudentId;

@@ -55,21 +55,22 @@
                     <span asp-validation-for="AcademicYearId" class="text-danger small"></span>
                 </div>
 
-                <div class="mb-3">
-                    <label asp-for="SubjectId" class="form-label"></label>
-                    <select asp-for="SubjectId" id="subjectSelect" class="form-select rounded-pill" asp-items="@Model.SubjectsList">
-                        <option value="">-- اختر المادة --</option>
-                    </select>
-                    <span asp-validation-for="SubjectId" class="text-danger small"></span>
-                </div>
 
-                <div class="mb-3">
-                    <label asp-for="TeacherId" class="form-label"></label>
-                    <select asp-for="TeacherId" id="teacherSelect" class="form-select rounded-pill">
-                        <option value="">-- اختر المدرس --</option>
-                    </select>
-                    <span asp-validation-for="TeacherId" class="text-danger small"></span>
-                </div>
+                 <div class="mb-3"> 
+                     <label asp-for="SubjectId" class="form-label"></label> 
+                     <select asp-for="SubjectId" id="subjectSelect" class="form-select rounded-pill" asp-items="@Model.SubjectsList"> 
+                         <option value="">-- اختر المادة --</option> 
+                     </select> 
+                     <span asp-validation-for="SubjectId" class="text-danger small"></span> 
+                 </div> 
+
+                 <div class="mb-3"> 
+                     <label asp-for="TeacherId" class="form-label"></label> 
+                     <select asp-for="TeacherId" id="teacherSelect" class="form-select rounded-pill"> 
+                         <option value="">-- اختر المدرس --</option> 
+                     </select> 
+                     <span asp-validation-for="TeacherId" class="text-danger small"></span> 
+                 </div> 
 
                 <div class="d-flex justify-content-between align-items-center mt-4">
                     <button type="submit" class="btn btn-outline-success px-4 rounded-pill shadow-sm">

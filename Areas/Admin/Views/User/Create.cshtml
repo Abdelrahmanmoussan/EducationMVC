@@ -107,26 +107,12 @@
                         <span asp-validation-for="EmergencyContact" class="text-danger"></span>
                     </div>
 
-                    <div class="form-floating mb-3">
-                        <input asp-for="AttendancePercent" type="number" step="0.01" min="0" max="100" class="form-control" placeholder="نسبة الحضور" />
-                        <label asp-for="AttendancePercent">نسبة الحضور</label>
-                        <span asp-validation-for="AttendancePercent" class="text-danger"></span>
-                    </div>
 
                     <div class="form-floating mb-3">
                         <textarea asp-for="StudentNotes" class="form-control" placeholder="ملاحظات عن الطالب" style="height: 100px;"></textarea>
                         <label asp-for="StudentNotes">ملاحظات عن الطالب</label>
                         <span asp-validation-for="StudentNotes" class="text-danger"></span>
                     </div>
-
-                    @* <div class="form-floating mb-3"> *@
-                    @*     <select asp-for="SubscriptionId" asp-items="Model.SubscriptionsList" class="form-control"> *@
-                    @*         <option value="">اختر الاشتراك</option> *@
-                    @*         <!-- Add options dynamically --> *@
-                    @*     </select> *@
-                    @*     <label asp-for="SubscriptionId">الاشتراك</label> *@
-                    @*     <span asp-validation-for="SubscriptionId" class="text-danger"></span> *@
-                    @* </div> *@
 
                     <div class="form-floating mb-3">
                         <select asp-for="AcademicYearId" asp-items="Model.AcademicYearsList" class="form-control">

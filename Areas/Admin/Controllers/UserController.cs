@@ -101,7 +101,6 @@ namespace IdentityText.Areas.Admin.Controllers
                 ModelState.Remove("StudentDB");
                 ModelState.Remove("EnrollmentDate");
                 ModelState.Remove("EmergencyContact");
-                ModelState.Remove("AttendancePercent");
                 ModelState.Remove("StudentNotes");
                 ModelState.Remove("AcademicYearId");
             }
@@ -152,7 +151,6 @@ namespace IdentityText.Areas.Admin.Controllers
                                 StudentDB = userVM.StudentDB,
                                 EnrollmentDate = userVM.EnrollmentDate,
                                 EmergencyContact = userVM.EmergencyContact,
-                                AttendancePercent = userVM.AttendancePercent,
                                 StudentNotes = userVM.StudentNotes,
                                 AcademicYearId = userVM.AcademicYearId,
                             };

@@ -18,86 +18,86 @@
 
     <style>
         body {
-            font-family: 'Segoe UI', sans-serif;
-            background-color: #f4f6f9;
+        font-family: 'Segoe UI', sans-serif;
+        background-color: #f4f6f9;
         }
 
         .sidebar {
-            width: 250px;
-            min-height: 100vh;
-            background: linear-gradient(180deg, #1d3557, #457b9d);
-            color: white;
-            padding: 20px;
+        width: 250px;
+        min-height: 100vh;
+        background: linear-gradient(180deg, #1d3557, #457b9d);
+        color: white;
+        padding: 20px;
         }
 
-            .sidebar a {
-                text-decoration: none;
-                padding: 10px 0;
-                display: block;
-                font-size: 15px;
-                transition: 0.3s;
-            }
+        .sidebar a {
+        text-decoration: none;
+        padding: 10px 0;
+        display: block;
+        font-size: 15px;
+        transition: 0.3s;
+        }
 
-            .sidebar .nav-link:hover {
-                background-color: rgba(255, 255, 255, 0.05);
-                padding-left: 12px;
-                border-radius: 4px;
-            }
+        .sidebar .nav-link:hover {
+        background-color: rgba(255, 255, 255, 0.05);
+        padding-left: 12px;
+        border-radius: 4px;
+        }
 
-            .sidebar .collapse .nav-link {
-                font-size: 14px;
-                padding-left: 20px;
-            }
+        .sidebar .collapse .nav-link {
+        font-size: 14px;
+        padding-left: 20px;
+        }
 
         .profile {
-            text-align: center;
-            margin-bottom: 20px;
+        text-align: center;
+        margin-bottom: 20px;
         }
 
-            .profile img {
-                width: 70px;
-                height: 70px;
-                border-radius: 50%;
-                object-fit: cover;
-            }
+        .profile img {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        object-fit: cover;
+        }
 
         .profile-info h6 {
-            margin: 10px 0 0;
-            font-weight: bold;
+        margin: 10px 0 0;
+        font-weight: bold;
         }
 
         .main-content {
-            flex-grow: 1;
-            padding: 30px;
-            animation: fadeInUp 0.5s ease-in-out;
+        flex-grow: 1;
+        padding: 30px;
+        animation: fadeInUp 0.5s ease-in-out;
         }
 
         .header {
-            background-color: #fff;
-            padding: 15px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        background-color: #fff;
+        padding: 15px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
 
-            .header .user-info img {
-                width: 40px;
-                height: 40px;
-                border-radius: 50%;
-                object-fit: cover;
-            }
+        .header .user-info img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+        }
 
         @@keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
+        from {
+        opacity: 0;
+        transform: translateY(20px);
+        }
 
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        to {
+        opacity: 1;
+        transform: translateY(0);
+        }
         }
     </style>
 
@@ -132,24 +132,37 @@
                     📦 Models
                     <i class="fas fa-chevron-down small"></i>
                 </a>
-                <div class="collapse ps-3" id="modelsMenu">
-                    <a class="nav-link text-white-50" href="/Admin/User">👤 Users</a>
-                    <a class="nav-link text-white-50" href="/Admin/Subject">📘 Subjects</a>
-                    <a class="nav-link text-white-50" href="/Admin/AcademicYear">📅 Academic Year</a>
-                    <a class="nav-link text-white-50" href="/Admin/ClassGroup">🏫 Class Groups</a>
-                    <a class="nav-link text-white-50" href="/Admin/Lecture">🎤 Lectures</a>
 
+                <div class="collapse ps-3" id="modelsMenu">
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a class="nav-link text-white-50" href="/Admin/User">👤 Users</a>
+                        <a class="nav-link text-white-50" href="/Admin/Subject">📘 Subjects</a>
+                        <a class="nav-link text-white-50" href="/Admin/AcademicYear">📅 Academic Year</a>
+                        <a class="nav-link text-white-50" href="/Admin/ClassGroup">🏫 Class Groups</a>
+                    }
+                    <a class="nav-link text-white-50" href="/Admin/Lecture">🎤 Lectures</a>
                     <a class="nav-link text-white d-flex justify-content-between align-items-center" data-bs-toggle="collapse" data-bs-target="#attendanceMenu" role="button">
                         📝 Attendance
                         <i class="fas fa-chevron-down small"></i>
                     </a>
                     <div class="collapse ps-3" id="attendanceMenu">
-                        <a class="nav-link text-white-50" href="/Admin/Attendance/TakeAttendance">📍 Take Attendance</a>
-                        <a class="nav-link text-white-50" href="/Admin/Attendance/ShowAttendance">📊 Attendance History</a>
-                        <a class="nav-link text-white-50" href="/Admin/Attendance/AbsenceSummary">📊 Absence Summary</a>
+                        @if (User.IsInRole("Teacher"))
+                        {
+                            <a class="nav-link text-white-50" href="/Admin/Attendance/TakeAttendance">📍 Take Attendance</a>
+                            <a class="nav-link text-white-50" href="/Admin/Attendance/ShowAttendance">📊 Attendance History</a>
+                            <a class="nav-link text-white-50" href="/Admin/Attendance/AbsenceSummary">📊 Absence Summary</a>
+                        }
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a class="nav-link text-white-50" href="/Admin/Attendance/ShowAttendance">📊 Attendance History</a>
+                        }
                     </div>
+                    @if (User.IsInRole("Teacher"))
+                    {
+                        <a class="nav-link text-white-50" href="/Admin/Assessment">🧪 Assessments</a>
+                    }
 
-                    <a class="nav-link text-white-50" href="/Admin/Assessment">🧪 Assessments</a>
                     <a class="nav-link text-white-50" href="/Admin/PrivateLesson">📚 Private Lesson</a>
                 </div>
 
@@ -176,6 +189,12 @@
 
                 <!-- Right: User Info -->
                 <div class="user-info d-flex align-items-center gap-3">
+
+                    <a href="/Customer/Home" class="nav-link text-black fw-bold">
+                        <i class="bi bi-house-door-fill me-1"></i> Customer Page
+                    </a>
+
+
                     @if (SignInManager.IsSignedIn(User))
                     {
                         <img src="@profileImagePath" alt="User" class="rounded-circle shadow-sm" width="42" height="42" style="object-fit: cover;" />
