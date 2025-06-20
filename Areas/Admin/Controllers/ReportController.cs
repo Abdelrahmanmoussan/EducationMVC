@@ -40,18 +40,20 @@ namespace IdentityText.Areas.Admin.Controllers
             var teacherUser = _teacherRepository.Get(includes: [e => e.ApplicationUser]).ToList();
             var studentUser = _studentRepository.Get(includes: [e => e.ApplicationUser]).ToList();
 
-
-
             var teacherName = teacherId.HasValue
                 ? await _teacherRepository.GetTeacherNameByIdAsync(teacherId.Value)
                 : "جميع المدرسين";
+
+            // فقط الإيرادات الناجحة
+            var paidPayments = payments.Where(p => p.PaymentStatus == PaymentStatus.Paid).ToList();
 
             var report = new PaymentsReportViewModel
             {
                 TeacherName = teacherName,
                 Payments = payments,
-                TotalRevenue = payments.Sum(p => p.Amount),
+                TotalRevenue = paidPayments.Sum(p => p.Amount),
                 TotalStudents = payments.Select(p => p.Enrollment.StudentId).Distinct().Count(),
+
                 PaidCount = payments.Count(p => p.PaymentStatus == PaymentStatus.Paid),
                 PendingCount = payments.Count(p => p.PaymentStatus == PaymentStatus.Pending),
                 FailedCount = payments.Count(p => p.PaymentStatus == PaymentStatus.Failed),

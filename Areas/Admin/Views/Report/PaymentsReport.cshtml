@@ -179,14 +179,25 @@
                 <tbody>
                     @foreach (var payment in Model.Payments)
                     {
+                        var status = payment.PaymentStatus.ToString();
+                        var badgeClass = status switch
+                        {
+                            "Paid" => "success",
+                            "Pending" => "warning",
+                            "Failed" => "danger",
+                            "Cancelled" => "secondary",
+                            _ => "dark"
+                        };
+
                         <tr>
                             <td>@payment.Enrollment.Student.FullName</td>
                             <td>@payment.Amount.ToString("C")</td>
                             <td>@payment.NetAmountForTeacher.ToString("C")</td>
                             <td>@payment.PaymentDate.ToString("yyyy-MM-dd")</td>
-                            <td>@payment.PaymentStatus.ToString()</td>
+                            <td><span class="badge bg-@badgeClass">@status</span></td>
                         </tr>
                     }
+
                 </tbody>
             </table>
         </div>

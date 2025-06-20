@@ -1,83 +1,104 @@
 ﻿@model IEnumerable<IdentityText.Models.Payment>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "المدفوعات";
 }
 
-<h1>Index</h1>
+@section Styles {
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+    <style>
+        .page-header {
+            background: linear-gradient(to right, #0d6efd, #6610f2);
+            color: white;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @* @Html.DisplayNameFor(model => model.Student) *@
-            </th>
-            <th>
-                @* @Html.DisplayNameFor(model => model.Teacher) *@
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Amount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PaymentDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PaymentMethod)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Notes)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PlatformPercentage)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NetAmountForTeacher)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PaymentStatus)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @* @Html.DisplayFor(modelItem => item.Student.UserId) *@
-            </td>
-            <td>
-                @* @Html.DisplayFor(modelItem => item.Teacher.UserId) *@
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Amount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PaymentDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PaymentMethod)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Notes)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PlatformPercentage)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NetAmountForTeacher)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PaymentStatus)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.PaymentId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.PaymentId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.PaymentId">Delete</a>
-            </td>
-        </tr>
+            .page-header i {
+                margin-left: 0.5rem;
+            }
+
+        .table th,
+        .table td {
+            vertical-align: middle !important;
+        }
+
+        .action-buttons a {
+            margin: 0 5px;
+        }
+    </style>
 }
-    </tbody>
-</table>
+
+<div class="container-fluid py-4">
+    <div class="page-header mb-4">
+        <i class="bi bi-cash-coin"></i> قائمة المدفوعات
+    </div>
+
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped text-center" id="paymentsTable">
+            <thead class="table-dark">
+                <tr>
+                    <th>المبلغ</th>
+                    <th>تاريخ الدفع</th>
+                    <th>طريقة الدفع</th>
+                    <th>ملاحظات</th>
+                    <th>نسبة المنصة</th>
+                    <th>صافي للمعلم</th>
+                    <th>الحالة</th>
+                    <th>العمليات</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    string badgeClass = item.PaymentStatus.ToString() switch
+                    {
+                        "Paid" => "success",
+                        "Pending" => "warning",
+                        "Failed" => "danger",
+                        "Cancelled" => "secondary",
+                        _ => "dark"
+                    };
+
+                    <tr>
+                        <td>@item.Amount.ToString("C")</td>
+                        <td>@item.PaymentDate.ToString("yyyy-MM-dd")</td>
+                        <td>@item.PaymentMethod</td>
+                        <td>@item.Notes</td>
+                        <td>@item.PlatformPercentage%</td>
+                        <td>@item.NetAmountForTeacher.ToString("C")</td>
+                        <td><span class="badge bg-@badgeClass">@item.PaymentStatus</span></td>
+                        <td class="action-buttons">
+                            <a asp-action="Details" asp-route-id="@item.PaymentId" class="btn btn-sm btn-outline-info">
+                                <i class="bi bi-info-circle"></i>
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@item.PaymentId" class="btn btn-sm btn-outline-danger">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#paymentsTable').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.13.6/i18n/ar.json"
+                }
+            });
+        });
+    </script>
+}
